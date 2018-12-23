@@ -1,3 +1,7 @@
 .off-canvas-sidebar .logo a.logo-mini, .sidebar .logo a.logo-mini {
     opacity: 1;
 }
+
+.off-canvas-sidebar .sidebar-wrapper, .sidebar .sidebar-wrapper {
+    overflow: hidden;
+}

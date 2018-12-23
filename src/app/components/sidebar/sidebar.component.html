@@ -3,56 +3,57 @@
     Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
 -->
   <div class="logo">
-    <a href="" class="simple-text logo-mini">
+    <a routerLinkActive="active" routerLink="dashboard" class="simple-text logo-mini">
       <div class="logo-image-small">
         <img src="../assets/img/hisaab-white.png">
       </div>
     </a>
-    <a href="" class="simple-text logo-normal">
+    <a routerLinkActive="active" routerLink="dashboard" class="simple-text logo-normal">
       HISAAB
-      <!-- <div class="logo-image-big">
-        <img src="../assets/img/logo-big.png">
-      </div> -->
     </a>
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
-      <li class="active ">
-        <a href="#">
+      <li routerLinkActive="active" routerLink="dashboard">
+        <a>
           <i class="nc-icon nc-bank"></i>
           <p>Dashboard</p>
         </a>
       </li>
-      <li>
-        <a href="#">
+      <li routerLinkActive="active" routerLink="orders">
+        <a>
           <i class="nc-icon nc-tile-56"></i>
           <p>Orders</p>
         </a>
       </li>
-      <li class=""><a href="#clientSubmenu" data-toggle="collapse" aria-expanded="false"><i class="nc-icon nc-single-02"></i>
+      <li><a href="#clientSubmenu" data-toggle="collapse" aria-expanded="false"><i class="nc-icon nc-single-02"></i>
           <p>Clients<b class="caret"></b></p>
         </a>
         <div class="collapse" id="clientSubmenu">
           <ul class="nav">
-            <li class=""><a href="#"><span class="sidebar-mini-icon">S</span><span class="sidebar-normal">Suppliers</span></a></li>
-            <li class=""><a href="#"><span class="sidebar-mini-icon">C</span><span class="sidebar-normal">Customers</span></a></li>
+            <li routerLinkActive="active" [routerLink]="['clients','suppliers']">
+              <a><span class="sidebar-mini-icon">S</span><span class="sidebar-normal">Suppliers</span></a>
+            </li>
+            <li routerLinkActive="active" [routerLink]="['clients','customers']">
+              <a><span class="sidebar-mini-icon">C</span><span class="sidebar-normal">Customers</span></a>
+            </li>
           </ul>
         </div>
       </li>
-      <li>
-        <a href="#">
+      <li routerLink="products" routerLinkActive="active">
+        <a>
           <i class="nc-icon nc-palette"></i>
           <p>Products</p>
         </a>
       </li>
-      <li>
-        <a href="#">
+      <li routerLink="reports" routerLinkActive="active">
+        <a>
           <i class="nc-icon nc-map-big"></i>
           <p>Reports</p>
         </a>
       </li>
-      <li>
-        <a href="#">
+      <li routerLink="settings" routerLinkActive="active">
+        <a>
           <i class="nc-icon nc-settings"></i>
           <p>Settings</p>
         </a>
