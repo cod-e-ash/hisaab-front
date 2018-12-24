@@ -4557,7 +4557,7 @@ a.fc-more:hover {
 
 .fc-toolbar .fc-left {
   float: left;
-  min-width: 260px
+  min-width: 200px
 }
 
 .fc-toolbar .fc-right {
@@ -10905,7 +10905,7 @@ img {
   top: 0;
   height: 100%;
   bottom: 0;
-  width: 260px;
+  width: 200px;
   left: 0;
   z-index: 999
 }
@@ -10915,7 +10915,7 @@ img {
   position: relative;
   height: calc(100vh - 75px);
   overflow: auto;
-  width: 260px;
+  width: 200px;
   z-index: 4;
   padding-bottom: 100px
 }
@@ -11465,7 +11465,7 @@ img {
 .main-panel {
   position: relative;
   float: right;
-  width: calc(100% - 260px);
+  width: calc(100% - 200px);
   background-color: #f4f3ef;
   transition: all .5s cubic-bezier(.685, .0473, .346, 1)
 }
@@ -11541,7 +11541,7 @@ img {
   }
 
   .sidebar-mini .sidebar:hover {
-    width: 260px
+    width: 200px
   }
 
   .sidebar-mini .sidebar:hover .logo a.logo-normal {
@@ -11554,7 +11554,7 @@ img {
   }
 
   .sidebar-mini .sidebar:hover .sidebar-wrapper {
-    width: 260px
+    width: 200px
   }
 
   .sidebar-mini .sidebar:hover .sidebar-wrapper .user .info>a>span,
@@ -11567,7 +11567,7 @@ img {
 }
 
 .panel-header {
-  height: 260px;
+  height: 200px;
   padding-top: 80px;
   padding-bottom: 45px;
   background: #141e30;
@@ -13626,7 +13626,7 @@ img {
 
   .nav-open .main-panel {
     right: 0;
-    transform: translate3d(260px, 0, 0)
+    transform: translate3d(200px, 0, 0)
   }
 
   .nav-open .sidebar {
@@ -13639,7 +13639,7 @@ img {
   }
 
   .nav-open .menu-on-right .main-panel {
-    transform: translate3d(-260px, 0, 0)
+    transform: translate3d(-200px, 0, 0)
   }
 
   .nav-open .menu-on-right .navbar-collapse,
@@ -13652,14 +13652,14 @@ img {
   }
 
   .nav-open .menu-on-right #bodyClick {
-    right: 260px;
+    right: 200px;
     left: auto
   }
 
   .menu-on-right .sidebar {
     left: auto;
     right: 0;
-    transform: translate3d(260px, 0, 0)
+    transform: translate3d(200px, 0, 0)
   }
 
   .bar1,
@@ -13787,7 +13787,7 @@ img {
     opacity: 1;
     top: 0;
     right: 0;
-    left: 260px;
+    left: 200px;
     content: "";
     z-index: 9999;
     overflow-x: hidden;
@@ -13814,7 +13814,7 @@ img {
     display: block;
     top: 0;
     height: 100%;
-    width: 260px;
+    width: 200px;
     right: auto;
     left: 0;
     z-index: 1032;
@@ -13822,7 +13822,7 @@ img {
     overflow-y: visible;
     padding: 0;
     transition: all .5s cubic-bezier(.685, .0473, .346, 1);
-    transform: translate3d(-260px, 0, 0)
+    transform: translate3d(-200px, 0, 0)
   }
 
   .main-panel {

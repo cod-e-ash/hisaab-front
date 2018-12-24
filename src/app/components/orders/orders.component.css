@@ -45,6 +45,4 @@ td>a {
 table td:nth-child(1) {
     color: rgb(173, 29, 29);
     cursor: pointer;
-    /* font-size: 13px; */
-    /* font-weight: bold; */
 }
