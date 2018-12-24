@@ -4,5 +4,47 @@
 }
 
 .table>tbody>tr>td {
-    padding: 5px 2px
+    padding: 4px 1px;
+    border: 0px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(5, 55, 95, 0.05);
+}
+
+.table td, .table th {
+    padding: 6px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin: 0%;
+    border-bottom: 0px;
+}
+
+.card .card-body {
+    padding: 2px 5px 2px;
+}
+
+.card .card-header .card-title {
+    margin-top: 2px;
+}
+
+.card {
+    height: 600px;
+}
+
+.card .card-footer {
+    border: 1px; 
+    /* background-color:  rgba(5, 54, 95, 0.06); */
+    padding-bottom: 0px;
+}
+
+td>a {
+    padding: 5px;
+}
+
+table td:nth-child(1) {
+    color: rgb(173, 29, 29);
+    cursor: pointer;
+    /* font-size: 13px; */
+    /* font-weight: bold; */
 }

@@ -3,119 +3,91 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title"> Simple Table</h4>
+          <div class="d-flex">
+            <h4 class="card-title"> Orders </h4>
+            <button class="btn btn-danger btn-sm ml-auto card-title">
+              <i class="fa fa-plus"></i> New Order
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-sm table-striped">
-              <thead class="text-primary">
-                <th class="text-center">
-                  #
-                </th>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Job Position
-                </th>
-                <th class="text-center">
-                  Since
-                </th>
-                <th class="text-right">
-                  Salary
-                </th>
-                <th class="text-right">
-                  Actions
-                </th>
+            <table class="table table-striped">
+              <thead class="text-secondary">
+                <th class="text-center">Order #</th>
+                <th>Customer </th>
+                <th class="text-center d-none d-md-table-cell">Items #</th>
+                <th class="text-right d-none d-md-table-cell">Total &#8377;</th>
+                <th class="text-right d-none d-sm-table-cell">Discount &#8377;</th>
+                <th class="text-right">Bill Date</th>
+                <th class="text-right">Final Amount &#8377;</th>
+                <th class="text-right">Status </th>
+                <th class="text-center">Actions </th>
               </thead>
               <tbody>
                 <tr>
+                  <td class="text-center">1001</td>
+                  <td>Ashish Bagaddeo</td>
+                  <td class="text-center d-none d-md-table-cell">20</td>
+                  <td class="text-right d-none d-md-table-cell">1234567.00</td>
+                  <td class="text-right d-none d-sm-table-cell">100.00</td>
+                  <td class="text-right">10-12-2018</td>
+                  <td class="text-right">1234467.00</td>
+                  <td class="text-right text-danger">Pending Delivery</td>
                   <td class="text-center">
-                    4
-                  </td>
-                  <td>
-                    Mike Monday
-                  </td>
-                  <td>
-                    Marketing
-                  </td>
-                  <td class="text-center">
-                    2013
-                  </td>
-                  <td class="text-right">
-                    € 49,990
-                  </td>
-                  <td class="text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-user"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-edit"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-times"></i>
-                    </button>
+                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
+                    <a><i class="fa fa-edit text-danger"></i></a>
+                    <a><i class="fa fa-forward text-success"></i></a>
                   </td>
                 </tr>
                 <tr>
+                  <td class="text-center">1002</td>
+                  <td>Anushri Arora</td>
+                  <td class="text-center d-none d-md-table-cell">36</td>
+                  <td class="text-right d-none d-md-table-cell">2564.50</td>
+                  <td class="text-right d-none d-sm-table-cell">200.00</td>
+                  <td class="text-right">10-12-2018</td>
+                  <td class="text-right">2364.50</td>
+                  <td class="text-right text-success">Complete</td>
                   <td class="text-center">
-                    5
-                  </td>
-                  <td>
-                    Paul Dickens
-                  </td>
-                  <td>
-                    Communication
-                  </td>
-                  <td class="text-center">
-                    2015
-                  </td>
-                  <td class="text-right">
-                    € 69,201
-                  </td>
-                  <td class="text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-user"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-edit"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-times"></i>
-                    </button>
+                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
+                    <a><i class="fa fa-edit text-danger"></i></a>
+                    <a><i class="fa fa-check text-success"></i></a>
                   </td>
                 </tr>
                 <tr>
+                  <td class="text-center">1003</td>
+                  <td>Neelam Arora</td>
+                  <td class="text-center d-none d-md-table-cell">666</td>
+                  <td class="text-right d-none d-md-table-cell">555666.77</td>
+                  <td class="text-right d-none d-sm-table-cell">0.00</td>
+                  <td class="text-right">10-12-2018</td>
+                  <td class="text-right">555666.77</td>
+                  <td class="text-right text-dplum">Pending Payment</td>
                   <td class="text-center">
-                    6
-                  </td>
-                  <td>
-                    Manuel Rico
-                  </td>
-                  <td>
-                    Manager
-                  </td>
-                  <td class="text-center">
-                    2012
-                  </td>
-                  <td class="text-right">
-                    € 99,201
-                  </td>
-                  <td class="text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-user"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-edit"></i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm   btn-neutral  ">
-                      <i class="fa fa-times"></i>
-                    </button>
+                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
+                    <a><i class="fa fa-edit text-danger"></i></a>
+                    <a><i class="fa fa-forward text-success"></i></a>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </div>
+        <div class="card-footer">
+          <nav>
+            <ul class="pagination justify-content-end">
+              <li class="page-item disabled">
+                <a class="page-link" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item active"><a class="page-link">1</a></li>
+              <li class="page-item"><a class="page-link">2</a></li>
+              <li class="page-item"><a class="page-link">3</a></li>
+              <li class="page-item">
+                <a class="page-link">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>

@@ -5,3 +5,7 @@
 .off-canvas-sidebar .sidebar-wrapper, .sidebar .sidebar-wrapper {
     overflow: hidden;
 }
+
+.off-canvas-sidebar .logo a.logo-normal, .sidebar .logo {
+    padding-left: 20%;
+}
