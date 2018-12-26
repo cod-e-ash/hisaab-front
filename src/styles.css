@@ -2,3 +2,11 @@
 .text-dplum {
     color: rgb(219, 63, 219);
 }
+
+.text-delete {
+   color: #dc3545!important;
+}
+
+.text-prime {
+    color: #007bff!important;
+}

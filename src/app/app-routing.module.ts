@@ -1,3 +1,4 @@
+import { ClientDetailsComponent } from './components/client-details/client-details.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -14,8 +15,9 @@ const routes: Routes = [
   {path: 'orders', component: OrdersComponent},
   {path: 'orders/edit', component: OrderDetailsComponent},
   {path: 'orders/new', component: OrderDetailsComponent},
-  {path: 'clients/suppliers', component: ClientsComponent},
-  {path: 'clients/customers', component: ClientsComponent},
+  {path: 'clients/:type', component: ClientsComponent, pathMatch: 'full'},
+  {path: 'clients/:type/:option', component: ClientDetailsComponent},
+  {path: 'clients/edit', component: ClientDetailsComponent},
   {path: 'products', component: ProductsComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'settings', component: SettingsComponent},

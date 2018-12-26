@@ -26,16 +26,16 @@
           <p>Orders</p>
         </a>
       </li>
-      <li><a href="#clientSubmenu" data-toggle="collapse" aria-expanded="false"><i class="nc-icon nc-single-02"></i>
+      <li routerLinkActive="active"><a href="#clientSubmenu" data-toggle="collapse" aria-expanded="false"><i class="nc-icon nc-single-02"></i>
           <p>Clients<b class="caret"></b></p>
         </a>
         <div class="collapse" id="clientSubmenu">
           <ul class="nav">
-            <li routerLinkActive="active" [routerLink]="['clients','suppliers']">
-              <a><span class="sidebar-mini-icon">S</span><span class="sidebar-normal">Suppliers</span></a>
-            </li>
             <li routerLinkActive="active" [routerLink]="['clients','customers']">
               <a><span class="sidebar-mini-icon">C</span><span class="sidebar-normal">Customers</span></a>
+            </li>
+            <li routerLinkActive="active" [routerLink]="['clients','suppliers']">
+              <a><span class="sidebar-mini-icon">S</span><span class="sidebar-normal">Suppliers</span></a>
             </li>
           </ul>
         </div>
