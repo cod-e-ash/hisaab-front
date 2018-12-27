@@ -52,14 +52,18 @@
               <input type="text" name="size" class="form-control" placeholder="Size">
             </div>
           </div>
-          <div class="col-md-1 mt-4 p-2 text-muted"><p>and / or</p></div>
+          <div class="col-md-1 mt-4 p-2 text-muted">
+            <p>and / or</p>
+          </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="variant">Variant</label>
               <input type="text" name="size" class="form-control" placeholder="Variant">
             </div>
           </div>
-          <div class="col-md-1 mt-4 p-2 text-muted"><p>and / or</p></div>
+          <div class="col-md-1 mt-4 p-2 text-muted">
+            <p>and / or</p>
+          </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="units">Units</label>
@@ -87,15 +91,28 @@
               <input type="text" name="margin" class="form-control" placeholder="in % (Optional)">
             </div>
           </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-2">
-            <select class="form-control" name="taxrate" title="Tax Select">
+          <div class="col-md-2 selectcol">
+            <!-- <select class="form-control" name="taxrate" title="Tax Select" multiple>
               <option disabled selected>Select TAX</option>
               <option value="Excempted">Excempted</option>
               <option value="GST5">GST 5%</option>
               <option value="GST8">GST 8%</option>
-            </select>
+            </select> -->
+            <!-- <div class="form-group"> -->
+              <select name="taxrate" class="selectpicker" data-style="btn btn-danger" multiple title="Choose TAX" data-size="7">
+                <option value="Excempted"> Excempted</option>
+                <option value="GST5">GST 5%</option>
+                <option value="GST8">GST 8%</option>
+                <option value="GST8">GST 12%</option>
+                <option value="GST8">GST 18%</option>
+                <option value="GST8">GST 28%</option>
+                <option value="GST8">IGST 5%</option>
+                <option value="GST8">IGST 8%</option>
+                <option value="GST8">IGST 12%</option>
+                <option value="GST8">IGST 18%</option>
+                <option value="GST8">IGST 28%</option>
+              </select>
+            <!-- </div> -->
           </div>
         </div>
         <div class="row">

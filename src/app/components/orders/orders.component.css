@@ -4,7 +4,7 @@
 }
 
 .table>tbody>tr>td {
-    padding: 4px 1px;
+    padding: 8px 1px;
     border: 0px;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .card {
-    height: 600px;
+    min-height: 600px;
 }
 
 .card .card-footer {
@@ -46,4 +46,5 @@ td>a {
 table td:nth-child(1) {
     color: rgb(173, 29, 29);
     cursor: pointer;
+    min-width: 40px;
 }

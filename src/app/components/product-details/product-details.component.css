@@ -82,3 +82,7 @@ label {
   .slider.round:before {
     border-radius: 50%;
   }
+
+  .selectcol {
+    margin-top:-8px;
+  }
