@@ -1,3 +1,109 @@
-<p>
-  product-details works!
-</p>
+<div class="col-md-10  mx-auto">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex">
+        <h5 class="card-title"> New Product </h5>
+        <div class="mt-3 mb-auto ml-auto pr-3 d-flex">
+          <p class="mr-2">Active</p>
+          <div class="form-check">
+            <label class="switch">
+              <input type="checkbox" value="active" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="row justify-content-center">
+          <div class="col-md-2 pr-1">
+            <div class="form-group">
+              <label for="code">Code</label>
+              <input type="text" name="code" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="name" class="form-control" placeholder="Name">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" class="form-control" placeholder="Company">
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="hsn">HSN</label>
+              <input type="text" name="hsn" class="form-control" placeholder="HSN (Optional)">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h6 class="mx-auto text-prime"> <i class="fa fa-balance-scale"></i></h6>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="size">Size</label>
+              <input type="text" name="size" class="form-control" placeholder="Size">
+            </div>
+          </div>
+          <div class="col-md-1 mt-4 p-2 text-muted"><p>and / or</p></div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="variant">Variant</label>
+              <input type="text" name="size" class="form-control" placeholder="Variant">
+            </div>
+          </div>
+          <div class="col-md-1 mt-4 p-2 text-muted"><p>and / or</p></div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="units">Units</label>
+              <input type="text" name="units" class="form-control" placeholder="Units">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h6 class="mx-auto text-delete"> <i class="fa fa-rupee-sign"></i> </h6>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-3 pr-1">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">PRICE</span>
+              </div>
+              <input type="text" name="price" class="form-control" placeholder="0.00">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">MARGIN</span>
+              </div>
+              <input type="text" name="margin" class="form-control" placeholder="in % (Optional)">
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-2">
+            <select class="form-control" name="taxrate" title="Tax Select">
+              <option disabled selected>Select TAX</option>
+              <option value="Excempted">Excempted</option>
+              <option value="GST5">GST 5%</option>
+              <option value="GST8">GST 8%</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="update mx-auto">
+            <button type="submit" class="btn btn-info btn-round">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
