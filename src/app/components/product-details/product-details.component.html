@@ -3,6 +3,9 @@
     <div class="card-header">
       <div class="d-flex">
         <h5 class="card-title"> New Product </h5>
+        <div *ngIf="product.submitted && product.invalid" class="mx-auto pl-3 d-flex text-delete">
+          <p>Incomplete or Invalid form. <br class="d-block d-md-none"> Please correct and re-submit.</p>
+        </div>
         <div class="mt-3 mb-auto ml-auto pr-3 d-flex">
           <p class="mr-2">Active</p>
           <div class="form-check">
@@ -29,13 +32,15 @@
           <div class="col-md-3">
             <div class="form-group" [ngClass]="{'has-danger':!name.valid && name.touched}">
               <label for="name">Name</label>
-              <input required minlength="3" type="text" ngModel #name="ngModel" name="name" class="form-control has-danger" placeholder="Name">
+              <input required minlength="3" type="text" ngModel #name="ngModel" name="name" class="form-control has-danger"
+                placeholder="Name">
             </div>
           </div>
           <div class="col-md-3">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-danger':!company.valid && company.touched}">
               <label for="company">Company</label>
-              <input required minlength="3" type="text" ngModel #company="ngModel" name="company" class="form-control" placeholder="Company">
+              <input required minlength="3" type="text" ngModel #company="ngModel" name="company" class="form-control"
+                placeholder="Company">
             </div>
           </div>
           <div class="col-md-2">
@@ -46,18 +51,20 @@
           </div>
         </div>
         <!-- Validation for FORM ROW 1 -->
-        <div class="row" *ngIf="code.touched && !code.valid">
+        <div class="row" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
           <ul class="text-delete col-md-11 pl-5 offset-1">
-            <li *ngIf="code.errors?.required">Code is required</li>
-            <li *ngIf="code.errors?.minlength">Code must be minimum {{code.errors.minlength.requiredLength}} chars</li>
+            <li *ngIf="code.touched && (code.errors?.required || code.errors?.minlength)">
+              Code is required & must be minimum 3 chars.
+            </li>
+            <li *ngIf="name.touched && (name.errors?.required || name.errors?.minlength)">
+              Name is required & must be minimum 3 chars.
+            </li>
+            <li *ngIf="company.touched && (company.errors?.required || company.errors?.minlength)">
+              Company is required & must be minimum 3 chars.
+            </li>
           </ul>
         </div>
-        <div class="row" *ngIf="name.touched && code.valid && !name.valid">
-          <ul class="text-delete col-md-11 pl-5 offset-1">
-            <li *ngIf="name.errors?.required">Name is required</li>
-            <li *ngIf="name.errors?.minlength">Name must be minimum {{name.errors.minlength.requiredLength}} chars</li>
-          </ul>
-        </div>
+
         <!-- FORM ROW 2 -->
         <div class="row">
           <h6 class="mx-auto text-prime"> <i class="fa fa-balance-scale"></i></h6>
@@ -66,7 +73,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="size">Size</label>
-              <input type="text" ngModel name="size" class="form-control" placeholder="Size">
+              <input type="text" ngModel name="size" #size="ngModel" class="form-control" placeholder="Size">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -75,7 +82,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="variant">Variant</label>
-              <input type="text" ngModel name="variant" class="form-control" placeholder="Variant">
+              <input type="text" ngModel name="variant" #variant="ngModel" class="form-control" placeholder="Variant">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -84,10 +91,13 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="units">Units</label>
-              <input type="text" ngModel name="units" class="form-control" placeholder="Units">
+              <input type="text" ngModel name="units" #units="ngModel" class="form-control" placeholder="Units">
             </div>
           </div>
         </div>
+        <!-- Validation for FORM ROW 2 -->
+
+        <!-- FORM ROW 3 -->
         <div class="row">
           <h6 class="mx-auto text-delete"> <i class="fa fa-rupee-sign"></i> </h6>
         </div>
@@ -97,7 +107,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">PRICE</span>
               </div>
-              <input required type="text" ngModel name="price" class="form-control" placeholder="0.00">
+              <input required type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" ngModel name="price" #price="ngModel" class="form-control" placeholder="0.00">
             </div>
           </div>
           <div class="col-md-3">
@@ -105,11 +115,11 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">MARGIN</span>
               </div>
-              <input type="text" ngModel name="margin" class="form-control" placeholder="in % (Optional)">
+              <input type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" ngModel name="margin" #margin="ngModel" class="form-control" placeholder="%" value="0">
             </div>
           </div>
           <div class="col-md-3 form-group selectcol">
-            <select class="form-control" name="taxrate" title="Tax Select">
+            <select required class="form-control" ngModel name="taxrate" #taxrate="ngModel" title="Tax Select">
               <option disabled selected>Select TAX</option>
               <option value="Excempted">Excempted</option>
               <option value="GST5">GST 5%</option>
@@ -123,27 +133,24 @@
               <option value="GST8">IGST 18%</option>
               <option value="GST8">IGST 28%</option>
             </select>
-            <!-- <div class="form-group"> -->
-            <!-- <select ngModel required name="taxrate" class="selectpicker" data-style="btn btn-danger" multiple title="Choose TAX"
-              data-size="7">
-              <option value="Excempted"> Excempted</option>
-              <option value="GST5">GST 5%</option>
-              <option value="GST8">GST 8%</option>
-              <option value="GST8">GST 12%</option>
-              <option value="GST8">GST 18%</option>
-              <option value="GST8">GST 28%</option>
-              <option value="GST8">IGST 5%</option>
-              <option value="GST8">IGST 8%</option>
-              <option value="GST8">IGST 12%</option>
-              <option value="GST8">IGST 18%</option>
-              <option value="GST8">IGST 28%</option>
-            </select> -->
-            <!-- </div> -->
           </div>
+        </div>
+        <!-- Validation for FORM ROW 1 -->
+        <div class="row" *ngIf="price?.touched || margin?.touched || taxrate?.touched">
+          <ul class="text-delete col-md-11 pl-5 offset-1">
+            <li *ngIf="price.touched && (price.errors?.required || price.errors?.pattern)">
+              Price is required and cannot be negative.
+            </li>
+            <li *ngIf="margin.touched && margin.value < 0 && margin.errors?.pattern">
+                Margin cannot be negative.
+              </li>
+            <li *ngIf="taxrate.touched && taxrate.errors?.required">
+              Please select a tax rate.
+            </li>
+          </ul>
         </div>
         <div class="row">
           <div class="update mx-auto">
-            <button [disabled]="!product.valid" class="btn btn-info btn-round">Save</button>
             <button class="btn btn-info btn-round">Save</button>
           </div>
         </div>

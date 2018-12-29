@@ -15,6 +15,9 @@ body {
     color: #007bff!important;
 }
 
+.has-danger .form-control {
+  background-color: inherit;
+}
 
 /* The switch - the box around the slider */
 .switch {
