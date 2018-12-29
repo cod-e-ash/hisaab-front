@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-product-details',
@@ -10,6 +10,10 @@ export class ProductDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  fsubmit(product) {
+    console.log(product);
   }
 
 }

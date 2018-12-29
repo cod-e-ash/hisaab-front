@@ -1,3 +1,7 @@
+body {
+  overflow: auto;
+}
+
 /* You can add global styles to this file, and also import other style files */
 .text-dplum {
     color: rgb(219, 63, 219);

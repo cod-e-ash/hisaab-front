@@ -7,7 +7,8 @@
           <p class="mr-2">Active</p>
           <div class="form-check">
             <label class="switch">
-              <input type="checkbox" value="active" checked>
+              <input ngModel #status="ngModel" (change)="fsubmit(status)" name="status" type="checkbox" value="active"
+                checked>
               <span class="slider round"></span>
             </label>
           </div>
@@ -15,33 +16,49 @@
       </div>
     </div>
     <div class="card-body">
-      <form>
+      <form #product="ngForm" name="product" (ngSubmit)="fsubmit(product)" validate>
+        <!-- FORM ROW 1 -->
         <div class="row justify-content-center">
           <div class="col-md-2 pr-1">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-danger':!code.valid && code.touched}">
               <label for="code">Code</label>
-              <input type="text" name="code" class="form-control" placeholder="Code">
+              <input required minlength="3" type="text" ngModel #code="ngModel" name="code" class="form-control"
+                placeholder="Code">
             </div>
           </div>
           <div class="col-md-3">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-danger':!name.valid && name.touched}">
               <label for="name">Name</label>
-              <input type="text" name="name" class="form-control" placeholder="Name">
+              <input required minlength="3" type="text" ngModel #name="ngModel" name="name" class="form-control has-danger" placeholder="Name">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label for="company">Company</label>
-              <input type="text" class="form-control" placeholder="Company">
+              <input required minlength="3" type="text" ngModel #company="ngModel" name="company" class="form-control" placeholder="Company">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="hsn">HSN</label>
-              <input type="text" name="hsn" class="form-control" placeholder="HSN (Optional)">
+              <input minlength="3" type="text" ngModel name="hsn" class="form-control" placeholder="HSN (Optional)">
             </div>
           </div>
         </div>
+        <!-- Validation for FORM ROW 1 -->
+        <div class="row" *ngIf="code.touched && !code.valid">
+          <ul class="text-delete col-md-11 pl-5 offset-1">
+            <li *ngIf="code.errors?.required">Code is required</li>
+            <li *ngIf="code.errors?.minlength">Code must be minimum {{code.errors.minlength.requiredLength}} chars</li>
+          </ul>
+        </div>
+        <div class="row" *ngIf="name.touched && code.valid && !name.valid">
+          <ul class="text-delete col-md-11 pl-5 offset-1">
+            <li *ngIf="name.errors?.required">Name is required</li>
+            <li *ngIf="name.errors?.minlength">Name must be minimum {{name.errors.minlength.requiredLength}} chars</li>
+          </ul>
+        </div>
+        <!-- FORM ROW 2 -->
         <div class="row">
           <h6 class="mx-auto text-prime"> <i class="fa fa-balance-scale"></i></h6>
         </div>
@@ -49,7 +66,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="size">Size</label>
-              <input type="text" name="size" class="form-control" placeholder="Size">
+              <input type="text" ngModel name="size" class="form-control" placeholder="Size">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -58,7 +75,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="variant">Variant</label>
-              <input type="text" name="size" class="form-control" placeholder="Variant">
+              <input type="text" ngModel name="variant" class="form-control" placeholder="Variant">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -67,7 +84,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="units">Units</label>
-              <input type="text" name="units" class="form-control" placeholder="Units">
+              <input type="text" ngModel name="units" class="form-control" placeholder="Units">
             </div>
           </div>
         </div>
@@ -80,7 +97,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">PRICE</span>
               </div>
-              <input type="text" name="price" class="form-control" placeholder="0.00">
+              <input required type="text" ngModel name="price" class="form-control" placeholder="0.00">
             </div>
           </div>
           <div class="col-md-3">
@@ -88,36 +105,46 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">MARGIN</span>
               </div>
-              <input type="text" name="margin" class="form-control" placeholder="in % (Optional)">
+              <input type="text" ngModel name="margin" class="form-control" placeholder="in % (Optional)">
             </div>
           </div>
-          <div class="col-md-2 selectcol">
-            <!-- <select class="form-control" name="taxrate" title="Tax Select" multiple>
+          <div class="col-md-3 form-group selectcol">
+            <select class="form-control" name="taxrate" title="Tax Select">
               <option disabled selected>Select TAX</option>
               <option value="Excempted">Excempted</option>
               <option value="GST5">GST 5%</option>
               <option value="GST8">GST 8%</option>
-            </select> -->
+              <option value="GST8">GST 12%</option>
+              <option value="GST8">GST 18%</option>
+              <option value="GST8">GST 28%</option>
+              <option value="GST8">IGST 5%</option>
+              <option value="GST8">IGST 8%</option>
+              <option value="GST8">IGST 12%</option>
+              <option value="GST8">IGST 18%</option>
+              <option value="GST8">IGST 28%</option>
+            </select>
             <!-- <div class="form-group"> -->
-              <select name="taxrate" class="selectpicker" data-style="btn btn-danger" multiple title="Choose TAX" data-size="7">
-                <option value="Excempted"> Excempted</option>
-                <option value="GST5">GST 5%</option>
-                <option value="GST8">GST 8%</option>
-                <option value="GST8">GST 12%</option>
-                <option value="GST8">GST 18%</option>
-                <option value="GST8">GST 28%</option>
-                <option value="GST8">IGST 5%</option>
-                <option value="GST8">IGST 8%</option>
-                <option value="GST8">IGST 12%</option>
-                <option value="GST8">IGST 18%</option>
-                <option value="GST8">IGST 28%</option>
-              </select>
+            <!-- <select ngModel required name="taxrate" class="selectpicker" data-style="btn btn-danger" multiple title="Choose TAX"
+              data-size="7">
+              <option value="Excempted"> Excempted</option>
+              <option value="GST5">GST 5%</option>
+              <option value="GST8">GST 8%</option>
+              <option value="GST8">GST 12%</option>
+              <option value="GST8">GST 18%</option>
+              <option value="GST8">GST 28%</option>
+              <option value="GST8">IGST 5%</option>
+              <option value="GST8">IGST 8%</option>
+              <option value="GST8">IGST 12%</option>
+              <option value="GST8">IGST 18%</option>
+              <option value="GST8">IGST 28%</option>
+            </select> -->
             <!-- </div> -->
           </div>
         </div>
         <div class="row">
           <div class="update mx-auto">
-            <button type="submit" class="btn btn-info btn-round">Save</button>
+            <button [disabled]="!product.valid" class="btn btn-info btn-round">Save</button>
+            <button class="btn btn-info btn-round">Save</button>
           </div>
         </div>
       </form>
