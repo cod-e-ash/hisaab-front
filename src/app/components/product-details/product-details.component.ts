@@ -1,4 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ProductService } from './../../services/product.service';
+import { Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
@@ -7,13 +9,19 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dataService: ProductService, private router: Router) { }
 
   ngOnInit() {
   }
 
   fsubmit(product) {
-    console.log(product);
+    if (product.valid) {
+      console.log(product.value);
+      this.dataService.createData(product.value)
+      .subscribe( data => {
+        this.router.navigate(['products']);
+      });
+    }
   }
 
 }

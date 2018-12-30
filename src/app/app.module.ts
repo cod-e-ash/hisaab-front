@@ -16,6 +16,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { ClientDetailsComponent } from './components/client-details/client-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ProductDetailsComponent } from './components/product-details/product-de
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
