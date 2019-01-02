@@ -6,9 +6,11 @@
           <div class="d-flex">
             <h4 class="card-title"> Products </h4>
             <div class="card-title d-flex ml-auto">
-              <input type="text" #productS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Product..." (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
-              <input type="text" #companyS [value]="params?.company || null" class="form-control mr-2" placeholder="Company..." (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
-              <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
+              <input type="text" #productS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Product..."
+                (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
+              <input type="text" #companyS [value]="params?.company || null" class="form-control mr-2" placeholder="Company..."
+                (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
+              <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: null})">
                 <i class="nc-icon nc-zoom-split"></i>
               </button>
               <div class="mt-auto mb-auto ml-5 p-2 d-flex">
@@ -48,17 +50,17 @@
                   <td class="text-center">{{product.code}}</td>
                   <td>{{ product.name }}</td>
                   <td class="text-center">{{ product.company }}</td>
-                  <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') + product?.variant || '' }}</td>
+                  <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
+                    product?.variant || '' }}</td>
                   <td class="text-center">{{ product?.unit }}</td>
                   <td class="text-center">{{ product.price }}</td>
                   <td class="text-center">{{ product.taxrate }}</td>
                   <td class="text-center" [ngClass]="{'text-success':product.status, 'text-delete':!product.status}">{{
                     product.status ? 'Active': 'Inactive' }}</td>
                   <td class="text-center">
-                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
                     <a *ngIf="product.status"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
                         data-placement="left" title="Add to Invoice"></i></a>
-                    <a><i class="fa fa-edit text-prime" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                    <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
                     <a *ngIf="product.status"><i class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left"
                         title="Deactivate"></i></a>
                   </td>
@@ -69,23 +71,23 @@
         </div>
         <div class="card-footer">
           <div class="row d-flex">
-              <div class="p-2">
-                  <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}} found</div>
-                  <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
-              </div>
-              <nav class="ml-auto">
-                <ul class="pagination">
-                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" tabindex="-1">Previous</a>
+            <div class="p-2">
+              <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}} found</div>
+              <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+            </div>
+            <nav class="ml-auto">
+              <ul class="pagination">
+                <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" tabindex="-1">Previous</a>
+                </li>
+                <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}">{{pageIndex}}</a>
                   </li>
-                  <li class="page-item" *ngFor="let pageIndex of navPages" [routerLink]="" [queryParams]="{page:pageIndex}" class="page-item"
-                    [ngClass]="{disabled: pageIndex === curPage, active: pageIndex === curPage}"><a class="page-link">{{pageIndex}}</a></li>
-                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}">Next</a>
-                  </li>
-                </ul>
-              </nav>
-     
+                <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}">Next</a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

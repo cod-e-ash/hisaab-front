@@ -1,13 +1,15 @@
+import { ProductsComponent } from './../components/products/products.component';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private curPageData: {};
+  private products: Product[];
   private url = 'http://localhost:3000/api/products';
 
   // HTTP Options
@@ -34,7 +36,12 @@ export class ProductService {
       totalPages: number,
       curPage: number,
       products: Product[]}>
-      (this.url, {params: params});
+      (this.url, {params: params})
+      .pipe(
+        tap(data => {
+          this.products = data.products;
+        })
+      );
   }
 
   createData (data: Product) {
@@ -47,14 +54,18 @@ export class ProductService {
   }
 
   updateData (data: Product ) {
-    return this.http.patch(this.url + '/' + data._id, data, this.httpOptions);
+    return this.http.put(this.url + '/' + data._id, data, this.httpOptions);
   }
 
   deleteData (id: string) {
     return this.http.delete(this.url + '/' + id, this.httpOptions );
   }
 
-  dataEmitter() {
-    // this.curPageData
+  getSingle(id: string) {
+    if (this.products) {
+      return this.products.filter(product => {
+        return product._id === id;
+      })[0];
+    }
   }
 }

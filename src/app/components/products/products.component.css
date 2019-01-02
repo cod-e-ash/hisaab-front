@@ -9,3 +9,10 @@
     height: 35px;
     margin-top: 0;
 }
+
+li.page-item.disabled.active>.page-link.page-pages {
+    background-color: #51cbce !important;
+    border-color: #51cbce !important;
+    color: #fff !important;
+    opacity: 1;
+}

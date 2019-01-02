@@ -88,3 +88,9 @@ label {
     margin-top: 3px;
     /* width: 180px; */
   }
+
+  .form-group .input-group-append .input-group-text, .form-group .input-group-prepend .input-group-text, .input-group .input-group-append .input-group-text, .input-group .input-group-prepend .input-group-text {
+    padding: 10px 0 10px 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
