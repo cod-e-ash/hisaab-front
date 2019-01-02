@@ -1,1 +1,11 @@
-@import '../orders/orders.component.css'
+@import '../orders/orders.component.css';
+
+.card-header .card-title input {
+    height: 35px;
+    padding: 4px;
+    min-width: 100px !important;
+}
+.card-header .btn {
+    height: 35px;
+    margin-top: 0;
+}
