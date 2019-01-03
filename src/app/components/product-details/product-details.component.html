@@ -21,7 +21,8 @@
       </div>
     </div>
     <div class="card-body">
-      <form *ngIf="type === 'edit' && product || type === 'new'" #productForm="ngForm" name="product" (ngSubmit)="fsubmit(productForm)" validate>
+      <form *ngIf="type === 'edit' && product || type === 'new'" #productForm="ngForm" name="productForm" (ngSubmit)="createProduct(productForm)"
+        validate>
         <!-- FORM ROW 1 -->
         <div class="row justify-content-center">
           <div class="col-md-2 pr-1">
@@ -41,14 +42,14 @@
           <div class="col-md-3">
             <div class="form-group" [ngClass]="{'has-danger':!company.valid && company.touched}">
               <label for="company">Company</label>
-              <input required minlength="3" type="text" [(ngModel)]="product.company" #company="ngModel" name="company" class="form-control"
-                placeholder="Company">
+              <input required minlength="3" type="text" [(ngModel)]="product.company" #company="ngModel" name="company"
+                class="form-control" placeholder="Company">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="hsn">HSN</label>
-              <input minlength="3" type="text" [(ngModel)]="product.hsn" name="hsn" class="form-control" placeholder="HSN (Optional)">
+              <input type="text" [(ngModel)]="product.hsn" name="hsn" class="form-control" placeholder="HSN (Optional)">
             </div>
           </div>
         </div>
@@ -75,7 +76,8 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="size">Size</label>
-              <input type="text" [(ngModel)]="product.size" name="size" #size="ngModel" class="form-control" placeholder="Size">
+              <input type="text" [(ngModel)]="product.size" name="size" #size="ngModel" class="form-control"
+                placeholder="Size">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -84,7 +86,8 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="variant">Variant</label>
-              <input type="text" [(ngModel)]="product.variant" name="variant" #variant="ngModel" class="form-control" placeholder="Variant">
+              <input type="text" [(ngModel)]="product.variant" name="variant" #variant="ngModel" class="form-control"
+                placeholder="Variant">
             </div>
           </div>
           <div class="col-md-1 mt-4 p-2 text-muted">
@@ -93,7 +96,8 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="units">Unit</label>
-              <input type="text" [(ngModel)]="product.unit" name="unit" #unit="ngModel" class="form-control" placeholder="Units">
+              <input type="text" [(ngModel)]="product.unit" name="unit" #unit="ngModel" class="form-control"
+                placeholder="Units">
             </div>
           </div>
         </div>
@@ -109,7 +113,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">PRICE</span>
               </div>
-              <input required type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.price" name="price" #price="ngModel" class="form-control" placeholder="0.00">
+              <input required type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.price"
+                name="price" #price="ngModel" class="form-control" placeholder="0.00">
             </div>
           </div>
           <div class="col-md-3">
@@ -117,7 +122,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">MARGIN</span>
               </div>
-              <input type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.margin" name="margin" #margin="ngModel" class="form-control" placeholder="%" value="0">
+              <input type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.margin" name="margin"
+                #margin="ngModel" class="form-control" placeholder="%" value="0">
             </div>
           </div>
           <div class="col-md-3 form-group selectcol">
@@ -138,15 +144,15 @@
           </div>
         </div>
         <!-- Validation for FORM ROW 3 -->
-        <div class="row" *ngIf="price?.touched || margin?.touched || taxrate?.touched">
+        <div class="row" *ngIf="productForm.submitted && (price?.touched || margin?.touched || taxrate?.touched)">
           <ul class="text-delete col-md-11 pl-5 offset-1">
             <li *ngIf="price.touched && (price.errors?.required || price.errors?.pattern)">
               Price is required and cannot be negative.
             </li>
             <li *ngIf="margin.touched && margin.value < 0 && margin.errors?.pattern">
-                Margin cannot be negative.
-              </li>
-            <li *ngIf="taxrate.touched && taxrate.errors?.required">
+              Margin cannot be negative.
+            </li>
+            <li *ngIf="taxrate.dirty && taxrate.errors?.required">
               Please select a tax rate.
             </li>
           </ul>
@@ -159,18 +165,19 @@
       </form>
     </div>
     <div class="card-footer">
-        <div class="d-flex">
-          <div class="p-2">
-            <div class="text-success">{{message}}</div>
-          </div>
-          <nav class="ml-auto">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" [routerLink]="['/products']">Back</a>
-              </li>
-            </ul>
-          </nav>
+      <div class="d-flex">
+        <div class="p-2">
+          <div *ngIf="messageSuccess" class="text-success">{{messageSuccess}}</div>
+          <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
         </div>
+        <nav class="ml-auto">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" [routerLink]="['/products']" [queryParams]="prvParams">Back</a>
+            </li>
+          </ul>
+        </nav>
       </div>
+    </div>
   </div>
 </div>

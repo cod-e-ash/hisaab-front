@@ -1,9 +1,7 @@
-import { NavbarComponent } from './../navbar/navbar.component';
 import { Product } from './../../models/product.model';
 import { ProductService } from './../../services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-products',
@@ -19,6 +17,10 @@ export class ProductsComponent implements OnInit {
   startPage = 0;
   endPage = 0;
   params: {};
+  delProductId: string;
+  delProductName: string;
+  alertMsgSuccess: string;
+  alertMsgFail: string;
 
   constructor(private router: Router, private route: ActivatedRoute , private dataservice: ProductService) { }
 
@@ -70,10 +72,40 @@ export class ProductsComponent implements OnInit {
   }
 
   searchParamChange(newParam) {
-    if (newParam.active === false) {
+    if (newParam.active === true) {
       newParam.active = null;
+    } else {
+      newParam.active = 'all';
     }
     this.router.navigate(['/products'], {queryParams: {...newParam}, queryParamsHandling: 'merge'});
   }
 
+  deleteProduct() {
+    this.alertMsgSuccess = null;
+    this.alertMsgFail = null;
+    if (this.delProductId) {
+      this.dataservice.deleteData(this.delProductId)
+      .subscribe(data => {
+          if (!data.error) {
+            const index = this.getProductIndex(this.delProductId);
+            if (index >= 0) {
+              this.products.splice(index, 1);
+              this.alertMsgSuccess = 'Product deleted successfully';
+              this.delProductId = null;
+              this.delProductName = null;
+            }
+          } else {
+            this.alertMsgFail = 'Product not deleted.' + data.error;
+          }
+      }, error => {
+          this.alertMsgFail = 'Product not deleted. Server Error!';
+      });
+    }
+  }
+
+  getProductIndex(id: string) {
+    return this.products.findIndex(product => {
+      return product['_id'] === id;
+    });
+  }
 }

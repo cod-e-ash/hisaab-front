@@ -1,4 +1,18 @@
 <div class="content">
+  <div *ngIf="alertMsgFail" class="alert alert-danger alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgFail=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Failed - </b> {{alertMsgFail}}</span>
+  </div>
+  <div *ngIf="alertMsgSuccess" class="alert alert-success alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgSuccess=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Success - </b> {{alertMsgSuccess}}</span>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -17,14 +31,14 @@
                 <p class="ml-2">All</p>
                 <div class="form-check ml-1">
                   <label class="switch">
-                    <input name="status" #status (change)="searchParamChange({active: $event.target.checked})" type="checkbox">
+                    <input name="status" #status (change)="searchParamChange({active: $event.target.checked})" type="checkbox" checked>
                     <span class="slider round"></span>
                   </label>
                 </div>
                 <p class="ml-1">Active</p>
               </div>
             </div>
-            <a class="ml-auto card-title" routerLink="new">
+            <a class="ml-auto card-title" routerLink="new" queryParamsHandling="merge">
               <button class="btn btn-danger ml-auto">
                 <i class="fa fa-plus"></i> New Product
               </button>
@@ -60,9 +74,10 @@
                   <td class="text-center">
                     <a *ngIf="product.status"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
                         data-placement="left" title="Add to Invoice"></i></a>
-                    <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                    <a *ngIf="product.status"><i class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left"
-                        title="Deactivate"></i></a>
+                    <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}"
+                        queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                    <a *ngIf="product.status" data-toggle="modal" (click)="delProductId=product._id; delProductName=product.name" data-target="#deleteModal"><i
+                        class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i></a>
                   </td>
                 </tr>
               </tbody>
@@ -78,17 +93,42 @@
             <nav class="ml-auto">
               <ul class="pagination">
                 <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" tabindex="-1">Previous</a>
+                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge" tabindex="-1">Previous</a>
                 </li>
                 <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
-                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}">{{pageIndex}}</a>
-                  </li>
+                  <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}" queryParamsHandling="merge">{{pageIndex}}</a>
+                </li>
                 <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}">Next</a>
+                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
                 </li>
               </ul>
             </nav>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="nc-icon nc-simple-remove"></i>
+        </button>
+        <h4 class="title title-up">Delete Product</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <b class="text-delete">{{delProductName}}</b>?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteProduct()">Delete</button>
         </div>
       </div>
     </div>

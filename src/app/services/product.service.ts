@@ -58,7 +58,7 @@ export class ProductService {
   }
 
   deleteData (id: string) {
-    return this.http.delete(this.url + '/' + id, this.httpOptions );
+    return this.http.delete<{error?: string, product?: Product}>(this.url + '/' + id, this.httpOptions);
   }
 
   getSingle(id: string) {

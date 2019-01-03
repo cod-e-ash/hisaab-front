@@ -1,8 +1,8 @@
 import { Product } from './../../models/product.model';
 import { ProductService } from './../../services/product.service';
 import { Component, OnInit} from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators'
+import { Router, ActivatedRoute} from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
@@ -12,7 +12,9 @@ import { filter } from 'rxjs/operators'
 export class ProductDetailsComponent implements OnInit {
   product: any = {};
   type: string;
-  message = '';
+  messageSuccess: string;
+  messageFail: string;
+  prvParams = {};
 
   constructor(private route: ActivatedRoute, private dataService: ProductService, private router: Router) { }
 
@@ -20,26 +22,33 @@ export class ProductDetailsComponent implements OnInit {
     this.type = this.route.snapshot.params['option'];
     this.route.queryParams
     .subscribe(params => {
+      this.prvParams = {...params};
+      this.prvParams['id'] = null;
       if (this.type === 'edit') {
         this.product = this.dataService.getSingle(params.id);
         if (!this.product) {
-          this.router.navigate(['/products']);
+          this.router.navigate(['/products'], {queryParams: this.prvParams});
         }
       }
     });
   }
 
-  fsubmit(product) {
-    if (product.valid) {
+  createProduct(product: NgForm) {
+    this.messageFail = null;
+    this.messageSuccess = null;
+    if (!product.valid) {
+      this.messageFail = 'Invalid Entries in Form';
+    } else{
       if (this.type === 'new') {
         this.dataService.createData(product.value)
         .subscribe( data => {
-          this.router.navigate(['products']);
+          product.reset();
+          this.messageSuccess = 'Record Added Successfully';
         });
       } else {
         this.dataService.updateData(this.product)
         .subscribe( data => {
-          this.message = 'Record Updated Successfully';
+          this.messageSuccess = 'Record Updated Successfully';
         });
       }
     }
