@@ -24,16 +24,18 @@ export class ProductDetailsComponent implements OnInit {
     .subscribe(params => {
       this.prvParams = {...params};
       this.prvParams['id'] = null;
-      if (this.type === 'edit') {
+      if (this.type === 'edit' || this.type === 'display') {
         this.product = this.dataService.getSingle(params.id);
         if (!this.product) {
           this.router.navigate(['/products'], {queryParams: this.prvParams});
         }
+      } else {
+        this.product.stock = 0;
       }
     });
   }
 
-  createProduct(product: NgForm) {
+  saveProduct(product: NgForm) {
     this.messageFail = null;
     this.messageSuccess = null;
     if (!product.valid) {
@@ -50,6 +52,16 @@ export class ProductDetailsComponent implements OnInit {
         .subscribe( data => {
           this.messageSuccess = 'Record Updated Successfully';
         });
+      }
+    }
+  }
+
+  changeStockQty(opr, pqty) {
+    if (pqty && pqty > 0) {
+      if (opr === 'add') {
+        this.product.stock += pqty;
+      } else {
+        this.product.stock -= pqty;
       }
     }
   }

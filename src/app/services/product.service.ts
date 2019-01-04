@@ -23,12 +23,12 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   // HTTP GET
-  getData (inParams: {page?: number, name?: string, company?: string, active?: string}) {
+  getData (inParams: {page?: number, name?: string, company?: string, stockOpt?: string}) {
     const params = new HttpParams()
         .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
         .set('name', inParams && inParams.name ? inParams.name : '')
         .set('company', inParams && inParams.company ? inParams.company : '')
-        .set('active', inParams && inParams.active ? inParams.active : '');
+        .set('stockOpt', inParams && inParams.stockOpt ? inParams.stockOpt : '');
 
     return this.http.get<{
       error: string,

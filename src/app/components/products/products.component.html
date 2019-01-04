@@ -17,120 +17,133 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex">
-            <h4 class="card-title"> Products </h4>
-            <div class="card-title d-flex ml-auto">
-              <input type="text" #productS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Product..."
-                (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
-              <input type="text" #companyS [value]="params?.company || null" class="form-control mr-2" placeholder="Company..."
-                (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
-              <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: null})">
-                <i class="nc-icon nc-zoom-split"></i>
-              </button>
-              <div class="mt-auto mb-auto ml-5 p-2 d-flex">
-                <p class="ml-2">All</p>
-                <div class="form-check ml-1">
+          <div class="row mb-2">
+            <div class="col-md-2">
+              <h5 class="card-title"> Products </h5>
+            </div>
+            <div class="col-md-5">
+              <div class="d-flex card-title">
+                <input type="text" #productS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Product..."
+                  (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
+                <input type="text" #companyS [value]="params?.company || null" class="form-control mr-2" placeholder="Company..."
+                  (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
+                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: null})">
+                  <i class="nc-icon nc-zoom-split"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 card-title">
+              <div class="d-flex justify-content-end mr-5">
+                <span class="m-1">All</span>
+                <div class="form-check m-1">
                   <label class="switch">
-                    <input name="status" #status (change)="searchParamChange({active: $event.target.checked})" type="checkbox" checked>
+                    <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt" type="checkbox"
+                      [checked]="stockOpt">
                     <span class="slider round"></span>
                   </label>
                 </div>
-                <p class="ml-1">Active</p>
+                <span class="m-1">In-Stock</span>
               </div>
             </div>
-            <a class="ml-auto card-title" routerLink="new" queryParamsHandling="merge">
-              <button class="btn btn-danger ml-auto">
-                <i class="fa fa-plus"></i> New Product
-              </button>
-            </a>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead class="text-secondary">
-                <th class="text-center"> Code # </th>
-                <th>Name </th>
-                <th class="text-center">Company</th>
-                <th class="text-center">Size / Variant</th>
-                <th class="text-center">Unit</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Tax</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions </th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let product of products; let i=index">
-                  <td class="text-center">{{product.code}}</td>
-                  <td>{{ product.name }}</td>
-                  <td class="text-center">{{ product.company }}</td>
-                  <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
-                    product?.variant || '' }}</td>
-                  <td class="text-center">{{ product?.unit }}</td>
-                  <td class="text-center">{{ product.price }}</td>
-                  <td class="text-center">{{ product.taxrate }}</td>
-                  <td class="text-center" [ngClass]="{'text-success':product.status, 'text-delete':!product.status}">{{
-                    product.status ? 'Active': 'Inactive' }}</td>
-                  <td class="text-center">
-                    <a *ngIf="product.status"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
-                        data-placement="left" title="Add to Invoice"></i></a>
-                    <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}"
-                        queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                    <a *ngIf="product.status" data-toggle="modal" (click)="delProductId=product._id; delProductName=product.name" data-target="#deleteModal"><i
-                        class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="row d-flex">
-            <div class="p-2">
-              <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}} found</div>
-              <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+            <div class="col-md-1 col-sm-6 card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-auto new-btn">
+                  <i class="fa fa-plus"></i> New Product
+                </button>
+              </a>
             </div>
-            <nav class="ml-auto">
-              <ul class="pagination">
-                <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge" tabindex="-1">Previous</a>
-                </li>
-                <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
-                  <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}" queryParamsHandling="merge">{{pageIndex}}</a>
-                </li>
-                <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                  <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
-                </li>
-              </ul>
-            </nav>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead class="text-secondary">
+                  <th class="text-center"> Code # </th>
+                  <th>Name </th>
+                  <th class="text-center">Company</th>
+                  <th class="text-center">Size / Variant</th>
+                  <th class="text-center">Unit</th>
+                  <th class="text-right">Price</th>
+                  <th class="text-center">Tax</th>
+                  <th class="text-right">Stock</th>
+                  <th class="text-right">Actions </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of products; let i=index">
+                    <td [routerLink]="['display']" [queryParams]="{id:product._id}"
+                    queryParamsHandling="merge" class="text-center">{{product.code}}</td>
+                    <td>{{ product.name }}</td>
+                    <td class="text-center">{{ product.company }}</td>
+                    <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
+                      product?.variant || '' }}</td>
+                    <td class="text-center">{{ product?.unit }}</td>
+                    <td class="text-right">{{ product.price | currency:'INR':'' }}</td>
+                    <td class="text-center">{{ product.taxrate }}</td>
+                    <td class="text-right" [ngClass]="product.stock > 0 ? 'text-success' : 'text-delete'"><b>{{
+                      product.stock !== 0 ? product.stock : 'Nil' }}</b></td>
+                    <td class="text-right">
+                      <a *ngIf="product.stock>0"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
+                          data-placement="left" title="Add to Invoice"></i></a>
+                      <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}"
+                          queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                      <a data-toggle="modal" (click)="delProductId=product._id; delProductName=product.name"
+                        data-target="#deleteModal"><i class="fa fa-times text-delete" data-toggle="tooltip"
+                          data-placement="left" title="Delete"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row d-flex">
+              <div class="p-2">
+                <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
+                  found</div>
+                <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+              </div>
+              <nav class="ml-auto">
+                <ul class="pagination">
+                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                      tabindex="-1">Previous</a>
+                  </li>
+                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                      queryParamsHandling="merge">{{pageIndex}}</a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header justify-content-center">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="nc-icon nc-simple-remove"></i>
-        </button>
-        <h4 class="title title-up">Delete Product</h4>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete <b class="text-delete">{{delProductName}}</b>?
-        </p>
-      </div>
-      <div class="modal-footer">
-        <div class="left-side">
-          <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="nc-icon nc-simple-remove"></i>
+          </button>
+          <h4 class="title title-up">Delete Product</h4>
         </div>
-        <div class="divider"></div>
-        <div class="right-side">
-          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteProduct()">Delete</button>
+        <div class="modal-body">
+          <p>Are you sure you want to delete <b class="text-delete">{{delProductName}}</b>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <div class="left-side">
+            <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteProduct()">Delete</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

@@ -6,8 +6,13 @@
     min-width: 100px !important;
 }
 .card-header .btn {
-    height: 35px;
+    height: 33px;
     margin-top: 0;
+}
+
+.card-title .new-btn {
+    padding: 4px 8px;
+    /* margin-right: 10px; */
 }
 
 li.page-item.disabled.active>.page-link.page-pages {
@@ -16,3 +21,9 @@ li.page-item.disabled.active>.page-link.page-pages {
     color: #fff !important;
     opacity: 1;
 }
+
+.card-footer{
+    position:absolute;
+      bottom:0;
+      width:98%;
+    }

@@ -94,3 +94,8 @@ label {
     font-size: 13px;
     font-weight: 600;
 }
+
+input:disabled, select:disabled {
+  background: inherit;
+  cursor: default;
+}

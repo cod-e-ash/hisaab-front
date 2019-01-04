@@ -7,7 +7,8 @@ export interface Product {
     size: string;
     variant: string;
     unit: string;
-    price: string;
-    margin: string;
+    price: number;
+    margin: number;
+    stock: number;
     taxrate: string;
   }

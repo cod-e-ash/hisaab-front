@@ -21,14 +21,19 @@ export class ProductsComponent implements OnInit {
   delProductName: string;
   alertMsgSuccess: string;
   alertMsgFail: string;
+  stockOpt: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute , private dataservice: ProductService) { }
 
   ngOnInit() {
+    this.stockOpt = true;
     this.route.queryParams
     .subscribe(params => {
       if (JSON.stringify(params) !== JSON.stringify(this.params)) {
         this.params = params;
+        if (this.params['stockOpt'] === 'all') {
+          this.stockOpt = false;
+        }
         this.dataservice.getData(this.params)
         .subscribe(data => {
           if (this.totalRecs !== data.totalRecs) {
@@ -72,10 +77,10 @@ export class ProductsComponent implements OnInit {
   }
 
   searchParamChange(newParam) {
-    if (newParam.active === true) {
-      newParam.active = null;
-    } else {
-      newParam.active = 'all';
+    if (newParam.stockOpt === false && (!newParam.company || !newParam.name)) {
+      newParam.stockOpt = 'all';
+    } else if (newParam.stockOpt === true && (!newParam.company || !newParam.name)) {
+      newParam.stockOpt = null;
     }
     this.router.navigate(['/products'], {queryParams: {...newParam}, queryParamsHandling: 'merge'});
   }
