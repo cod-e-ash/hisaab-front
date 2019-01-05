@@ -37,8 +37,8 @@
                 <span class="m-1">All</span>
                 <div class="form-check m-1">
                   <label class="switch">
-                    <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt" type="checkbox"
-                      [checked]="stockOpt">
+                    <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt"
+                      type="checkbox" [checked]="stockOpt">
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -69,8 +69,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let product of products; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:product._id}"
-                    queryParamsHandling="merge" class="text-center">{{product.code}}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:product._id}" queryParamsHandling="merge" class="text-center">{{product.code}}</td>
                     <td>{{ product.name }}</td>
                     <td class="text-center">{{ product.company }}</td>
                     <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
@@ -79,7 +78,7 @@
                     <td class="text-right">{{ product.price | currency:'INR':'' }}</td>
                     <td class="text-center">{{ product.taxrate }}</td>
                     <td class="text-right" [ngClass]="product.stock > 0 ? 'text-success' : 'text-delete'"><b>{{
-                      product.stock !== 0 ? product.stock : 'Nil' }}</b></td>
+                        product.stock !== 0 ? product.stock : 'Nil' }}</b></td>
                     <td class="text-right">
                       <a *ngIf="product.stock>0"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
                           data-placement="left" title="Add to Invoice"></i></a>

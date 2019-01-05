@@ -1,97 +1,189 @@
 <div class="content">
+  <div *ngIf="alertMsgFail" class="alert alert-danger alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgFail=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Failed - </b> {{alertMsgFail}}</span>
+  </div>
+  <div *ngIf="alertMsgSuccess" class="alert alert-success alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgSuccess=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Success - </b> {{alertMsgSuccess}}</span>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex">
-            <h4 class="card-title"> Orders </h4>
-            <a class="ml-auto card-title" routerLink="new">
-              <button class="btn btn-danger ml-auto">
-                <i class="fa fa-plus"></i> New Order
+          <div class="row mb-2">
+            <div class="col-md-2  col-sm-6 d-flex">
+              <h5 class="card-title mr-2"> Orders </h5>
+              <button class="btn btn-danger btn-round btn-icon mt-1">
+                <i class="fa fa-plus-circle"></i>
               </button>
-            </a>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="d-flex card-title ml-auto">
+                <button class="btn btn-outline-danger btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
+                <div class="text-secondary font-italic ml-1">
+                  <div>12/12/2018</div>
+                  <div>12/12/2018</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 col-sm-6">
+              <div class="d-flex card-title">
+                <input type="text" #orderS [value]="params?.name || null" class="form-control col-3 ml-auto" placeholder="Order Id..."
+                  (keyup.enter)="searchParamChange({name: orderS.value || null, client: clientS.value || null, page: 1})">
+                <input type="text" #clientS [value]="params?.client || null" class="form-control col-5 mx-2" placeholder="Client..."
+                  (keyup.enter)="searchParamChange({name: orderS.value, client: clientS.value, page: 1})">
+                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: orderS.value || null, client: clientS.value || null, page: null})">
+                  <i class="nc-icon nc-zoom-split"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 card-title">
+              <div class="d-flex justify-content-end">
+                <span class="m-1">All</span>
+                <div class="form-check m-1">
+                  <label class="switch">
+                    <input name="statusOpt" (change)="searchParamChange({statusOpt: $event.target.checked}); statusOpt = !statusOpt"
+                      type="checkbox" [checked]="statusOpt">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <span class="m-1">Pending</span>
+              </div>
+            </div>
+            <!-- <div class="col-md-1 col-sm-6 card-title ml-auto mr-auto">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-auto new-btn">
+                  <i class="fa fa-plus"></i> New Order
+                </button>
+              </a>
+            </div> -->
           </div>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead class="text-secondary">
-                <th class="text-center">Order #</th>
-                <th>Customer </th>
-                <th class="text-center d-none d-md-table-cell">Items #</th>
-                <th class="text-right d-none d-md-table-cell">Total &#8377;</th>
-                <th class="text-right d-none d-sm-table-cell">Discount &#8377;</th>
-                <th class="text-right">Bill Date</th>
-                <th class="text-right">Final Amount &#8377;</th>
-                <th class="text-right">Status </th>
-                <th class="text-center">Actions </th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center">1001</td>
-                  <td>Ashish Bagaddeo</td>
-                  <td class="text-center d-none d-md-table-cell">20</td>
-                  <td class="text-right d-none d-md-table-cell">1234567.00</td>
-                  <td class="text-right d-none d-sm-table-cell">100.00</td>
-                  <td class="text-right">10-12-2018</td>
-                  <td class="text-right">1234467.00</td>
-                  <td class="text-right text-danger">Pending Delivery</td>
-                  <td class="text-center">
-                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
-                    <a><i class="fa fa-edit text-danger"></i></a>
-                    <a><i class="fa fa-forward text-success"></i></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">1002</td>
-                  <td>Anushri Arora</td>
-                  <td class="text-center d-none d-md-table-cell">36</td>
-                  <td class="text-right d-none d-md-table-cell">2564.50</td>
-                  <td class="text-right d-none d-sm-table-cell">200.00</td>
-                  <td class="text-right">10-12-2018</td>
-                  <td class="text-right">2364.50</td>
-                  <td class="text-right text-success">Complete</td>
-                  <td class="text-center">
-                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
-                    <a><i class="fa fa-edit text-danger"></i></a>
-                    <a><i class="fa fa-check text-success"></i></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">1003</td>
-                  <td>Neelam Arora</td>
-                  <td class="text-center d-none d-md-table-cell">666</td>
-                  <td class="text-right d-none d-md-table-cell">555666.77</td>
-                  <td class="text-right d-none d-sm-table-cell">0.00</td>
-                  <td class="text-right">10-12-2018</td>
-                  <td class="text-right">555666.77</td>
-                  <td class="text-right text-dplum">Pending Payment</td>
-                  <td class="text-center">
-                    <!-- <a><i class="fa fa-bullhorn text-info"></i></a> -->
-                    <a><i class="fa fa-edit text-danger"></i></a>
-                    <a><i class="fa fa-forward text-success"></i></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead class="text-secondary">
+                  <th class="text-center"> Order # </th>
+                  <th>Client </th>
+                  <th class="text-center">Items #</th>
+                  <th class="text-right">Total &#8377;</th>
+                  <th class="text-right">Discount &#8377;</th>
+                  <th class="text-right">Bill Date</th>
+                  <th class="text-right">Final Amount &#8377;</th>
+                  <th class="text-right">Status</th>
+                  <th class="text-right">Actions </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of orders; let i=index">
+                    <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge" class="text-center">{{order.billno}}</td>
+                    <td>{{ order.client }}</td>
+                    <td class="text-center">{{ order.details.length }}</td>
+                    <td class="text-right">{{ order.total | currency:'INR':'' }}</td>
+                    <td class="text-right">{{ order?.discountamount | currency:'INR':'' || '' }}</td>
+                    <td class="text-right">{{ order.date | date }}</td>
+                    <td class="text-right">{{ order.finalamount | currency:'INR':'' }}</td>
+                    <td class="text-right" [ngClass]="order.status === 'Completed' ? 'text-success' : 'text-delete'">
+                      <b>{{ order.status }}</b>
+                    </td>
+                    <td class="text-right">
+                      <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:order._id}"
+                          queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                      <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal"><i
+                          class="fa fa-check text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="card-footer">
-          <nav>
-            <ul class="pagination justify-content-end">
-              <li class="page-item disabled">
-                <a class="page-link" tabindex="-1">Previous</a>
-              </li>
-              <li class="page-item active"><a class="page-link">1</a></li>
-              <li class="page-item"><a class="page-link">2</a></li>
-              <li class="page-item"><a class="page-link">3</a></li>
-              <li class="page-item">
-                <a class="page-link">Next</a>
-              </li>
-            </ul>
-          </nav>
+          <div class="card-footer">
+            <div class="row d-flex">
+              <div class="p-2">
+                <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
+                  found</div>
+                <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+              </div>
+              <nav class="ml-auto">
+                <ul class="pagination">
+                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                      tabindex="-1">Previous</a>
+                  </li>
+                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                      queryParamsHandling="merge">{{pageIndex}}</a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="nc-icon nc-simple-remove"></i>
+          </button>
+          <h4 class="title title-up">Delete Order</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete <b class="text-delete">{{delOrderName}}</b>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <div class="left-side">
+            <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteOrder()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade modal-primary" id="dateSearch" tabindex="-1" role="dialog" aria-labelledby="dateSearch"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <div class="modal-profile ml-auto mr-auto">
+            <i class="nc-icon nc-time-alarm"></i>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="searchFromDate">From Date</label>
+            <input type="date" ngModel #searchFromDate="ngModel" name="searchFromDate" class="form-control" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label for="searchEndDate">To Date</label>
+            <input type="date" ngModel #searchEndDate="ngModel" name="searchEndDate" class="form-control" placeholder="0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="left-side">
+            <button type="button" class="btn btn-link btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-link btn-success" (click)="changeStockQty('add', pqty.value)"
+              data-dismiss="modal">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

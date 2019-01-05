@@ -1,50 +1,79 @@
 .table-responsive {
-    overflow-x: auto;
-    overflow-y: auto;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .table>tbody>tr>td {
-    padding: 8px 1px;
-    border: 0px;
+  padding: 8px 1px;
+  border: 0px;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(5, 55, 95, 0.05);
+  background-color: rgba(5, 55, 95, 0.05);
 }
 
 .table td, .table th {
-    padding: 6px;
-    padding-left: 2px;
-    padding-right: 2px;
-    margin: 0%;
-    border-bottom: 0px;
+  padding: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin: 0%;
+  border-bottom: 0px;
 }
 
 .card .card-body {
-    padding: 2px 5px 2px;
+  padding: 2px 5px 2px;
 }
 
 .card .card-header .card-title {
-    margin-top: 2px;
+  margin-top: 2px;
 }
 
 .card {
-    min-height: 600px;
+  min-height: 600px;
 }
 
 .card .card-footer {
-    border: 1px; 
-    /* background-color:  rgba(5, 54, 95, 0.06); */
-    padding-bottom: 0px;
+  border: 1px; 
+  /* background-color:  rgba(5, 54, 95, 0.06); */
+  padding-bottom: 0px;
 }
 
 td>a {
-    padding: 5px;
-    cursor: pointer;
+  padding: 5px;
+  cursor: pointer;
 }
 
 table td:nth-child(1) {
-    color: rgb(173, 29, 29);
-    cursor: pointer;
-    min-width: 40px;
+  color: rgb(173, 29, 29);
+  cursor: pointer;
+  min-width: 40px;
+}
+
+.card-header .card-title input {
+  height: 35px;
+  padding: 4px;
+  min-width: 100px !important;
+}
+
+.card-header .btn {
+  height: 33px;
+  margin-top: 0;
+}
+
+.card-title .new-btn {
+  padding: 4px 8px;
+  /* margin-right: 10px; */
+}
+
+li.page-item.disabled.active>.page-link.page-pages {
+  background-color: #51cbce !important;
+  border-color: #51cbce !important;
+  color: #fff !important;
+  opacity: 1;
+}
+
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  width: 98%;
 }
