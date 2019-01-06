@@ -26,20 +26,20 @@
             </div>
             <div class="col-md-2 col-sm-6">
               <div class="d-flex card-title ml-auto">
-                <button class="btn btn-outline-danger btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
+                <button class="btn btn-outline-danger date-btn btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
                 <div class="text-secondary font-italic ml-1">
-                  <div>12/12/2018</div>
-                  <div>12/12/2018</div>
+                  <div><small><b>{{ params.fromDate | date:'d, MMM yyyy' || '' }}</b></small></div>
+                  <div><small><b>{{ params.toDate | date:'d, MMM yyyy' || '' }}</b></small></div>
                 </div>
               </div>
             </div>
             <div class="col-md-5 col-sm-6">
               <div class="d-flex card-title">
-                <input type="text" #orderS [value]="params?.name || null" class="form-control col-3 ml-auto" placeholder="Order Id..."
-                  (keyup.enter)="searchParamChange({name: orderS.value || null, client: clientS.value || null, page: 1})">
+                <input type="text" #orderS [value]="params?.orderno || null" class="form-control col-3 ml-auto" placeholder="Order Id..."
+                  (keyup.enter)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: 1})">
                 <input type="text" #clientS [value]="params?.client || null" class="form-control col-5 mx-2" placeholder="Client..."
-                  (keyup.enter)="searchParamChange({name: orderS.value, client: clientS.value, page: 1})">
-                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: orderS.value || null, client: clientS.value || null, page: null})">
+                  (keyup.enter)="searchParamChange({orderno: orderS.value, client: clientS.value, page: 1})">
+                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: null})">
                   <i class="nc-icon nc-zoom-split"></i>
                 </button>
               </div>
@@ -81,7 +81,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let order of orders; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge" class="text-center">{{order.billno}}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge" class="text-center">{{order.orderno}}</td>
                     <td>{{ order.client }}</td>
                     <td class="text-center">{{ order.details.length }}</td>
                     <td class="text-right">{{ order.total | currency:'INR':'' }}</td>
@@ -94,8 +94,12 @@
                     <td class="text-right">
                       <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:order._id}"
                           queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                      <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal"><i
-                          class="fa fa-check text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i></a>
+                      <a *ngIf="order.status !== 'Completed'" data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                        <i class="fa fa-check text-success" data-toggle="tooltip" data-placement="left" title="Completed"></i>
+                      </a>
+                      <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                        <i class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i>
+                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -140,7 +144,7 @@
           <h4 class="title title-up">Delete Order</h4>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete <b class="text-delete">{{delOrderName}}</b>?
+          <p>Are you sure you want to delete <b class="text-delete">{{delOrderorderno}}</b>?
           </p>
         </div>
         <div class="modal-footer">
@@ -167,11 +171,11 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="searchFromDate">From Date</label>
-            <input type="date" ngModel #searchFromDate="ngModel" name="searchFromDate" class="form-control" placeholder="0">
+            <input type="date" #sfromDate name="sfromDate" [value]="params.fromDate || ''" class="form-control" placeholder="0">
           </div>
           <div class="form-group">
             <label for="searchEndDate">To Date</label>
-            <input type="date" ngModel #searchEndDate="ngModel" name="searchEndDate" class="form-control" placeholder="0">
+            <input type="date" #stoDate name="stoDate" value="params.toDate || ''" class="form-control" placeholder="0">
           </div>
         </div>
         <div class="modal-footer">
@@ -180,7 +184,7 @@
           </div>
           <div class="divider"></div>
           <div class="right-side">
-            <button type="button" class="btn btn-link btn-success" (click)="changeStockQty('add', pqty.value)"
+            <button type="button" class="btn btn-link btn-success" (click)="searchParamChange({fromDate: sfromDate, toDate: stoDate})"
               data-dismiss="modal">Search</button>
           </div>
         </div>

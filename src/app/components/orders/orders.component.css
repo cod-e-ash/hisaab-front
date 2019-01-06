@@ -77,3 +77,7 @@ li.page-item.disabled.active>.page-link.page-pages {
   bottom: 0;
   width: 98%;
 }
+
+.btn-round.date-btn {
+  padding: 7px;
+}

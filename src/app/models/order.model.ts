@@ -1,6 +1,6 @@
 export interface Order {
   _id: string;
-  billno: string;
+  orderno: string;
   date: Date;
   custid: string;
   total: number;

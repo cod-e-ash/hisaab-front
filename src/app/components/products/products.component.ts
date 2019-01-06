@@ -95,6 +95,7 @@ export class ProductsComponent implements OnInit {
             const index = this.getProductIndex(this.delProductId);
             if (index >= 0) {
               this.products.splice(index, 1);
+              this.totalRecs -= this.totalRecs > 1 ? 1 : 0;
               this.alertMsgSuccess = 'Product deleted successfully';
               this.delProductId = null;
               this.delProductName = null;

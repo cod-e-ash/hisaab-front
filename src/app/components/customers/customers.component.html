@@ -1,0 +1,127 @@
+<div class="content">
+  <div *ngIf="alertMsgFail" class="alert alert-danger alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgFail=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Failed - </b> {{alertMsgFail}}</span>
+  </div>
+  <div *ngIf="alertMsgSuccess" class="alert alert-success alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgSuccess=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Success - </b> {{alertMsgSuccess}}</span>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row mb-2">
+            <div class="col-md-3">
+              <h5 class="card-title"> Customers </h5>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex card-title">
+                <input type="text" #customerS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Name..."
+                  (keyup.enter)="searchParamChange({name: customerS.value || null, page: 1})">
+                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: customerS.value || null, page: null})">
+                  <i class="nc-icon nc-zoom-split"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-1 col-sm-6 offset-md-3 card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-auto new-btn">
+                  <i class="fa fa-plus"></i> New Customer
+                </button>
+              </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead class="text-secondary">
+                  <th> &nbsp;SNo # &nbsp;</th>
+                  <th>Name </th>
+                  <th>Contact</th>
+                  <th>Email </th>
+                  <th>Contact 2</th>
+                  <th>Email 2</th>
+                  <th class="text-right">Actions </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let customer of customers; let i=index">
+                    <td [routerLink]="['display']" [queryParams]="{id:customer._id}" queryParamsHandling="merge" class="text-center">{{ i }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.phone1 }}</td>
+                    <td>{{ customer.email1 }}</td>
+                    <td>{{ customer.phone2 }}</td>
+                    <td>{{ customer.email2 }}</td>
+                    <td class="text-right">
+                      <a *ngIf="customer.stock>0"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
+                          data-placement="left" title="New Invoice"></i></a>
+                      <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:customer._id}"
+                          queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                      <a data-toggle="modal" (click)="delCustomerId=customer._id; delCustomerName=customer.name"
+                        data-target="#deleteModal"><i class="fa fa-times text-delete" data-toggle="tooltip"
+                          data-placement="left" title="Delete"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row d-flex">
+              <div class="p-2">
+                <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
+                  found</div>
+                <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+              </div>
+              <nav class="ml-auto">
+                <ul class="pagination">
+                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                      tabindex="-1">Previous</a>
+                  </li>
+                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                      queryParamsHandling="merge">{{pageIndex}}</a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="nc-icon nc-simple-remove"></i>
+          </button>
+          <h4 class="title title-up">Delete Customer</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete <b class="text-delete">{{delCustomerName}}</b>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <div class="left-side">
+            <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteCustomer()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

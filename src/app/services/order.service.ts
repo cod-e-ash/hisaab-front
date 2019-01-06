@@ -1,4 +1,3 @@
-import { OrdersComponent } from './../components/orders/orders.component';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Order } from './../models/order.model';
@@ -23,12 +22,14 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   // HTTP GET
-  getData (inParams: {page?: number, code?: string, client?: string, statusOpt?: string}) {
+  getData (inParams: {page?: number, orderno?: string, client?: string, statusOpt?: string, fromDate?: string, toDate?: string}) {
     const params = new HttpParams()
         .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
-        .set('code', inParams && inParams.code ? inParams.code : '')
+        .set('orderno', inParams && inParams.orderno ? inParams.orderno : '')
         .set('client', inParams && inParams.client ? inParams.client : '')
-        .set('statusOpt', inParams && inParams.statusOpt ? inParams.statusOpt : '');
+        .set('statusOpt', inParams && inParams.statusOpt ? inParams.statusOpt : '')
+        .set('fromDate', inParams && inParams.fromDate ? inParams.fromDate : '')
+        .set('toDate', inParams && inParams.toDate ? inParams.toDate : '')
 
     return this.http.get<{
       error: string,

@@ -5,7 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { ClientsComponent } from './components/clients/clients.component';
+import { CustomersComponent } from './components/customers/customers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
@@ -15,8 +15,8 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'orders', component: OrdersComponent},
   {path: 'orders/:option', component: OrderDetailsComponent},
-  {path: 'clients/:type', component: ClientsComponent, pathMatch: 'full'},
-  {path: 'clients/:type/:option', component: ClientDetailsComponent},
+  {path: 'clients/:type', component: CustomersComponent, pathMatch: 'full'},
+  {path: 'clients/:type/:option', component: ClientDetailsComponent, pathMatch: 'full'},
   {path: 'clients/edit', component: ClientDetailsComponent},
   {path: 'products', component: ProductsComponent},
   {path: 'products/:option', component: ProductDetailsComponent},

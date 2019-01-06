@@ -10,7 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ProductsComponent } from './components/products/products.component';
-import { ClientsComponent } from './components/clients/clients.component';
+import { CustomersComponent } from './components/customers/customers.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
@@ -27,7 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     DashboardComponent,
     OrdersComponent,
     ProductsComponent,
-    ClientsComponent,
+    CustomersComponent,
     SettingsComponent,
     ReportsComponent,
     OrderDetailsComponent,

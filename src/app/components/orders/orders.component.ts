@@ -21,6 +21,8 @@ export class OrdersComponent implements OnInit {
   alertMsgSuccess: string;
   alertMsgFail: string;
   statusOpt: boolean;
+  // sfromDate: string;
+  // stoDate: string;
 
   constructor(private router: Router, private route: ActivatedRoute , private dataservice: OrderService) { }
 
@@ -76,9 +78,23 @@ export class OrdersComponent implements OnInit {
   }
 
   searchParamChange(newParam) {
-    if (newParam.statusOpt === false && (!newParam.client || !newParam.code)) {
+    if (newParam.fromDate || newParam.toDate) {
+      if (newParam.fromDate.value !== '') {
+        newParam.fromDate = newParam.fromDate.value;
+      } else {
+        newParam.fromDate = null;
+      }
+
+      if (newParam.toDate.value !== '') {
+        newParam.toDate = newParam.toDate.value;
+      } else {
+        newParam.toDate = null;
+      }
+    }
+
+    if (newParam.statusOpt === false && (!newParam.client || !newParam.orderno)) {
       newParam.statusOpt = 'all';
-    } else if (newParam.statusOpt === true && (!newParam.client || !newParam.code)) {
+    } else if (newParam.statusOpt === true && (!newParam.client || !newParam.orderno)) {
       newParam.statusOpt = null;
     }
     this.router.navigate(['/orders'], {queryParams: {...newParam}, queryParamsHandling: 'merge'});
@@ -94,6 +110,7 @@ export class OrdersComponent implements OnInit {
             const index = this.getOrderIndex(this.delOrderId);
             if (index >= 0) {
               this.orders.splice(index, 1);
+              this.totalRecs -= this.totalRecs > 1 ? 1 : 0;
               this.alertMsgSuccess = 'Order deleted successfully';
               this.delOrderId = null;
             }
