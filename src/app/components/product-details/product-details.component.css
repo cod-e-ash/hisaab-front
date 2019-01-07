@@ -20,20 +20,6 @@ label {
   color: inherit;
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-.selectcol {
-  margin-top: 3px;
-  /* width: 180px; */
-}
-
 .form-group .input-group-append .input-group-text,
 .form-group .input-group-prepend .input-group-text,
 .input-group .input-group-append .input-group-text,
@@ -51,4 +37,9 @@ select:disabled {
 
 span.input-group-text {
   background-color: lavender;
+}
+
+.flex-container {
+  flex-direction: column;
+  flex-wrap: wrap;
 }

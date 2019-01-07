@@ -12,7 +12,8 @@
   background-color: rgba(5, 55, 95, 0.05);
 }
 
-.table td, .table th {
+.table td,
+.table th {
   padding: 6px;
   padding-left: 2px;
   padding-right: 2px;
@@ -33,7 +34,7 @@
 }
 
 .card .card-footer {
-  border: 1px; 
+  border: 1px;
   /* background-color:  rgba(5, 54, 95, 0.06); */
   padding-bottom: 0px;
 }
@@ -73,9 +74,8 @@ li.page-item.disabled.active>.page-link.page-pages {
 }
 
 .card-footer {
-  position: absolute;
   bottom: 0;
-  width: 98%;
+  width: 100%;
 }
 
 .btn-round.date-btn {

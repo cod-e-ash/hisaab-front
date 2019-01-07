@@ -17,20 +17,15 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="row mb-2">
-            <div class="col-md-3">
-              <h5 class="card-title"> Customers </h5>
+          <div class="d-flex flex-wrap justify-content-between">
+            <div class="card-title d-inline-flex">
+              <input type="text" #customerS [value]="params?.name || null" class="form-control col-md-12" placeholder="Name..."
+                (keyup.enter)="searchParamChange({name: customerS.value || null, page: 1})">
+              <button class="btn btn-icon btn-primary search-btn mx-2" (click)="searchParamChange({name: customerS.value || null, page: null})">
+                <i class="nc-icon nc-zoom-split"></i>
+              </button>
             </div>
-            <div class="col-md-4">
-              <div class="d-flex card-title">
-                <input type="text" #customerS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Name..."
-                  (keyup.enter)="searchParamChange({name: customerS.value || null, page: 1})">
-                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: customerS.value || null, page: null})">
-                  <i class="nc-icon nc-zoom-split"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-md-1 col-sm-6 offset-md-3 card-title">
+            <div class="card-title d-inline-flex">
               <a routerLink="new" queryParamsHandling="merge">
                 <button class="btn btn-danger ml-auto new-btn">
                   <i class="fa fa-plus"></i> New Customer
@@ -52,7 +47,8 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let customer of customers; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:customer._id}" queryParamsHandling="merge" class="text-center">{{ i }}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:customer._id}" queryParamsHandling="merge" class="text-center">{{
+                      i }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.phone1 }}</td>
                     <td>{{ customer.email1 }}</td>
@@ -73,27 +69,29 @@
             </div>
           </div>
           <div class="card-footer">
-            <div class="row d-flex">
-              <div class="p-2">
+            <div class="d-flex flex-wrap justify-content-between">
+              <div class="mt-4 p-2">
                 <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
                   found</div>
                 <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
               </div>
-              <nav class="ml-auto">
-                <ul class="pagination">
-                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
-                      tabindex="-1">Previous</a>
-                  </li>
-                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
-                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
-                      queryParamsHandling="merge">{{pageIndex}}</a>
-                  </li>
-                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
-                  </li>
-                </ul>
-              </nav>
+              <div *ngIf="totalRecs > 0">
+                <nav class="ml-auto mt-4">
+                  <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                        tabindex="-1">Previous</a>
+                    </li>
+                    <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                      <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                        queryParamsHandling="merge">{{pageIndex}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
         </div>

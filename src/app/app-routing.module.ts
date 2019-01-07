@@ -1,4 +1,3 @@
-import { ClientDetailsComponent } from './components/client-details/client-details.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -9,6 +8,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 
 
 const routes: Routes = [
@@ -16,8 +16,8 @@ const routes: Routes = [
   {path: 'orders', component: OrdersComponent},
   {path: 'orders/:option', component: OrderDetailsComponent},
   {path: 'clients/:type', component: CustomersComponent, pathMatch: 'full'},
-  {path: 'clients/:type/:option', component: ClientDetailsComponent, pathMatch: 'full'},
-  {path: 'clients/edit', component: ClientDetailsComponent},
+  {path: 'clients/:type/:option', component: CustomerDetailsComponent, pathMatch: 'full'},
+  {path: 'clients/:type/edit', component: CustomerDetailsComponent, pathMatch: 'full'},
   {path: 'products', component: ProductsComponent},
   {path: 'products/:option', component: ProductDetailsComponent},
   {path: 'reports', component: ReportsComponent},

@@ -19,6 +19,10 @@ body {
   background-color: inherit;
 }
 
+.text-success2 {
+  color: rgb(68, 209, 68);
+}
+
 input:checked+.slider {
   background-color: rgb(138, 243, 138);
 }

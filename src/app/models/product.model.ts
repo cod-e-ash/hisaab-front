@@ -8,6 +8,7 @@ export interface Product {
     variant: string;
     unit: string;
     price: number;
+    mrp: number;
     margin: number;
     stock: number;
     taxrate: string;

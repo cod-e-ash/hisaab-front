@@ -17,35 +17,28 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="row mb-2">
-            <div class="col-md-2">
-              <h5 class="card-title"> Products </h5>
+          <div class="d-flex justify-content-between">
+            <div class="card-title d-inline-flex">
+              <input type="text" #productS [value]="params?.name || null" class="form-control mx-2" placeholder="Product..."
+                (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
+              <input type="text" #companyS [value]="params?.company || null" class="form-control mx-2" placeholder="Company..."
+                (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
+              <button class="btn btn-icon btn-primary search-btn mx-2" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: null})">
+                <i class="nc-icon nc-zoom-split"></i>
+              </button>
             </div>
-            <div class="col-md-5">
-              <div class="d-flex card-title">
-                <input type="text" #productS [value]="params?.name || null" class="form-control ml-2 mr-2" placeholder="Product..."
-                  (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
-                <input type="text" #companyS [value]="params?.company || null" class="form-control mr-2" placeholder="Company..."
-                  (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
-                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: null})">
-                  <i class="nc-icon nc-zoom-split"></i>
-                </button>
+            <div class="card-title d-inline-flex">
+              <span class="m-1">All</span>
+              <div class="form-check m-1">
+                <label class="switch">
+                  <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt"
+                    type="checkbox" [checked]="stockOpt">
+                  <span class="slider round"></span>
+                </label>
               </div>
+              <span class="m-1">In-Stock</span>
             </div>
-            <div class="col-md-3 col-sm-6 card-title">
-              <div class="d-flex justify-content-end mr-5">
-                <span class="m-1">All</span>
-                <div class="form-check m-1">
-                  <label class="switch">
-                    <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt"
-                      type="checkbox" [checked]="stockOpt">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <span class="m-1">In-Stock</span>
-              </div>
-            </div>
-            <div class="col-md-1 col-sm-6 card-title">
+            <div class="card-title d-inline-flex">
               <a routerLink="new" queryParamsHandling="merge">
                 <button class="btn btn-danger ml-auto new-btn">
                   <i class="fa fa-plus"></i> New Product
@@ -62,7 +55,7 @@
                   <th class="text-center">Company</th>
                   <th class="text-center">Size / Variant</th>
                   <th class="text-center">Unit</th>
-                  <th class="text-right">Price</th>
+                  <th class="text-right">MRP</th>
                   <th class="text-center">Tax</th>
                   <th class="text-right">Stock</th>
                   <th class="text-right">Actions </th>
@@ -75,7 +68,7 @@
                     <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
                       product?.variant || '' }}</td>
                     <td class="text-center">{{ product?.unit }}</td>
-                    <td class="text-right">{{ product.price | currency:'INR':'' }}</td>
+                    <td class="text-right">{{ product.mrp | currency:'INR':'' }}</td>
                     <td class="text-center">{{ product.taxrate }}</td>
                     <td class="text-right" [ngClass]="product.stock > 0 ? 'text-success' : 'text-delete'"><b>{{
                         product.stock !== 0 ? product.stock : 'Nil' }}</b></td>
@@ -94,27 +87,29 @@
             </div>
           </div>
           <div class="card-footer">
-            <div class="row d-flex">
-              <div class="p-2">
+            <div class="d-flex flex-wrap justify-content-between">
+              <div class="mt-4 p-2">
                 <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
                   found</div>
                 <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
               </div>
-              <nav class="ml-auto">
-                <ul class="pagination">
-                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
-                      tabindex="-1">Previous</a>
-                  </li>
-                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
-                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
-                      queryParamsHandling="merge">{{pageIndex}}</a>
-                  </li>
-                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
-                  </li>
-                </ul>
-              </nav>
+              <div *ngIf="totalRecs > 0">
+                <nav class="ml-auto mt-4">
+                  <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                        tabindex="-1">Previous</a>
+                    </li>
+                    <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                      <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                        queryParamsHandling="merge">{{pageIndex}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
         </div>

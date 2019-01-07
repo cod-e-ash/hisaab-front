@@ -17,35 +17,25 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="row mb-2">
-            <div class="col-md-2  col-sm-6 d-flex">
-              <h5 class="card-title mr-2"> Orders </h5>
-              <button class="btn btn-danger btn-round btn-icon mt-1">
-                <i class="fa fa-plus-circle"></i>
+          <div class="d-flex flex-wrap justify-content-between">
+            <div class="card-title d-inline-flex justify-content-around">
+              <button class="btn btn-outline-danger date-btn btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
+              <div class="text-secondary font-italic ml-1">
+                <div><b>{{ params.fromDate | date:'d, MMM yyyy' || '' }}</b></div>
+                <div><small><b>{{ params.toDate | date:'d, MMM yyyy' || '' }}</b></small></div>
+              </div>
+            </div>
+            <div class="card-title d-inline-flex">
+              <input type="text" #orderS [value]="params?.orderno || null" class="form-control col-3 mx-1" placeholder="Order Id..."
+                (keyup.enter)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: 1})">
+              <input type="text" #clientS [value]="params?.client || null" class="form-control mx-2" placeholder="Client..."
+                (keyup.enter)="searchParamChange({orderno: orderS.value, client: clientS.value, page: 1})">
+              <button class="btn btn-icon btn-primary search-btn mx-1" (click)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: null})">
+                <i class="nc-icon nc-zoom-split"></i>
               </button>
             </div>
-            <div class="col-md-2 col-sm-6">
-              <div class="d-flex card-title ml-auto">
-                <button class="btn btn-outline-danger date-btn btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
-                <div class="text-secondary font-italic ml-1">
-                  <div><small><b>{{ params.fromDate | date:'d, MMM yyyy' || '' }}</b></small></div>
-                  <div><small><b>{{ params.toDate | date:'d, MMM yyyy' || '' }}</b></small></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5 col-sm-6">
-              <div class="d-flex card-title">
-                <input type="text" #orderS [value]="params?.orderno || null" class="form-control col-3 ml-auto" placeholder="Order Id..."
-                  (keyup.enter)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: 1})">
-                <input type="text" #clientS [value]="params?.client || null" class="form-control col-5 mx-2" placeholder="Client..."
-                  (keyup.enter)="searchParamChange({orderno: orderS.value, client: clientS.value, page: 1})">
-                <button class="btn btn-icon btn-primary search-btn" (click)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: null})">
-                  <i class="nc-icon nc-zoom-split"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 card-title">
-              <div class="d-flex justify-content-end">
+            <div class="d-inline-flex">
+              <div class="d-inline-flex">
                 <span class="m-1">All</span>
                 <div class="form-check m-1">
                   <label class="switch">
@@ -56,14 +46,14 @@
                 </div>
                 <span class="m-1">Pending</span>
               </div>
+              <div class="card-title d-inline-flex">
+                <a class="ml-3" routerLink="new" queryParamsHandling="merge">
+                  <button class="btn btn-danger ml-auto new-btn">
+                    <i class="fa fa-plus"></i> New Order
+                  </button>
+                </a>
+              </div>
             </div>
-            <!-- <div class="col-md-1 col-sm-6 card-title ml-auto mr-auto">
-              <a routerLink="new" queryParamsHandling="merge">
-                <button class="btn btn-danger ml-auto new-btn">
-                  <i class="fa fa-plus"></i> New Order
-                </button>
-              </a>
-            </div> -->
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -92,11 +82,12 @@
                       <b>{{ order.status }}</b>
                     </td>
                     <td class="text-right">
+                      <a *ngIf="order.status !== 'Completed'" data-toggle="modal" (click)="delOrderId=order._id"
+                        data-target="#deleteModal">
+                        <i class="far fa-check-circle text-success2" data-toggle="tooltip" data-placement="left" title="Completed"></i>
+                      </a>
                       <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:order._id}"
                           queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                      <a *ngIf="order.status !== 'Completed'" data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
-                        <i class="fa fa-check text-success" data-toggle="tooltip" data-placement="left" title="Completed"></i>
-                      </a>
                       <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
                         <i class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i>
                       </a>
@@ -107,27 +98,29 @@
             </div>
           </div>
           <div class="card-footer">
-            <div class="row d-flex">
-              <div class="p-2">
+            <div class="d-flex flex-wrap justify-content-between">
+              <div class="mt-4 p-2">
                 <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
                   found</div>
                 <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
               </div>
-              <nav class="ml-auto">
-                <ul class="pagination">
-                  <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
-                      tabindex="-1">Previous</a>
-                  </li>
-                  <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
-                    <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
-                      queryParamsHandling="merge">{{pageIndex}}</a>
-                  </li>
-                  <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
-                    <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
-                  </li>
-                </ul>
-              </nav>
+              <div *ngIf="totalRecs > 0">
+                <nav class="ml-auto mt-4">
+                  <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                        tabindex="-1">Previous</a>
+                    </li>
+                    <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                      <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                        queryParamsHandling="merge">{{pageIndex}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
         </div>
@@ -171,7 +164,8 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="searchFromDate">From Date</label>
-            <input type="date" #sfromDate name="sfromDate" [value]="params.fromDate || ''" class="form-control" placeholder="0">
+            <input type="date" #sfromDate name="sfromDate" [value]="params.fromDate || ''" class="form-control"
+              placeholder="0">
           </div>
           <div class="form-group">
             <label for="searchEndDate">To Date</label>

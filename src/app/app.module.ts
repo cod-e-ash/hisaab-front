@@ -14,7 +14,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
-import { ClientDetailsComponent } from './components/client-details/client-details.component';
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -31,7 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     SettingsComponent,
     ReportsComponent,
     OrderDetailsComponent,
-    ClientDetailsComponent,
+    CustomerDetailsComponent,
     ProductDetailsComponent
   ],
   imports: [

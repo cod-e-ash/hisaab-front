@@ -9,16 +9,6 @@
         <div *ngIf="productForm && productForm.submitted && productForm.invalid" class="mx-auto pl-3 d-flex text-delete">
           <p>Incomplete or Invalid form. <br class="d-block d-md-none"> Please correct and re-submit.</p>
         </div>
-        <!-- <div *ngIf="product && product._id" class="mt-3 mb-auto ml-auto pr-3 d-flex">
-          <p class="mr-2">Active</p>
-          <div class="form-check">
-            <label class="switch">
-              <input [(ngModel)]="product.status" #status="ngModel" name="status" type="checkbox" value="active"
-                checked>
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="card-body">
@@ -26,38 +16,30 @@
         (ngSubmit)="saveProduct(productForm)" validate>
         <fieldset [disabled]="type === 'display'">
           <!-- FORM ROW 1 -->
-          <div class="row justify-content-center">
-            <div class="col-md-2 pr-1">
-              <div class="form-group" [ngClass]="{'has-danger':!code.valid && code.touched}">
-                <label for="code">Code</label>
-                <input required minlength="3" type="text" [(ngModel)]="product.code" #code="ngModel" name="code" class="form-control"
-                  placeholder="Code">
-              </div>
+          <div class="d-flex flex-wrap justify-content-around">
+            <div class="form-group" [ngClass]="{'has-danger':!code.valid && code.touched}">
+              <label for="code">Code</label>
+              <input required minlength="3" type="text" [(ngModel)]="product.code" #code="ngModel" name="code" class="form-control"
+                placeholder="Code">
             </div>
-            <div class="col-md-3">
-              <div class="form-group" [ngClass]="{'has-danger':!name.valid && name.touched}">
-                <label for="name">Name</label>
-                <input required minlength="3" type="text" [(ngModel)]="product.name" #name="ngModel" name="name" class="form-control has-danger"
-                  placeholder="Name">
-              </div>
+            <div class="form-group" [ngClass]="{'has-danger':!name.valid && name.touched}">
+              <label for="name">Name</label>
+              <input required minlength="3" type="text" [(ngModel)]="product.name" #name="ngModel" name="name" class="form-control has-danger"
+                placeholder="Name">
             </div>
-            <div class="col-md-3">
-              <div class="form-group" [ngClass]="{'has-danger':!company.valid && company.touched}">
-                <label for="company">Company</label>
-                <input required minlength="3" type="text" [(ngModel)]="product.company" #company="ngModel" name="company"
-                  class="form-control" placeholder="Company">
-              </div>
+            <div class="form-group" [ngClass]="{'has-danger':!company.valid && company.touched}">
+              <label for="company">Company</label>
+              <input required minlength="3" type="text" [(ngModel)]="product.company" #company="ngModel" name="company"
+                class="form-control" placeholder="Company">
             </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="hsn">HSN</label>
-                <input type="text" [(ngModel)]="product.hsn" name="hsn" class="form-control" placeholder="HSN (Optional)">
-              </div>
+            <div class="form-group">
+              <label for="hsn">HSN</label>
+              <input type="text" [(ngModel)]="product.hsn" name="hsn" class="form-control" placeholder="HSN (Optional)">
             </div>
           </div>
           <!-- Validation for FORM ROW 1 -->
-          <div class="row" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
-            <ul class="text-delete col-md-11 pl-5 offset-1">
+          <div class="d-flex" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
+            <ul class="text-delete ml-5">
               <li *ngIf="code.touched && (code.errors?.required || code.errors?.minlength)">
                 Code is required & must be minimum 3 chars.
               </li>
@@ -71,55 +53,40 @@
           </div>
 
           <!-- FORM ROW 2 -->
-          <div class="row">
+          <div class="row mt-3">
             <h6 class="mx-auto text-prime"> <i class="fa fa-balance-scale"></i></h6>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="size">Size</label>
-                <input type="text" [(ngModel)]="product.size" name="size" #size="ngModel" class="form-control"
-                  placeholder="Size">
-              </div>
+          <div class="d-flex flex-wrap justify-content-around">
+            <div class="form-group">
+              <label for="size">Size</label>
+              <input type="text" [(ngModel)]="product.size" name="size" #size="ngModel" class="form-control"
+                placeholder="Size (Optional)">
             </div>
-            <div class="col-md-1 mt-4 p-2 text-muted">
-              <p>and / or</p>
+            <div class="form-group">
+              <label for="variant">Variant</label>
+              <input type="text" [(ngModel)]="product.variant" name="variant" #variant="ngModel" class="form-control"
+                placeholder="Variant (Optional)">
             </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="variant">Variant</label>
-                <input type="text" [(ngModel)]="product.variant" name="variant" #variant="ngModel" class="form-control"
-                  placeholder="Variant">
-              </div>
+            <div class="form-group">
+              <label for="units">Unit</label>
+              <input type="text" [(ngModel)]="product.unit" name="unit" #unit="ngModel" class="form-control"
+                placeholder="Units (Optional)">
             </div>
-            <div class="col-md-1 mt-4 p-2 text-muted">
-              <p>and / or</p>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="units">Unit</label>
-                <input type="text" [(ngModel)]="product.unit" name="unit" #unit="ngModel" class="form-control"
-                  placeholder="Units">
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="stock">Stock (Qty)</label>
-                <input type="number" [(ngModel)]="product.stock" name="stock" #stock="ngModel" class="form-control"
-                  placeholder="Stock">
-                <button *ngIf="type === 'edit'" type="button" class="btn btn-link btn-sm" data-toggle="modal"
-                  data-target="#editStock">Edit</button>
-              </div>
+            <div class="form-group">
+              <label for="stock">Stock (Qty)</label>
+              <input type="number" [(ngModel)]="product.stock" name="stock" #stock="ngModel" class="form-control"
+                placeholder="Stock">
+              <button *ngIf="type === 'edit'" type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editStock">Edit</button>
             </div>
           </div>
           <!-- Validation for FORM ROW 2 -->
 
           <!-- FORM ROW 3 -->
-          <div class="row">
+          <div class="row mt-3">
             <h6 class="mx-auto text-delete"> <i class="fa fa-rupee-sign"></i> </h6>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-md-3 pr-1">
+          <div class="d-flex flex-sm-nowwrap justify-content-center">
+            <div class="col-md-4 pr-1">
               <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                   <span class="input-group-text p-2">PRICE</span>
@@ -128,16 +95,26 @@
                   name="price" #price="ngModel" class="form-control" placeholder="0.00">
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4 pr-1">
               <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
-                  <span class="input-group-text p-2">MARGIN</span>
+                  <span class="input-group-text p-2">MRP</span>
                 </div>
+                <input required type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.mrp"
+                  name="mrp" #mrp="ngModel" class="form-control" placeholder="0.00">
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-sm-nowwrap justify-content-center">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="margin">Margin %</label>
                 <input type="number" min="1" pattern="^[+]?([.]\d+|\d+([.]\d+)?)$" [(ngModel)]="product.margin" name="margin"
                   #margin="ngModel" class="form-control" placeholder="%" value="0">
               </div>
             </div>
             <div class="col-md-3 form-group selectcol">
+              <label for="units">Tax</label>
               <select required class="form-control" [(ngModel)]="product.taxrate" name="taxrate" #taxrate="ngModel"
                 title="Tax Select">
                 <option disabled selected>Select TAX</option>
@@ -170,7 +147,7 @@
             </ul>
           </div>
         </fieldset>
-        <div class="row">
+        <div class="row mt-3">
           <div class="update mx-auto">
             <button type="button" class="btn btn-info btn-round" [routerLink]="['/products']" [queryParams]="prvParams">Back</button>
             <button *ngIf="type !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
