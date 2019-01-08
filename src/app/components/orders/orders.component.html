@@ -18,14 +18,14 @@
       <div class="card">
         <div class="card-header">
           <div class="d-flex flex-wrap justify-content-between">
-            <div class="card-title d-inline-flex justify-content-around">
-              <button class="btn btn-outline-danger date-btn btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
-              <div class="text-secondary font-italic ml-1">
-                <div><b>{{ params.fromDate | date:'d, MMM yyyy' || '' }}</b></div>
-                <div><small><b>{{ params.toDate | date:'d, MMM yyyy' || '' }}</b></small></div>
-              </div>
+            <div class="card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-2 new-btn">
+                  <i class="fa fa-plus-circle"></i> ADD
+                </button>
+              </a>
             </div>
-            <div class="card-title d-inline-flex">
+            <div class="card-title d-inline-flex mx-auto">
               <input type="text" #orderS [value]="params?.orderno || null" class="form-control col-3 mx-1" placeholder="Order Id..."
                 (keyup.enter)="searchParamChange({orderno: orderS.value || null, client: clientS.value || null, page: 1})">
               <input type="text" #clientS [value]="params?.client || null" class="form-control mx-2" placeholder="Client..."
@@ -34,24 +34,26 @@
                 <i class="nc-icon nc-zoom-split"></i>
               </button>
             </div>
-            <div class="d-inline-flex">
-              <div class="d-inline-flex">
-                <span class="m-1">All</span>
-                <div class="form-check m-1">
-                  <label class="switch">
-                    <input name="statusOpt" (change)="searchParamChange({statusOpt: $event.target.checked}); statusOpt = !statusOpt"
-                      type="checkbox" [checked]="statusOpt">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <span class="m-1">Pending</span>
-              </div>
+            <div class="d-inline-flex  mx-auto">
               <div class="card-title d-inline-flex">
-                <a class="ml-3" routerLink="new" queryParamsHandling="merge">
-                  <button class="btn btn-danger ml-auto new-btn">
-                    <i class="fa fa-plus"></i> New Order
-                  </button>
-                </a>
+                <button class="btn btn-outline-danger date-btn btn-round btn-sm mt-1" data-toggle="modal" data-target="#dateSearch">Dates</button>
+                <div class="text-secondary font-italic ml-1">
+                  <div>{{ params.fromDate | date:'dd MMM yyyy' || '' }}</div>
+                  <div>{{ params.toDate | date:'dd MMM yyyy' || '' }}</div>
+                </div>
+              </div>
+              <div class="ml-5 mt-2">
+                <div class="d-inline-flex">
+                  <span class="m-1">All</span>
+                  <div class="form-check m-1">
+                    <label class="switch">
+                      <input name="statusOpt" (change)="searchParamChange({statusOpt: $event.target.checked}); statusOpt = !statusOpt"
+                        type="checkbox" [checked]="statusOpt">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <span class="m-1">Pending</span>
+                </div>
               </div>
             </div>
           </div>
@@ -71,8 +73,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let order of orders; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge" class="text-center">{{order.orderno}}</td>
-                    <td>{{ order.client }}</td>
+                    <td class="text-center">{{order.orderno}}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge">{{
+                      order.client }}</td>
                     <td class="text-center">{{ order.details.length }}</td>
                     <td class="text-right">{{ order.total | currency:'INR':'' }}</td>
                     <td class="text-right">{{ order?.discountamount | currency:'INR':'' || '' }}</td>

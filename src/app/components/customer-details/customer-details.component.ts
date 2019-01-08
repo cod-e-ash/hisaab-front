@@ -43,13 +43,14 @@ export class CustomerDetailsComponent implements OnInit {
     });
   }
 
-  saveProduct(customer: NgForm) {
+  saveCustomer(customer: NgForm) {
     this.messageFail = null;
     this.messageSuccess = null;
     if (!customer.valid) {
       this.messageFail = 'Invalid Entries in Form';
     } else {
       if (this.type === 'new') {
+        customer.value['type'] = this.ctype;
         this.dataService.createData(customer.value)
         .subscribe( data => {
           customer.reset();

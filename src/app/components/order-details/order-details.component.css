@@ -1,0 +1,62 @@
+.nav-item {
+    width: 33.3%;
+}
+
+li.nav-item.active {
+    text-align: center;
+    /* font-size: 12px; */
+    text-transform: uppercase;
+    -webkit-font-smoothing: subpixel-antialiased;
+    top: 0;
+    left: 0;
+    background-color: #66615b;
+    box-shadow: 0 2px 2px hsla(38,16%,76%,.5);
+    color: #fff!important;
+    cursor: pointer;
+}
+
+input::placeholder {
+    color: rgba(83, 82, 82, 0.452);
+    /* font-size: 8; */
+  }
+  
+  input:focus::placeholder {
+    color: transparent;
+  }
+  
+  label {
+    /* color: rgb(22, 175, 175); */
+    font-weight: 600;
+  }
+  
+  .row {
+    padding: 4px;
+  }
+  
+  .form-check-label {
+    color: inherit;
+  }
+  
+  .form-group .input-group-append .input-group-text,
+  .form-group .input-group-prepend .input-group-text,
+  .input-group .input-group-append .input-group-text,
+  .input-group .input-group-prepend .input-group-text {
+    padding: 10px 0 10px 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  input:disabled,
+  select:disabled {
+    background: aliceblue;
+    cursor: default;
+  }
+  
+  span.input-group-text {
+    background-color: lavender;
+  }
+  
+  .flex-container {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }

@@ -3,10 +3,14 @@
     <div class="card-header">
       <div class="d-flex">
         <h5 *ngIf="type !== 'display'" class="card-title"> {{ type === 'edit' ? 'Edit' : 'Register' }} {{ ctype }} </h5>
+        <div class="p-2 ml-auto">
+          <div *ngIf="messageSuccess" class="text-success2">{{messageSuccess}}</div>
+          <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
+        </div>
       </div>
     </div>
     <div class="card-body">
-      <form *ngIf="((type === 'edit' || type === 'display') && customer) || type === 'new'" #productForm="ngForm" name="customerForm"
+      <form *ngIf="((type === 'edit' || type === 'display') && customer) || type === 'new'" #customerForm="ngForm" name="customerForm"
         (ngSubmit)="saveCustomer(customerForm)" validate>
         <fieldset [disabled]="type === 'display'">
           <!-- FORM ROW 1 -->
@@ -44,7 +48,7 @@
             </div>
             <div class="form-group">
               <label for="phone2">Contact Number (Optional)</label>
-              <input required type="tel" [(ngModel)]="customer.phone2" #phone2="ngModel" name="phone2" class="form-control"
+              <input type="tel" [(ngModel)]="customer.phone2" #phone2="ngModel" name="phone2" class="form-control"
                 placeholder="Secondary Contact (Optional)">
             </div>
             <div class="form-group">

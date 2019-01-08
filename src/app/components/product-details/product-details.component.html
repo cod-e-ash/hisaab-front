@@ -5,9 +5,13 @@
         <h5 *ngIf="type === 'edit' && !product" class="card-title mr-auto ml-auto"> Product not found </h5>
         <h5 *ngIf="type === 'new'" class="card-title"> New Product </h5>
         <h5 *ngIf="type === 'edit' && product && product._id" class="card-title"> Edit Product </h5>
-        <h5 *ngIf="type === 'display' && product && product._id" class="card-title"> Product </h5>
+        <!-- <h5 *ngIf="type === 'display' && product && product._id" class="card-title"> Product </h5> -->
         <div *ngIf="productForm && productForm.submitted && productForm.invalid" class="mx-auto pl-3 d-flex text-delete">
           <p>Incomplete or Invalid form. <br class="d-block d-md-none"> Please correct and re-submit.</p>
+        </div>
+        <div class="p-3 ml-auto">
+          <div *ngIf="messageSuccess" class="text-success">{{messageSuccess}}</div>
+          <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
         </div>
       </div>
     </div>
@@ -17,22 +21,22 @@
         <fieldset [disabled]="type === 'display'">
           <!-- FORM ROW 1 -->
           <div class="d-flex flex-wrap justify-content-around">
-            <div class="form-group" [ngClass]="{'has-danger':!code.valid && code.touched}">
+            <div class="form-group col-md-2" [ngClass]="{'has-danger':!code.valid && code.touched}">
               <label for="code">Code</label>
               <input required minlength="3" type="text" [(ngModel)]="product.code" #code="ngModel" name="code" class="form-control"
                 placeholder="Code">
             </div>
-            <div class="form-group" [ngClass]="{'has-danger':!name.valid && name.touched}">
+            <div class="form-group col-md-4" [ngClass]="{'has-danger':!name.valid && name.touched}">
               <label for="name">Name</label>
               <input required minlength="3" type="text" [(ngModel)]="product.name" #name="ngModel" name="name" class="form-control has-danger"
                 placeholder="Name">
             </div>
-            <div class="form-group" [ngClass]="{'has-danger':!company.valid && company.touched}">
+            <div class="form-group col-md-4" [ngClass]="{'has-danger':!company.valid && company.touched}">
               <label for="company">Company</label>
               <input required minlength="3" type="text" [(ngModel)]="product.company" #company="ngModel" name="company"
                 class="form-control" placeholder="Company">
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-2">
               <label for="hsn">HSN</label>
               <input type="text" [(ngModel)]="product.hsn" name="hsn" class="form-control" placeholder="HSN (Optional)">
             </div>
@@ -157,17 +161,7 @@
     </div>
     <div class="card-footer">
       <div class="d-flex">
-        <div class="p-2">
-          <div *ngIf="messageSuccess" class="text-success">{{messageSuccess}}</div>
-          <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
-        </div>
-        <nav class="ml-auto">
-          <ul class="pagination">
-            <li class="page-item">
-              <!-- <a class="page-link" [routerLink]="['/products']" [queryParams]="prvParams">Back</a> -->
-            </li>
-          </ul>
-        </nav>
+        
       </div>
     </div>
   </div>

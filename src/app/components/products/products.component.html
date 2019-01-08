@@ -17,9 +17,16 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex justify-content-between">
-            <div class="card-title d-inline-flex">
-              <input type="text" #productS [value]="params?.name || null" class="form-control mx-2" placeholder="Product..."
+          <div class="d-flex flex-wrap">
+            <div class="card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-2 new-btn">
+                  <i class="fa fa-plus-circle"></i> ADD
+                </button>
+              </a>
+            </div>
+            <div class="card-title d-inline-flex mx-auto">
+              <input type="text" #productS [value]="params?.name || null" class="form-control" placeholder="Product..."
                 (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
               <input type="text" #companyS [value]="params?.company || null" class="form-control mx-2" placeholder="Company..."
                 (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
@@ -27,23 +34,19 @@
                 <i class="nc-icon nc-zoom-split"></i>
               </button>
             </div>
-            <div class="card-title d-inline-flex">
-              <span class="m-1">All</span>
-              <div class="form-check m-1">
-                <label class="switch">
-                  <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt"
-                    type="checkbox" [checked]="stockOpt">
-                  <span class="slider round"></span>
-                </label>
+            <div class="card-title d-inline-flex mx-auto">
+              <div class="card-title d-inline-flex">
+                <span class="m-1">All</span>
+                <div class="form-check m-1">
+                  <label class="switch">
+                    <input name="stockOpt" (change)="searchParamChange({stockOpt: $event.target.checked}); stockOpt = !stockOpt"
+                      type="checkbox" [checked]="stockOpt">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <span class="m-1 mr-5">In-Stock</span>
               </div>
-              <span class="m-1">In-Stock</span>
-            </div>
-            <div class="card-title d-inline-flex">
-              <a routerLink="new" queryParamsHandling="merge">
-                <button class="btn btn-danger ml-auto new-btn">
-                  <i class="fa fa-plus"></i> New Product
-                </button>
-              </a>
+
             </div>
           </div>
           <div class="card-body">
@@ -62,8 +65,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let product of products; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:product._id}" queryParamsHandling="merge" class="text-center">{{product.code}}</td>
-                    <td>{{ product.name }}</td>
+                    <td class="text-center">{{product.code}}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:product._id}" queryParamsHandling="merge">{{
+                      product.name }}</td>
                     <td class="text-center">{{ product.company }}</td>
                     <td class="text-center">{{ product?.size || '' + (product?.size && product?.variant ? ' / ': '') +
                       product?.variant || '' }}</td>

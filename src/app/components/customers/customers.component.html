@@ -17,20 +17,20 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex flex-wrap justify-content-between">
-            <div class="card-title d-inline-flex">
+          <div class="d-flex flex-wrap">
+            <div class="card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-2 new-btn">
+                  <i class="fa fa-plus-circle"></i> ADD
+                </button>
+              </a>
+            </div>
+            <div class="card-title d-inline-flex col-md-4 col-10">
               <input type="text" #customerS [value]="params?.name || null" class="form-control col-md-12" placeholder="Name..."
                 (keyup.enter)="searchParamChange({name: customerS.value || null, page: 1})">
               <button class="btn btn-icon btn-primary search-btn mx-2" (click)="searchParamChange({name: customerS.value || null, page: null})">
                 <i class="nc-icon nc-zoom-split"></i>
               </button>
-            </div>
-            <div class="card-title d-inline-flex">
-              <a routerLink="new" queryParamsHandling="merge">
-                <button class="btn btn-danger ml-auto new-btn">
-                  <i class="fa fa-plus"></i> New Customer
-                </button>
-              </a>
             </div>
           </div>
           <div class="card-body">
@@ -47,9 +47,10 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let customer of customers; let i=index">
-                    <td [routerLink]="['display']" [queryParams]="{id:customer._id}" queryParamsHandling="merge" class="text-center">{{
-                      i }}</td>
-                    <td>{{ customer.name }}</td>
+                    <td class="text-center">{{
+                      ((curPage-1)*10) + i + 1 }}</td>
+                    <td [routerLink]="['display']" [queryParams]="{id:customer._id}" queryParamsHandling="merge">{{
+                      customer.name }}</td>
                     <td>{{ customer.phone1 }}</td>
                     <td>{{ customer.email1 }}</td>
                     <td>{{ customer.phone2 }}</td>

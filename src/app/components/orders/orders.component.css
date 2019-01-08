@@ -44,10 +44,12 @@ td>a {
   cursor: pointer;
 }
 
-table td:nth-child(1) {
-  color: rgb(173, 29, 29);
+table td:nth-child(2) {
+  color: rgb(106, 120, 124);
   cursor: pointer;
   min-width: 40px;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .card-header .card-title input {

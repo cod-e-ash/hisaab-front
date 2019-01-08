@@ -1,98 +1,113 @@
-<div class="col-md-12">
-  <div class="card card-user">
-    <div class="card-header">
-      <h5 class="card-title">Edit Profile</h5>
-    </div>
-    <div class="card-body">
-      <form>
-        <div class="row">
-          <div class="col-md-4 pr-1">
-            <div class="form-group">
-              <label>Client</label>
-              <div class="input-group">
-                <input type="text" value="" class="form-control col-md-3" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="nc-icon nc-zoom-syplit"></i>
-                  </div>
-                </div>
-                <select class="form-control input-group-append">
-                  <input type="search" placeholder="search">
-                  <option>Ashish Bagaddeo</option>
-                  <option>Anushri Arora</option>
-                </select>
+<div class="col-md-11 mr-auto ml-auto">
+  <!--      Wizard container        -->
+  <div class="wizard-container">
+    <div class="card card-wizard active" data-color="primary" id="wizardProfile">
+      <form action="" method="" novalidate="novalidate">
+        <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+        <div class="card-header text-center">
+          <h3 class="card-title">
+            Order
+          </h3>
+          <div class="wizard-navigation">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item active">
+                <a class="nav-link" href="#client" data-toggle="tab" role="tab" aria-controls="client" aria-selected="false">
+                  <i class="nc-icon nc-single-02"></i> Customer
+                  <i class="text-success2 fas fa-check ml-2"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#account" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
+                  <i class="nc-icon nc-cart-simple"></i> Details
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#address" data-toggle="tab" role="tab" aria-controls="address" aria-selected="true">
+                  <i class="nc-icon nc-credit-card"></i> Summary
+                </a>
+              </li>
+            </ul>
+            <!-- <ul class="nav nav-pills">
+              <li class="nav-item" style="width: 33.3333%;">
+                <a class="nav-link" href="#client" data-toggle="tab" role="tab" aria-controls="client" aria-selected="false">
+                  <i class="nc-icon nc-single-02"></i> Customer
+                </a>
+              </li>
+              <li class="nav-item" style="width: 33.3333%;">
+                <a class="nav-link" href="#account" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
+                  <i class="nc-icon nc-touch-id"></i> Details
+                </a>
+              </li>
+              <li class="nav-item" style="width: 33.3333%;">
+                <a class="nav-link active show" href="#address" data-toggle="tab" role="tab" aria-controls="address"
+                  aria-selected="true">
+                  <i class="nc-icon nc-pin-3"></i> Summary
+                </a>
+              </li>
+            </ul> -->
+          </div>
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="tab-pane show active" id="client">
+                <form #productForm="ngForm" name="productForm" (ngSubmit)="saveProduct(productForm)" validate>
+                  <fieldset [disabled]="type === 'display'">
+                    <!-- <h5 class="info-text"> Let's start with the client</h5> -->
+                    <div class="row">
+                      <div class="form-group col-md-7 mx-auto" [ngClass]="{'has-danger':!name.valid && name.touched}">
+                        <!-- <label for="name" class="pull-left">Customer Name</label> -->
+                        <input required minlength="3" type="text" [(ngModel)]="product.name" #name="ngModel" name="name"
+                          class="form-control has-danger" placeholder="Type few characters and search...">
+                        <button type="button" class="btn btn-sm btn-primary">Search</button>
+                      </div>
+                    </div>
+
+                    <div class="row mt-2">
+                      <div class="mx-auto">
+                        <h5> Customer Name Here </h5>
+                        <div class="d-flex justify-content-center font-weight-bold">
+                          <div class="col-12 mx-auto">9604588888</div>
+                          <div class="text-center text-danger"><i class="fas fa-envelope"></i></div>
+                          <div class="col-12 mx-auto">ashish@bagaddeo.com </div>
+                        </div>
+                        <div class="mt-3">
+                          <div>Address Line One</div>
+                          <div>City, State</div>
+                          <div>ZipCode Country</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Validation for FORM ROW 1 -->
+                    <div class="d-flex" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
+                      <ul class="text-delete ml-5">
+                        <li *ngIf="code.touched && (code.errors?.required || code.errors?.minlength)">
+                          Code is required & must be minimum 3 chars.
+                        </li>
+                        <li *ngIf="name.touched && (name.errors?.required || name.errors?.minlength)">
+                          Name is required & must be minimum 3 chars.
+                        </li>
+                        <li *ngIf="company.touched && (company.errors?.required || company.errors?.minlength)">
+                          Company is required & must be minimum 3 chars.
+                        </li>
+                      </ul>
+                    </div>
+                  </fieldset>
+                </form>
               </div>
             </div>
           </div>
-          <div class="col-md-3 px-1">
-            <div class="form-group">
-              <label>Username</label>
-              <input type="text" class="form-control" placeholder="Username" value="michael23">
+          <div class="card-footer">
+            <div class="pull-right">
+              <!-- <input type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='next' value='Next' /> -->
+              <input type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='finish' value='Finish' />
             </div>
-          </div>
-          <div class="col-md-4 pl-1">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" placeholder="Email">
+            <div class="pull-left">
+              <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 pr-1">
-            <div class="form-group">
-              <label>First Name</label>
-              <input type="text" class="form-control" placeholder="Company" value="Chet">
-            </div>
-          </div>
-          <div class="col-md-6 pl-1">
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" class="form-control" placeholder="Last Name" value="Faker">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Address</label>
-              <input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 pr-1">
-            <div class="form-group">
-              <label>City</label>
-              <input type="text" class="form-control" placeholder="City" value="Melbourne">
-            </div>
-          </div>
-          <div class="col-md-4 px-1">
-            <div class="form-group">
-              <label>Country</label>
-              <input type="text" class="form-control" placeholder="Country" value="Australia">
-            </div>
-          </div>
-          <div class="col-md-4 pl-1">
-            <div class="form-group">
-              <label>Postal Code</label>
-              <input type="number" class="form-control" placeholder="ZIP Code">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>About Me</label>
-              <textarea class="form-control textarea">Oh so, your weak rhyme You doubt I'll bother, reading into it</textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="update ml-auto mr-auto">
-            <button type="submit" class="btn btn-primary btn-round">Update Profile</button>
+            <div class="clearfix"></div>
           </div>
         </div>
       </form>
     </div>
   </div>
+  <!-- wizard container -->
 </div>
