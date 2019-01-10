@@ -27,75 +27,81 @@ export class CustomersComponent implements OnInit, OnDestroy {
   alertMsgSuccess: string;
   alertMsgFail: string;
   type: string;
-  latestParams: Observable < any > ;
+  latestParams: Observable<any>;
   combSub: Subscription;
 
-
-  constructor(private router: Router, private route: ActivatedRoute, private dataservice: CustomerService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataservice: CustomerService
+  ) {}
 
   ngOnInit() {
     // Combine route and query params
     // Distinct will check for distinct parameter
     // debounce will wait untill stack request are cleared
-    this.latestParams = combineLatest(this.route.queryParamMap, this.route.paramMap)
-      .pipe(
-        debounceTime(0),
-        distinctUntilChanged(),
-        map(data => ({
-          qParams: data[0],
-          params: data[1]
-        }))
-      );
+    this.latestParams = combineLatest(this.route.queryParamMap, this.route.paramMap).pipe(
+      debounceTime(0),
+      distinctUntilChanged(),
+      map(data => ({
+        qParams: data[0],
+        params: data[1]
+      }))
+    );
     // Subscribe to navigation or query parameter changes
-    this.combSub = this.latestParams
-      .subscribe(allParams => {
+    this.combSub = this.latestParams.subscribe(allParams => {
+      let wChange = false;
+      const newQParams = {};
 
-        let wChange = false;
-        const newQParams = {};
+      // Copy query parameters to new object
+      if (allParams.qParams.keys.length > 0) {
+        allParams.qParams.keys.forEach(key => {
+          newQParams[key] = allParams.qParams.get(key);
+        });
+      }
 
-        // Copy query parameters to new object
-        if (allParams.qParams.keys.length > 0) {
-          allParams.qParams.keys.forEach(key => {
-            newQParams[key] = allParams.qParams.get(key);
-          });
-        }
+      // If already on customer page and customer type changed (customer/supplier)
+      // (clear query parameter in this case)
+      if (this.type && this.type.toLowerCase() + 's' !== allParams.params.get('type')) {
+        this.qParams = null;
+        wChange = true;
+      } else if (
+        !this.type ||
+        !this.qParams ||
+        JSON.stringify(newQParams) !== JSON.stringify(this.qParams)
+      ) {
+        // If new query params are different from old query params
+        this.qParams = newQParams;
+        wChange = true;
+      }
 
-        // If already on customer page and customer type changed (customer/supplier)
-        // (clear query parameter in this case)
-        if (this.type && this.type.toLowerCase() + 's' !== allParams.params.get('type')) {
-          this.qParams = null;
-          wChange = true;
-        } else if (!this.type || !this.qParams || JSON.stringify(newQParams) !== JSON.stringify(this.qParams)) {
-          // If new query params are different from old query params
-          this.qParams = newQParams;
-          wChange = true;
-        }
+      // Update customer type
+      this.type = allParams.params.get('type') === 'customers' ? 'Customer' : 'Supplier';
 
-        // Update customer type
-        this.type = allParams.params.get('type') === 'customers' ? 'Customer' : 'Supplier';
-
-        // Get data
-        if (wChange) {
-          this.dataservice.getData(this.qParams, this.type)
-            .subscribe(data => {
-              // If change in data
-              if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
-                this.endPage = 0;
-              }
-              this.customers = data.customers;
-              this.curPage = data.curPage;
-              this.totalPages = data.totalPages;
-              this.totalRecs = data.totalRecs;
-              this.pageLogic();
-            }, error => {
-              this.customers = [];
-              this.curPage = 1;
-              this.totalPages = 1;
-              this.totalRecs = 0;
-              this.pageLogic();
-            });
-        }
-      });
+      // Get data
+      if (wChange) {
+        this.dataservice.getData(this.qParams, this.type).subscribe(
+          data => {
+            // If change in data
+            if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
+              this.endPage = 0;
+            }
+            this.customers = data.customers;
+            this.curPage = data.curPage;
+            this.totalPages = data.totalPages;
+            this.totalRecs = data.totalRecs;
+            this.pageLogic();
+          },
+          error => {
+            this.customers = [];
+            this.curPage = 1;
+            this.totalPages = 1;
+            this.totalRecs = 0;
+            this.pageLogic();
+          }
+        );
+      }
+    });
   }
 
   searchParamChange(newParam) {
@@ -103,7 +109,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
       newParam.name = null;
     }
     this.router.navigate(['/clients', this.type.toLowerCase() + 's'], {
-      queryParams: { ...newParam},
+      queryParams: { ...newParam },
       queryParamsHandling: 'merge'
     });
   }
@@ -111,7 +117,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
   pageLogic() {
     // If previous page requested is less than first page link and not zero
     if (this.curPage < this.startPage && this.curPage >= 0) {
-
       // Clear page array and fill with only 5 pages or total pages in case less that 5 pages
       this.navPages = [];
       this.startPage = this.curPage - 4 > 0 ? this.curPage - 4 : 1;
@@ -136,8 +141,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
     if (this.delCustomerId) {
-      this.dataservice.deleteData(this.delCustomerId)
-        .subscribe(data => {
+      this.dataservice.deleteData(this.delCustomerId).subscribe(
+        data => {
           if (!data.error) {
             const index = this.getCustomerIndex(this.delCustomerId);
             if (index >= 0) {
@@ -150,9 +155,11 @@ export class CustomersComponent implements OnInit, OnDestroy {
           } else {
             this.alertMsgFail = 'Customer not deleted.' + data.error;
           }
-        }, error => {
+        },
+        error => {
           this.alertMsgFail = 'Customer not deleted. Server Error!';
-        });
+        }
+      );
     }
   }
 

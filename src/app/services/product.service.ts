@@ -7,14 +7,14 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductService {
-
   private products: Product[];
   private url = 'http://localhost:3000/api/products';
 
   // HTTP Options
   private httpOptions = {
     headers: new HttpHeaders({
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudXNocmk\
+      'x-auth-token':
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudXNocmk\
       iLCJmdWxsbmFtZSI6ImFudXNocmkgYXJvcmEiLCJyb2xlIjoidXNlciIsImlhdCI6MTU0NjE0MDc0OH0.a\
       4NEIya-nJOhrAUKMgZvmVq8UHjE4pPJpzFULyxK_cM'
     })
@@ -25,10 +25,10 @@ export class ProductService {
 
   // HTTP GET
   getData(inParams: {
-    page ?: number,
-    name ?: string,
-    company ?: string,
-    stockOpt ?: string
+    page?: number;
+    name?: string;
+    company?: string;
+    stockOpt?: string;
   }) {
     const params = new HttpParams()
       .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
@@ -36,14 +36,14 @@ export class ProductService {
       .set('company', inParams && inParams.company ? inParams.company : '')
       .set('stockOpt', inParams && inParams.stockOpt ? inParams.stockOpt : '');
 
-    return this.http.get < {
-        error: string,
-        totalRecs: number,
-        totalPages: number,
-        curPage: number,
-        products: Product[]
-      } >
-      (this.url, {
+    return this.http
+      .get<{
+        error: string;
+        totalRecs: number;
+        totalPages: number;
+        curPage: number;
+        products: Product[];
+      }>(this.url, {
         params: params
       })
       .pipe(
@@ -54,7 +54,7 @@ export class ProductService {
   }
 
   createData(data: Product) {
-    return this.http.post < Product > (this.url, data, this.httpOptions);
+    return this.http.post<Product>(this.url, data, this.httpOptions);
   }
 
   patchData(id: string, status: boolean) {
@@ -70,10 +70,10 @@ export class ProductService {
   }
 
   deleteData(id: string) {
-    return this.http.delete < {
-      error ?: string,
-      product ?: Product
-    } > (this.url + '/' + id, this.httpOptions);
+    return this.http.delete<{
+      error?: string;
+      product?: Product;
+    }>(this.url + '/' + id, this.httpOptions);
   }
 
   getSingle(id: string) {

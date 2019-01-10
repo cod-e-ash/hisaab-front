@@ -25,55 +25,59 @@ export class ProductsComponent implements OnInit, OnDestroy {
   stockOpt: boolean;
   dataSubs: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataservice: ProductService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataservice: ProductService
+  ) {}
 
   ngOnInit() {
     // Show only in stok product by default
     this.stockOpt = true;
 
     // Subscribe to query param changes
-    this.route.queryParamMap
-      .subscribe(params => {
-        const newparams = {};
-        params.keys.forEach(key => {
-          newparams[key] = params.get(key);
-        });
-        // Compare old and new params, so that page is not reloaded if no changes
-        if (JSON.stringify(newparams) !== JSON.stringify(this.params)) {
-          this.params = newparams;
-          // Set stock option to false if all passed
-          if (this.params['stockOpt'] === 'all') {
-            this.stockOpt = false;
-          }
-          // Get data from data service by passing the params
-          this.dataSubs = this.dataservice.getData(this.params)
-            .subscribe(data => {
-              // Copy new values if records or number of pages change
-              if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
-                this.endPage = 0;
-              }
-              this.products = data.products;
-              this.curPage = data.curPage;
-              this.totalPages = data.totalPages;
-              this.totalRecs = data.totalRecs;
-              // Execute pagination logic
-              this.pageLogic();
-            }, error => {
-              // Set all fields to default if no records found or server error
-              this.products = [];
-              this.curPage = 1;
-              this.totalPages = 1;
-              this.totalRecs = 0;
-              this.pageLogic();
-            });
-        }
+    this.route.queryParamMap.subscribe(params => {
+      const newparams = {};
+      params.keys.forEach(key => {
+        newparams[key] = params.get(key);
       });
+      // Compare old and new params, so that page is not reloaded if no changes
+      if (JSON.stringify(newparams) !== JSON.stringify(this.params)) {
+        this.params = newparams;
+        // Set stock option to false if all passed
+        if (this.params['stockOpt'] === 'all') {
+          this.stockOpt = false;
+        }
+        // Get data from data service by passing the params
+        this.dataSubs = this.dataservice.getData(this.params).subscribe(
+          data => {
+            // Copy new values if records or number of pages change
+            if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
+              this.endPage = 0;
+            }
+            this.products = data.products;
+            this.curPage = data.curPage;
+            this.totalPages = data.totalPages;
+            this.totalRecs = data.totalRecs;
+            // Execute pagination logic
+            this.pageLogic();
+          },
+          error => {
+            // Set all fields to default if no records found or server error
+            this.products = [];
+            this.curPage = 1;
+            this.totalPages = 1;
+            this.totalRecs = 0;
+            this.pageLogic();
+          }
+        );
+      }
+    });
   }
 
   pageLogic() {
     // If previous page requested is less than first page link and not zero
     if (this.curPage < this.startPage && this.curPage >= 0) {
-
       // Clear page array and fill with only 5 pages or total pages in case less that 5 pages
       this.navPages = [];
       this.startPage = this.curPage - 4 > 0 ? this.curPage - 4 : 1;
@@ -102,7 +106,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       newParam.stockOpt = null;
     }
     this.router.navigate(['/products'], {
-      queryParams: { ...newParam},
+      queryParams: { ...newParam },
       queryParamsHandling: 'merge'
     });
   }
@@ -111,8 +115,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
     if (this.delProductId) {
-      this.dataservice.deleteData(this.delProductId)
-        .subscribe(data => {
+      this.dataservice.deleteData(this.delProductId).subscribe(
+        data => {
           if (!data.error) {
             const index = this.getProductIndex(this.delProductId);
             if (index >= 0) {
@@ -125,9 +129,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
           } else {
             this.alertMsgFail = 'Product not deleted.' + data.error;
           }
-        }, error => {
+        },
+        error => {
           this.alertMsgFail = 'Product not deleted. Server Error!';
-        });
+        }
+      );
     }
   }
 

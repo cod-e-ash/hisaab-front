@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-
 @Component({
   selector: 'app-customer-details',
   templateUrl: './customer-details.component.html',
@@ -18,7 +17,11 @@ export class CustomerDetailsComponent implements OnInit {
   messageFail: string;
   prvParams = {};
 
-  constructor(private route: ActivatedRoute, private dataService: CustomerService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: CustomerService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     // Get customer type
@@ -26,21 +29,20 @@ export class CustomerDetailsComponent implements OnInit {
     this.ctype = this.paramtype === 'customers' ? 'Customer' : 'Supplier';
     // Get Mode (New/Edit/Display)
     this.mode = this.route.snapshot.paramMap.get('mode');
-    this.route.queryParamMap
-      .subscribe(params => {
-        params.keys.forEach(key => {
-          this.prvParams[key] = params.get(key);
-        });
-        this.prvParams['id'] = null;
-        if (this.mode === 'edit' || this.mode === 'display') {
-          this.customer = this.dataService.getSingle(params.get('id'));
-          if (!this.customer) {
-            this.router.navigate(['/clients', this.paramtype], {
-              queryParams: this.prvParams
-            });
-          }
-        }
+    this.route.queryParamMap.subscribe(params => {
+      params.keys.forEach(key => {
+        this.prvParams[key] = params.get(key);
       });
+      this.prvParams['id'] = null;
+      if (this.mode === 'edit' || this.mode === 'display') {
+        this.customer = this.dataService.getSingle(params.get('id'));
+        if (!this.customer) {
+          this.router.navigate(['/clients', this.paramtype], {
+            queryParams: this.prvParams
+          });
+        }
+      }
+    });
   }
 
   saveCustomer(customer: NgForm) {
@@ -51,18 +53,15 @@ export class CustomerDetailsComponent implements OnInit {
     } else {
       if (this.mode === 'new') {
         customer.value['type'] = this.ctype;
-        this.dataService.createData(customer.value)
-          .subscribe(data => {
-            customer.reset();
-            this.messageSuccess = 'Record Added Successfully';
-          });
+        this.dataService.createData(customer.value).subscribe(data => {
+          customer.reset();
+          this.messageSuccess = 'Record Added Successfully';
+        });
       } else {
-        this.dataService.updateData(this.customer)
-          .subscribe(data => {
-            this.messageSuccess = 'Record Updated Successfully';
-          });
+        this.dataService.updateData(this.customer).subscribe(data => {
+          this.messageSuccess = 'Record Updated Successfully';
+        });
       }
     }
   }
-
 }

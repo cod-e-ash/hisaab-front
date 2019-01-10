@@ -7,13 +7,12 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
   curView: string;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.router.events.subscribe((val) => {
+    this.router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         if (this.router.parseUrl(val.url).root.children.primary) {
           const segments = this.router.parseUrl(val.url).root.children.primary.segments;
@@ -30,5 +29,4 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-
 }

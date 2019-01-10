@@ -24,50 +24,54 @@ export class OrdersComponent implements OnInit, OnDestroy {
   statusOpt: boolean;
   dataSubs: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute , private dataservice: OrderService) { }
-
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataservice: OrderService
+  ) {}
 
   ngOnInit() {
     // Show only in stok product by default
     this.statusOpt = true;
 
     // Subscribe to query param changes
-    this.route.queryParamMap
-      .subscribe(params => {
-        const newparams = {};
-        params.keys.forEach(key => {
-          newparams[key] = params.get(key);
-        });
-        // Compare old and new params, so that page is not reloaded if no changes
-        if (JSON.stringify(newparams) !== JSON.stringify(this.params)) {
-          this.params = newparams;
-          // Set stock option to false if all passed
-          if (this.params['statusOpt'] === 'all') {
-            this.statusOpt = false;
-          }
-          // Get data from data service by passing the params
-          this.dataSubs = this.dataservice.getData(this.params)
-            .subscribe(data => {
-              // Copy new values if records or number of pages change
-              if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
-                this.endPage = 0;
-              }
-              this.orders = data.orders;
-              this.curPage = data.curPage;
-              this.totalPages = data.totalPages;
-              this.totalRecs = data.totalRecs;
-              // Execute pagination logic
-              this.pageLogic();
-            }, error => {
-              // Set all fields to default if no records found or server error
-              this.orders = [];
-              this.curPage = 1;
-              this.totalPages = 1;
-              this.totalRecs = 0;
-              this.pageLogic();
-            });
-        }
+    this.route.queryParamMap.subscribe(params => {
+      const newparams = {};
+      params.keys.forEach(key => {
+        newparams[key] = params.get(key);
       });
+      // Compare old and new params, so that page is not reloaded if no changes
+      if (JSON.stringify(newparams) !== JSON.stringify(this.params)) {
+        this.params = newparams;
+        // Set stock option to false if all passed
+        if (this.params['statusOpt'] === 'all') {
+          this.statusOpt = false;
+        }
+        // Get data from data service by passing the params
+        this.dataSubs = this.dataservice.getData(this.params).subscribe(
+          data => {
+            // Copy new values if records or number of pages change
+            if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
+              this.endPage = 0;
+            }
+            this.orders = data.orders;
+            this.curPage = data.curPage;
+            this.totalPages = data.totalPages;
+            this.totalRecs = data.totalRecs;
+            // Execute pagination logic
+            this.pageLogic();
+          },
+          error => {
+            // Set all fields to default if no records found or server error
+            this.orders = [];
+            this.curPage = 1;
+            this.totalPages = 1;
+            this.totalRecs = 0;
+            this.pageLogic();
+          }
+        );
+      }
+    });
   }
 
   searchParamChange(newParam) {
@@ -90,13 +94,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
     } else if (newParam.statusOpt === true && (!newParam.client || !newParam.orderno)) {
       newParam.statusOpt = null;
     }
-    this.router.navigate(['/orders'], {queryParams: {...newParam}, queryParamsHandling: 'merge'});
+    this.router.navigate(['/orders'], {
+      queryParams: { ...newParam },
+      queryParamsHandling: 'merge'
+    });
   }
 
   pageLogic() {
     // If previous page requested is less than first page link and not zero
     if (this.curPage < this.startPage && this.curPage >= 0) {
-
       // Clear page array and fill with only 5 pages or total pages in case less that 5 pages
       this.navPages = [];
       this.startPage = this.curPage - 4 > 0 ? this.curPage - 4 : 1;
@@ -121,8 +127,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
     if (this.delOrderId) {
-      this.dataservice.deleteData(this.delOrderId)
-      .subscribe(data => {
+      this.dataservice.deleteData(this.delOrderId).subscribe(
+        data => {
           if (!data.error) {
             const index = this.getOrderIndex(this.delOrderId);
             if (index >= 0) {
@@ -134,9 +140,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
           } else {
             this.alertMsgFail = 'Order not deleted.' + data.error;
           }
-      }, error => {
+        },
+        error => {
           this.alertMsgFail = 'Order not deleted. Server Error!';
-      });
+        }
+      );
     }
   }
 
