@@ -26,7 +26,7 @@
               </a>
             </div>
             <div class="card-title d-inline-flex col-md-4 col-10">
-              <input type="text" #customerS [value]="params?.name || null" class="form-control col-md-12" placeholder="Name..."
+              <input type="text" #customerS [value]="qParams?.name || null" class="form-control col-md-12" placeholder="Name..."
                 (keyup.enter)="searchParamChange({name: customerS.value || null, page: 1})">
               <button class="btn btn-icon btn-primary search-btn mx-2" (click)="searchParamChange({name: customerS.value || null, page: null})">
                 <i class="nc-icon nc-zoom-split"></i>

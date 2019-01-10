@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-header">
       <div class="d-flex">
-        <h5 *ngIf="type === 'edit' && !product" class="card-title mr-auto ml-auto"> Product not found </h5>
-        <h5 *ngIf="type === 'new'" class="card-title"> New Product </h5>
-        <h5 *ngIf="type === 'edit' && product && product._id" class="card-title"> Edit Product </h5>
-        <!-- <h5 *ngIf="type === 'display' && product && product._id" class="card-title"> Product </h5> -->
+        <h5 *ngIf="mode === 'edit' && !product" class="card-title mr-auto ml-auto"> Product not found </h5>
+        <h5 *ngIf="mode === 'new'" class="card-title"> New Product </h5>
+        <h5 *ngIf="mode === 'edit' && product && product._id" class="card-title"> Edit Product </h5>
+        <!-- <h5 *ngIf="mode === 'display' && product && product._id" class="card-title"> Product </h5> -->
         <div *ngIf="productForm && productForm.submitted && productForm.invalid" class="mx-auto pl-3 d-flex text-delete">
           <p>Incomplete or Invalid form. <br class="d-block d-md-none"> Please correct and re-submit.</p>
         </div>
@@ -16,9 +16,9 @@
       </div>
     </div>
     <div class="card-body">
-      <form *ngIf="((type === 'edit' || type === 'display') && product) || type === 'new'" #productForm="ngForm" name="productForm"
+      <form *ngIf="((mode === 'edit' || mode === 'display') && product) || mode === 'new'" #productForm="ngForm" name="productForm"
         (ngSubmit)="saveProduct(productForm)" validate>
-        <fieldset [disabled]="type === 'display'">
+        <fieldset [disabled]="mode === 'display'">
           <!-- FORM ROW 1 -->
           <div class="d-flex flex-wrap justify-content-around">
             <div class="form-group col-md-2" [ngClass]="{'has-danger':!code.valid && code.touched}">
@@ -80,7 +80,7 @@
               <label for="stock">Stock (Qty)</label>
               <input type="number" [(ngModel)]="product.stock" name="stock" #stock="ngModel" class="form-control"
                 placeholder="Stock">
-              <button *ngIf="type === 'edit'" type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editStock">Edit</button>
+              <button *ngIf="mode === 'edit'" type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editStock">Edit</button>
             </div>
           </div>
           <!-- Validation for FORM ROW 2 -->
@@ -154,7 +154,7 @@
         <div class="row mt-3">
           <div class="update mx-auto">
             <button type="button" class="btn btn-info btn-round" [routerLink]="['/products']" [queryParams]="prvParams">Back</button>
-            <button *ngIf="type !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
+            <button *ngIf="mode !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
           </div>
         </div>
       </form>

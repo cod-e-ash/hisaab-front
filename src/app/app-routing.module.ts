@@ -14,12 +14,12 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
 const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'orders', component: OrdersComponent},
-  {path: 'orders/:option', component: OrderDetailsComponent},
+  {path: 'orders/:mode', component: OrderDetailsComponent},
   {path: 'clients/:type', component: CustomersComponent, pathMatch: 'full'},
-  {path: 'clients/:type/:option', component: CustomerDetailsComponent, pathMatch: 'full'},
+  {path: 'clients/:type/:mode', component: CustomerDetailsComponent, pathMatch: 'full'},
   {path: 'clients/:type/edit', component: CustomerDetailsComponent, pathMatch: 'full'},
   {path: 'products', component: ProductsComponent},
-  {path: 'products/:option', component: ProductDetailsComponent},
+  {path: 'products/:mode', component: ProductDetailsComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'settings', component: SettingsComponent},
   {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}

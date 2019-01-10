@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { Order } from './../../models/order.model';
 import { OrderService } from './../../services/order.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   orders: Order[];
   curPage = 0;
   totalPages: number;
@@ -21,60 +22,52 @@ export class OrdersComponent implements OnInit {
   alertMsgSuccess: string;
   alertMsgFail: string;
   statusOpt: boolean;
-  // sfromDate: string;
-  // stoDate: string;
+  dataSubs: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute , private dataservice: OrderService) { }
 
+
   ngOnInit() {
+    // Show only in stok product by default
     this.statusOpt = true;
-    this.route.queryParams
-    .subscribe(params => {
-      if (JSON.stringify(params) !== JSON.stringify(this.params)) {
-        this.params = params;
-        if (this.params['statusOpt'] === 'all') {
-          this.statusOpt = false;
-        }
-        this.dataservice.getData(this.params)
-        .subscribe(data => {
-          if (this.totalRecs !== data.totalRecs) {
-            this.endPage = 0;
+
+    // Subscribe to query param changes
+    this.route.queryParamMap
+      .subscribe(params => {
+        const newparams = {};
+        params.keys.forEach(key => {
+          newparams[key] = params.get(key);
+        });
+        // Compare old and new params, so that page is not reloaded if no changes
+        if (JSON.stringify(newparams) !== JSON.stringify(this.params)) {
+          this.params = newparams;
+          // Set stock option to false if all passed
+          if (this.params['statusOpt'] === 'all') {
+            this.statusOpt = false;
           }
-          this.orders = data.orders;
-          this.curPage = data.curPage;
-          this.totalPages = data.totalPages;
-          this.totalRecs = data.totalRecs;
-          this.pageLogic();
-        }, error => {
-          this.orders = [];
-          this.curPage = 1;
-          this.totalPages = 1;
-          this.totalRecs = 0;
-          this.pageLogic();
+          // Get data from data service by passing the params
+          this.dataSubs = this.dataservice.getData(this.params)
+            .subscribe(data => {
+              // Copy new values if records or number of pages change
+              if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
+                this.endPage = 0;
+              }
+              this.orders = data.orders;
+              this.curPage = data.curPage;
+              this.totalPages = data.totalPages;
+              this.totalRecs = data.totalRecs;
+              // Execute pagination logic
+              this.pageLogic();
+            }, error => {
+              // Set all fields to default if no records found or server error
+              this.orders = [];
+              this.curPage = 1;
+              this.totalPages = 1;
+              this.totalRecs = 0;
+              this.pageLogic();
+            });
         }
-        );
-      }
-    });
-  }
-
-  pageLogic() {
-    if (this.curPage < this.startPage && this.curPage >= 0) {
-      this.navPages = [];
-      this.startPage = this.curPage - 4 > 0 ? this.curPage - 4 : 1;
-      this.endPage = this.startPage + 4 > this.totalPages ? this.totalPages : this.startPage + 4;
-      for (let i = this.startPage ; i <= this.endPage ; i++) {
-        this.navPages.push(i);
-      }
-    }
-
-    if (this.curPage > this.endPage && this.curPage <= this.totalPages) {
-      this.navPages = [];
-      this.endPage = this.curPage + 4 > this.totalPages ? this.totalPages : this.curPage + 4;
-      this.startPage = this.endPage - 4 > 0 ? this.endPage - 4 : 1;
-      for (let i = this.startPage ; i <= this.endPage ; i++) {
-        this.navPages.push(i);
-      }
-    }
+      });
   }
 
   searchParamChange(newParam) {
@@ -98,6 +91,30 @@ export class OrdersComponent implements OnInit {
       newParam.statusOpt = null;
     }
     this.router.navigate(['/orders'], {queryParams: {...newParam}, queryParamsHandling: 'merge'});
+  }
+
+  pageLogic() {
+    // If previous page requested is less than first page link and not zero
+    if (this.curPage < this.startPage && this.curPage >= 0) {
+
+      // Clear page array and fill with only 5 pages or total pages in case less that 5 pages
+      this.navPages = [];
+      this.startPage = this.curPage - 4 > 0 ? this.curPage - 4 : 1;
+      this.endPage = this.startPage + 4 > this.totalPages ? this.totalPages : this.startPage + 4;
+      for (let i = this.startPage; i <= this.endPage; i++) {
+        this.navPages.push(i);
+      }
+    }
+
+    // If next page requested is greater than last page link and not the last page
+    if (this.curPage > this.endPage && this.curPage <= this.totalPages) {
+      this.navPages = [];
+      this.endPage = this.curPage + 4 > this.totalPages ? this.totalPages : this.curPage + 4;
+      this.startPage = this.endPage - 4 > 0 ? this.endPage - 4 : 1;
+      for (let i = this.startPage; i <= this.endPage; i++) {
+        this.navPages.push(i);
+      }
+    }
   }
 
   deleteOrder() {
@@ -127,5 +144,9 @@ export class OrdersComponent implements OnInit {
     return this.orders.findIndex(order => {
       return order['_id'] === id;
     });
+  }
+
+  ngOnDestroy() {
+    this.dataSubs.unsubscribe();
   }
 }

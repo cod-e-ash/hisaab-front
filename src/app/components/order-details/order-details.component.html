@@ -11,46 +11,28 @@
           <div class="wizard-navigation">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
               <li class="nav-item active">
-                <a class="nav-link" href="#client" data-toggle="tab" role="tab" aria-controls="client" aria-selected="false">
+                <a class="nav-link" href="#customer" data-toggle="tab" role="tab" aria-controls="client" aria-selected="true">
                   <i class="nc-icon nc-single-02"></i> Customer
                   <i class="text-success2 fas fa-check ml-2"></i>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#account" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
+                <a class="nav-link" href="#details" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
                   <i class="nc-icon nc-cart-simple"></i> Details
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#address" data-toggle="tab" role="tab" aria-controls="address" aria-selected="true">
+                <a class="nav-link" href="#address" data-toggle="tab" role="tab" aria-controls="address" aria-selected="false">
                   <i class="nc-icon nc-credit-card"></i> Summary
                 </a>
               </li>
             </ul>
-            <!-- <ul class="nav nav-pills">
-              <li class="nav-item" style="width: 33.3333%;">
-                <a class="nav-link" href="#client" data-toggle="tab" role="tab" aria-controls="client" aria-selected="false">
-                  <i class="nc-icon nc-single-02"></i> Customer
-                </a>
-              </li>
-              <li class="nav-item" style="width: 33.3333%;">
-                <a class="nav-link" href="#account" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
-                  <i class="nc-icon nc-touch-id"></i> Details
-                </a>
-              </li>
-              <li class="nav-item" style="width: 33.3333%;">
-                <a class="nav-link active show" href="#address" data-toggle="tab" role="tab" aria-controls="address"
-                  aria-selected="true">
-                  <i class="nc-icon nc-pin-3"></i> Summary
-                </a>
-              </li>
-            </ul> -->
           </div>
           <div class="card-body">
             <div class="tab-content">
-              <div class="tab-pane show active" id="client">
+              <div class="tab-pane show active" id="customer">
                 <form #productForm="ngForm" name="productForm" (ngSubmit)="saveProduct(productForm)" validate>
-                  <fieldset [disabled]="type === 'display'">
+                  <fieldset [disabled]="mode === 'display'">
                     <!-- <h5 class="info-text"> Let's start with the client</h5> -->
                     <div class="row">
                       <div class="form-group col-md-7 mx-auto" [ngClass]="{'has-danger':!name.valid && name.touched}">
@@ -79,17 +61,19 @@
                     <!-- Validation for FORM ROW 1 -->
                     <div class="d-flex" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
                       <ul class="text-delete ml-5">
-                        <li *ngIf="code.touched && (code.errors?.required || code.errors?.minlength)">
-                          Code is required & must be minimum 3 chars.
-                        </li>
                         <li *ngIf="name.touched && (name.errors?.required || name.errors?.minlength)">
                           Name is required & must be minimum 3 chars.
                         </li>
-                        <li *ngIf="company.touched && (company.errors?.required || company.errors?.minlength)">
-                          Company is required & must be minimum 3 chars.
-                        </li>
                       </ul>
                     </div>
+                  </fieldset>
+                </form>
+              </div>
+              <div class="tab-pane show active" id="details">
+                <form #productForm="ngForm" name="productForm" (ngSubmit)="saveProduct(productForm)" validate>
+                  <fieldset [disabled]="mode === 'display'">
+                    <!-- <h5 class="info-text"> Let's start with the client</h5> -->
+                    
                   </fieldset>
                 </form>
               </div>

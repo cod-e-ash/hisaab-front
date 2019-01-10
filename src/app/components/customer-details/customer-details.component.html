@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <div class="d-flex">
-        <h5 *ngIf="type !== 'display'" class="card-title"> {{ type === 'edit' ? 'Edit' : 'Register' }} {{ ctype }} </h5>
+        <h5 *ngIf="mode !== 'display'" class="card-title"> {{ mode === 'edit' ? 'Edit' : 'Register' }} {{ ctype }} </h5>
         <div class="p-2 ml-auto">
           <div *ngIf="messageSuccess" class="text-success2">{{messageSuccess}}</div>
           <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
@@ -10,9 +10,9 @@
       </div>
     </div>
     <div class="card-body">
-      <form *ngIf="((type === 'edit' || type === 'display') && customer) || type === 'new'" #customerForm="ngForm" name="customerForm"
+      <form *ngIf="((mode === 'edit' || mode === 'display') && customer) || mode === 'new'" #customerForm="ngForm" name="customerForm"
         (ngSubmit)="saveCustomer(customerForm)" validate>
-        <fieldset [disabled]="type === 'display'">
+        <fieldset [disabled]="mode === 'display'">
           <!-- FORM ROW 1 -->
           <div class="d-flex justify-content-around">
             <div class="col-12">
@@ -177,7 +177,7 @@
         <div class="row">
           <div class="update mx-auto">
             <button type="button" class="btn btn-info btn-round" [routerLink]="['/clients', paramtype]" [queryParams]="prvParams">Back</button>
-            <button *ngIf="type !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
+            <button *ngIf="mode !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
           </div>
         </div>
       </form>
