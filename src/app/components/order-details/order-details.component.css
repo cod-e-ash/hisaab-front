@@ -1,18 +1,67 @@
+/* @import '../orders/orders.component.css'; */
+
+.card-wizard {
+  height: 610px;
+}
+
+.card-wizard .tab-content {
+  min-height: 390px;
+  padding: 10px 0;
+}
+
+.table-responsive {
+  padding-top: 10px;
+  overflow-x: auto;
+  overflow-y: scroll;
+  max-height: 330px;
+}
+.card-body {
+  padding-top: 0px;
+}
+
+.tab-content {
+  padding-top: 10px;
+}
+
+.table td,
+.table th {
+  padding: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin: 0%;
+  border-bottom: 0px;
+}
+
+.table small.very-small {
+  font-size: 11px;
+  color: rgb(83, 80, 80);
+  font-weight: 500;
+  font-family: Verdana, default;
+}
+
+.search-box {
+  height: 32px;
+  margin-bottom: 5px;
+}
+
+.search-btn {
+  height: 32px;
+  margin: 0px;
+}
+
 .nav-item {
     width: 33.3%;
 }
 
-li.nav-item.active {
-    text-align: center;
-    /* font-size: 12px; */
-    text-transform: uppercase;
-    -webkit-font-smoothing: subpixel-antialiased;
-    top: 0;
-    left: 0;
-    background-color: #66615b;
-    box-shadow: 0 2px 2px hsla(38,16%,76%,.5);
-    color: #fff!important;
-    cursor: pointer;
+.nav-pills .nav-item .nav-link.active {
+  background-color: #66615b;
+}
+
+.nav-pills .nav-item:nth-child(3) .nav-link {
+  border-radius: 0px 0 0 0px !important;
+}
+.nav-pills .nav-item:first-child .nav-link {
+  border-radius: 0px 0 0 0px !important;
 }
 
 input::placeholder {

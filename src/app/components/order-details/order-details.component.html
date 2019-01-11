@@ -9,20 +9,23 @@
             Order
           </h3>
           <div class="wizard-navigation">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item active">
-                <a class="nav-link" href="#customer" data-toggle="tab" role="tab" aria-controls="client" aria-selected="true">
+            <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link" href="#customer" id="customer-tab" data-toggle="pill" role="tab" aria-controls="customer"
+                  aria-selected="false">
                   <i class="nc-icon nc-single-02"></i> Customer
                   <i class="text-success2 fas fa-check ml-2"></i>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#details" data-toggle="tab" role="tab" aria-controls="account" aria-selected="false">
+                <a class="nav-link active" href="#details" id="details-tab" data-toggle="pill" role="tab" aria-controls="details"
+                  aria-selected="true">
                   <i class="nc-icon nc-cart-simple"></i> Details
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#address" data-toggle="tab" role="tab" aria-controls="address" aria-selected="false">
+                <a class="nav-link" href="#summary" id="summary-tab" data-toggle="pill" role="tab" aria-controls="summary"
+                  aria-selected="false">
                   <i class="nc-icon nc-credit-card"></i> Summary
                 </a>
               </li>
@@ -30,11 +33,11 @@
           </div>
           <div class="card-body">
             <div class="tab-content">
-              <div class="tab-pane show active" id="customer">
+              <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
                 <form #productForm="ngForm" name="productForm" (ngSubmit)="saveProduct(productForm)" validate>
                   <fieldset [disabled]="mode === 'display'">
-                    <!-- <h5 class="info-text"> Let's start with the client</h5> -->
-                    <div class="row">
+                    <!-- <h5 class="info-text"> Let's start with the customer</h5> -->
+                    <div class="row mt-4">
                       <div class="form-group col-md-7 mx-auto" [ngClass]="{'has-danger':!name.valid && name.touched}">
                         <!-- <label for="name" class="pull-left">Customer Name</label> -->
                         <input required minlength="3" type="text" [(ngModel)]="product.name" #name="ngModel" name="name"
@@ -42,7 +45,6 @@
                         <button type="button" class="btn btn-sm btn-primary">Search</button>
                       </div>
                     </div>
-
                     <div class="row mt-2">
                       <div class="mx-auto">
                         <h5> Customer Name Here </h5>
@@ -69,11 +71,306 @@
                   </fieldset>
                 </form>
               </div>
-              <div class="tab-pane show active" id="details">
+              <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                <div class="d-inline-flex mr-auto search-box">
+                  <input type="text" #productS [value]="params?.name || null" class="form-control" placeholder="Product..."
+                    (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
+                  <input type="text" #companyS [value]="params?.company || null" class="form-control mx-2" placeholder="Company..."
+                    (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
+                  <button data-toggle="modal" data-target="#noticeModal" class="btn btn-icon btn-primary search-btn" >
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </button>
+                </div>
                 <form #productForm="ngForm" name="productForm" (ngSubmit)="saveProduct(productForm)" validate>
                   <fieldset [disabled]="mode === 'display'">
-                    <!-- <h5 class="info-text"> Let's start with the client</h5> -->
-                    
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class="">
+                          <tr>
+                            <th>#</th>
+                            <th class="text-left">Product</th>
+                            <th></th>
+                            <th></th>
+                            <th>Company</th>
+                            <th class="text-right">Disc%</th>
+                            <th>Tax (&#8377;)</th>
+                            <th class="text-right">Price (&#8377;)</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Amount (&#8377;)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="ml-3 mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-number">1</td>
+                            <td class="td-name text-secondary font-weight-bold text-left">
+                              Stylus
+                              <br>
+                              <small class="very-small">Size: 12 Variant: M Units: Pieces</small><span class="text-warning">
+                                | </span><small class="very-small">GST@12%</small>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>ABC Corp.</td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">5%</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Discount"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td>25</td>
+                            <td class="td-number text-right">
+                              <small>€</small>499
+                            </td>
+                            <td class="td-number text-right">
+                              <div class="d-inline-flex">
+                                <div class="mr-1">99</div>
+                                <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                  <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
+                                    title="Edit Quantity"></i>
+                                </a>
+                              </div>
+                            </td>
+                            <td class="td-number text-right">
+                              <small>€</small>998
+                            </td>
+                            <td class="td-actions">
+                              <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                                <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Remove Item"></i>
+                              </a>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+              <div class="tab-pane" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
+                  <fieldset [disabled]="mode === 'display'">
+                    <!-- <h5 class="info-text"> Let's start with the customer</h5> -->
+                    <!-- Nav tabs -->
+                    Summary
                   </fieldset>
                 </form>
               </div>
@@ -94,4 +391,54 @@
     </div>
   </div>
   <!-- wizard container -->
+</div>
+<!-- notice modal -->
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="nc-icon nc-simple-remove"></i>
+        </button>
+        <h5 class="modal-title" id="myModalLabel">How Do You Become an Affiliate?</h5>
+      </div>
+      <div class="modal-body">
+        <div class="instruction">
+          <div class="row">
+            <div class="col-md-8">
+              <strong>1. Register</strong>
+              <p class="description">The first step is to create an account at
+                <a href="http://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or go for the
+                classic version, whatever works best for you.</p>
+            </div>
+            <div class="col-md-4">
+              <div class="picture">
+                <img src="../../assets/img/bg/daniel-olahs.jpg" alt="Thumbnail Image" class="rounded img-raised">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="instruction">
+          <div class="row">
+            <div class="col-md-8">
+              <strong>2. Apply</strong>
+              <p class="description">The first step is to create an account at
+                <a href="http://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or go for the
+                classic version, whatever works best for you.</p>
+            </div>
+            <div class="col-md-4">
+              <div class="picture">
+                <img src="../../assets/img/bg/david-marcu.jpg" alt="Thumbnail Image" class="rounded img-raised">
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>If you have more questions, don't hesitate to contact us or send us a tweet @creativetim. We're here to
+          help!</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-info btn-round" data-dismiss="modal">Sounds good!</button>
+      </div>
+    </div>
+  </div>
 </div>
