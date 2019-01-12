@@ -6,3 +6,12 @@
     color: #9A9A9A;
     text-decoration: none;
 }
+
+.card-stats {
+    min-height: 180px;
+    height: 180px;
+    min-width: 280px;
+    max-width: 280px;
+    /* width: 240px; */
+    margin: 5px;
+}

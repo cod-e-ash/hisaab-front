@@ -5,27 +5,36 @@
       <form action="" method="" novalidate="novalidate">
         <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
         <div class="card-header text-center">
-          <h3 class="card-title">
-            Order
-          </h3>
+          <div class="d-flex justify-content-center">
+            <div class="mx-auto mr-lg-1"> </div>
+            <h3 class="card-title mx-auto">
+              Order
+            </h3>
+            <div class="ml-auto mr-3">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-sm btn-danger ml-2 new-btn">
+                  <i class="fa fa-print"></i> Print
+                </button>
+              </a>
+            </div>
+          </div>
           <div class="wizard-navigation">
             <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link" href="#customer" id="customer-tab" data-toggle="pill" role="tab" aria-controls="customer"
                   aria-selected="false">
                   <i class="nc-icon nc-single-02"></i> Customer
-                  <i class="text-success2 fas fa-check ml-2"></i>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#details" id="details-tab" data-toggle="pill" role="tab" aria-controls="details"
-                  aria-selected="true">
+                <a class="nav-link" href="#details" id="details-tab" data-toggle="pill" role="tab" aria-controls="details"
+                  aria-selected="false">
                   <i class="nc-icon nc-cart-simple"></i> Details
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#summary" id="summary-tab" data-toggle="pill" role="tab" aria-controls="summary"
-                  aria-selected="false">
+                <a class="nav-link active" href="#summary" id="summary-tab" data-toggle="pill" role="tab" aria-controls="summary"
+                  aria-selected="true">
                   <i class="nc-icon nc-credit-card"></i> Summary
                 </a>
               </li>
@@ -49,9 +58,9 @@
                       <div class="mx-auto">
                         <h5> Customer Name Here </h5>
                         <div class="d-flex justify-content-center font-weight-bold">
-                          <div class="col-12 mx-auto">9604588888</div>
-                          <div class="text-center text-danger"><i class="fas fa-envelope"></i></div>
-                          <div class="col-12 mx-auto">ashish@bagaddeo.com </div>
+                          <div class="col-md-12 mx-auto">9604588888</div>
+                          <div class="text-center text-danger mx-2"><i class="fas fa-envelope"></i></div>
+                          <div class="col-md-12 mx-auto">ashish@bagaddeo.com </div>
                         </div>
                         <div class="mt-3">
                           <div>Address Line One</div>
@@ -71,13 +80,15 @@
                   </fieldset>
                 </form>
               </div>
-              <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+              <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
                 <div class="d-inline-flex mr-auto search-box">
+                  <input type="text" #productS [value]="params?.name || null" class="form-control col-2 mx-2"
+                    placeholder="Code..." (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
                   <input type="text" #productS [value]="params?.name || null" class="form-control" placeholder="Product..."
                     (keyup.enter)="searchParamChange({name: productS.value || null, company: companyS.value || null, page: 1})">
                   <input type="text" #companyS [value]="params?.company || null" class="form-control mx-2" placeholder="Company..."
                     (keyup.enter)="searchParamChange({name: productS.value, company: companyS.value, page: 1})">
-                  <button data-toggle="modal" data-target="#noticeModal" class="btn btn-icon btn-primary search-btn" >
+                  <button data-toggle="modal" data-target="#noticeModal" class="btn btn-icon btn-primary search-btn">
                     <i class="nc-icon nc-zoom-split"></i>
                   </button>
                 </div>
@@ -358,21 +369,74 @@
                               </a>
                             </td>
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
                   </fieldset>
                 </form>
               </div>
-              <div class="tab-pane" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-                <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
-                  <fieldset [disabled]="mode === 'display'">
-                    <!-- <h5 class="info-text"> Let's start with the customer</h5> -->
-                    <!-- Nav tabs -->
-                    Summary
-                  </fieldset>
-                </form>
+              <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                <div class="d-flex justify-content-around">
+                  <div class="card col-6 mx-1 card-summary">
+                    <div class="card-header final-card-header">
+                      <h6>Customer Company Name</h6>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-group list-group-flush">
+                        <li class="d-flex-nowrap list-group-item">
+                          <div>Total Items </div>
+                          <div class="font-weight-bold">30</div>
+                        </li>
+                        <li class="d-flex-nowrap list-group-item">
+                          <div>Tax Rates Applicable </div>
+                          <div class="font-weight-bold very-small">GST@5% | GST@12% | GST@28%</div>
+                        </li>
+                        <li class="d-flex-nowrap list-group-item">
+                          <div>Additional Discount/Charges
+                            <a class="btn btn-sm btn-info text-light ml-2" data-toggle="modal" (click)="delOrderId=order._id"
+                              data-target="#deleteModal">
+                              <i class="fa fa-plus"></i>ADD
+                            </a>
+                          </div>
+                          <div class="font-weight-bold very-small">Discount: 15%</div>
+                          <div class="font-weight-bold very-small">Other Charges: 200 &#8377;</div>
+                        </li>
+                        <li class="d-flex-nowrap list-group-item">
+                          <div>Delivery Address </div>
+                          <div class="font-weight-bold">302, Silverline Apt, Opp PWD House, Pune 411001, India</div>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- <div class="card-footer">
+                      Footer
+                    </div> -->
+                  </div>
+                  <div class="ml-auto mr-5 col-5">
+                    <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
+                      <fieldset [disabled]="mode === 'display'">
+                        <h5 class="info-text"> Final Summary</h5>
+                        <ul class="list-group list-group-flush final-summary">
+                          <li class="d-inline-flex list-group-item justify-content-between">
+                            <div class="">Total Amount</div>
+                            <div class="font-weight-bold">3000 &#8377;</div>
+                          </li>
+                          <li class="d-inline-flex list-group-item justify-content-between">
+                            <div class="">Discount Amount</div>
+                            <div class="font-weight-bold">300 &#8377;</div>
+                          </li>
+                          <li class="d-inline-flex list-group-item justify-content-between ">
+                            <div class="">Tax Amount</div>
+                            <div class="font-weight-bold">500 &#8377;</div>
+                          </li>
+                          <li class="d-inline-flex list-group-item justify-content-between font-weight-bold final-amount">
+                            <div class="text-dark">Final Amount </div>
+                            <div>3200 &#8377;</div>
+                          </li>
+                        </ul>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

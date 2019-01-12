@@ -2,6 +2,11 @@ body {
   overflow: auto;
 }
 
+.flex-container {
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
 /* You can add global styles to this file, and also import other style files */
 .text-dplum {
   color: rgb(219, 63, 219);

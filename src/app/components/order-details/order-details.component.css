@@ -32,11 +32,25 @@
   border-bottom: 0px;
 }
 
-.table small.very-small {
+.very-small {
   font-size: 11px;
   color: rgb(83, 80, 80);
   font-weight: 500;
   font-family: Verdana, default;
+}
+
+.final-summary {
+  font-size: 16px;
+}
+
+li.final-amount {
+  border-color: rgb(131, 130, 133);
+  border-width: 3px;
+  border-radius: 5px;
+}
+
+.list-group-flush:last-child .list-group-item:last-child {
+  border-bottom: 5px !important;
 }
 
 .search-box {
@@ -55,6 +69,11 @@
 
 .nav-pills .nav-item .nav-link.active {
   background-color: #66615b;
+  cursor: default;
+}
+
+.nav-pills .nav-item .nav-link:not(.active):hover {
+  background-color: #6e6f74;
 }
 
 .nav-pills .nav-item:nth-child(3) .nav-link {
@@ -108,4 +127,9 @@ input::placeholder {
   .flex-container {
     flex-direction: column;
     flex-wrap: wrap;
+  }
+
+  .card.card-summary {
+      border-radius: 50px;
+      box-shadow: 0px 6px 10px 4px rgba(0, 0, 0, .10);
   }
