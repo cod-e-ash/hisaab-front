@@ -75,10 +75,10 @@
                   <tr *ngFor="let order of orders; let i=index">
                     <td class="text-center">{{order.orderno}}</td>
                     <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge">{{
-                      order.client }}</td>
+                      order.customer.name }}</td>
                     <td class="text-center">{{ order.details.length }}</td>
                     <td class="text-right">{{ order.total | currency:'INR':'' }}</td>
-                    <td class="text-right">{{ order?.discountamount | currency:'INR':'' || '' }}</td>
+                    <td class="text-right">{{ order?.discount | currency:'INR':'' || '' }}</td>
                     <td class="text-right">{{ order.date | date }}</td>
                     <td class="text-right">{{ order.finalamount | currency:'INR':'' }}</td>
                     <td class="text-right" [ngClass]="order.status === 'Completed' ? 'text-success' : 'text-delete'">

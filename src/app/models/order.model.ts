@@ -1,26 +1,26 @@
+import { Product } from './product.model';
+import { Customer } from './customer.model';
+
 export interface Order {
-  _id: string;
-  orderno: string;
-  date: Date;
-  custid: string;
-  total: number;
-  discount: number;
-  discountamount: number;
-  totaltax: number;
-  pkgdly: number;
-  finalamount: number;
-  details: {
-    itemno: number;
-    name: string;
-    hsn: string;
-    mrp: number;
-    quantity: number;
-    margin: number;
-    discountpercentage: number;
-    discountamount: number;
-    rate: number;
-    taxamount: number;
-    totalamount: number;
-  };
+  _id?: string;
+  orderno?: string;
+  date?: Date;
+  customer?: Customer;
+  total?: number;
+  discountrate?: number;
+  discount?: number;
+  totaltax?: number;
+  finalamount?: number;
+  details?: OrderDetails[];
   }
 
+export interface OrderDetails {
+  itemno: number;
+  product: Product;
+  quantity: number;
+  discountrate: number;
+  discount: number;
+  price: number;
+  tax: number;
+  total: number;
+}

@@ -32,8 +32,8 @@ export class OrderService {
   }) {
     const params = new HttpParams()
       .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
-      .set('orderno', inParams && inParams.orderno ? inParams.orderno : '')
       .set('client', inParams && inParams.client ? inParams.client : '')
+      .set('orderno', inParams && inParams.orderno ? inParams.orderno : '')
       .set(
         'statusOpt',
         inParams && inParams.statusOpt ? inParams.statusOpt : ''
@@ -56,7 +56,13 @@ export class OrderService {
       );
   }
 
-  createData(data: Order) {
+  createData(data: any) {
+    // Set Customer ID
+    data['customername'] = data.customer.name;
+    data['customerid'] = data.customer._id;
+    data.details.forEach((detail, index) => {
+      data.details[index]['product'] = detail.product._id;
+    });
     return this.http.post<Order>(this.url, data, this.httpOptions);
   }
 
@@ -65,7 +71,12 @@ export class OrderService {
     return this.http.patch(this.url + '/' + id, data, this.httpOptions);
   }
 
-  updateData(data: Order) {
+  updateData(data: any) {
+    data['customername'] = data.customer.name;
+    data['customer'] = data.customer._id;
+    data.details.forEach((detail, index) => {
+      data.details[index]['product'] = detail.product._id;
+    });
     return this.http.put(this.url + '/' + data._id, data, this.httpOptions);
   }
 
