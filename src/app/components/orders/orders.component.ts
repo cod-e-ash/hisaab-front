@@ -1,3 +1,4 @@
+import { TaxRateService } from './../../services/taxrate.service';
 import { Subscription } from 'rxjs';
 import { Order } from './../../models/order.model';
 import { OrderService } from './../../services/order.service';
@@ -27,13 +28,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataservice: OrderService
+    private dataservice: OrderService,
+    private taxRateService: TaxRateService
   ) {}
 
   ngOnInit() {
     // Show only in stok product by default
     this.statusOpt = true;
-
+    this.taxRateService.getTaxes();
     // Subscribe to query param changes
     this.route.queryParamMap.subscribe(params => {
       const newparams = {};

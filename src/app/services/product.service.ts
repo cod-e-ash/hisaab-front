@@ -14,9 +14,7 @@ export class ProductService {
   private httpOptions = {
     headers: new HttpHeaders({
       'x-auth-token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudXNocmk\
-      iLCJmdWxsbmFtZSI6ImFudXNocmkgYXJvcmEiLCJyb2xlIjoidXNlciIsImlhdCI6MTU0NjE0MDc0OH0.a\
-      4NEIya-nJOhrAUKMgZvmVq8UHjE4pPJpzFULyxK_cM'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudXNocmkiLCJmdWxsbmFtZSI6ImFudXNocmkgYXJvcmEiLCJyb2xlIjoidXNlciIsImlhdCI6MTU0NjE0MDc0OH0.a4NEIya-nJOhrAUKMgZvmVq8UHjE4pPJpzFULyxK_cM'
     })
   };
 
@@ -25,12 +23,14 @@ export class ProductService {
 
   // HTTP GET
   getData(inParams: {
+    code?: string;
     page?: number;
     name?: string;
     company?: string;
     stockOpt?: string;
   }) {
     const params = new HttpParams()
+      .set('code', (inParams && inParams.code ? inParams.code : ''))
       .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
       .set('name', inParams && inParams.name ? inParams.name : '')
       .set('company', inParams && inParams.company ? inParams.company : '')

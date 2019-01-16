@@ -15,6 +15,7 @@
   overflow-y: scroll;
   max-height: 330px;
 }
+
 .card-body {
   padding-top: 0px;
 }
@@ -133,3 +134,18 @@ input::placeholder {
       border-radius: 50px;
       box-shadow: 0px 6px 10px 4px rgba(0, 0, 0, .10);
   }
+
+  .modal-dialog:not(.modal-sm) {
+    max-width: 900px !important;
+    height: 600px !important;
+  }
+
+.table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+td a {
+  cursor: pointer;
+}

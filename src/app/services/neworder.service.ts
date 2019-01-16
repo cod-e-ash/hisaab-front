@@ -5,82 +5,86 @@ import { Product } from './../models/product.model';
 import { Order, OrderDetails } from '../models/order.model';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class CurOrderService {
+export class NewOrderService {
+  curOrder: Order;
+
+  constructor(private taxRateService: TaxRateService) {}
+
+  createOrder(customer?: Customer) {
+    if (customer) {
+      this.curOrder = {
+        customer: customer
+      };
+    } else {
+      this.curOrder = { details: [] };
+    }
+  }
+
+  clearOrder() {
+    this.curOrder = null;
+  }
+
+  async addOrderItem(product: Product, discountRate?: number, quantity?: number) {
     
-    curOrder: Order;
+    let isNew = true;
+    let foundIndex = -1;
+    let prvQuantity = 0;
+    let prvDiscountRate = 0;
 
-    constructor(private taxRateService: TaxRateService){}
-
-    createOrder(customer?: Customer) {
-        if (customer) {
-            this.curOrder = {
-                customer: customer,
-            }
-        } else {
-            this.curOrder = {};
+    // Create new Order Item if currently not added to array
+    if (!this.curOrder) {
+      this.createOrder();
+    } else {
+      this.curOrder.details.forEach((detail, index) => {
+        if (detail.product.name === product.name) {
+          isNew = false;
+          foundIndex = index;
+          prvQuantity = detail.quantity;
+          prvDiscountRate = detail.discountrate;
         }
+      });
     }
 
-    clearOrder() {
-        this.curOrder = null;
-    }
+    discountRate = discountRate ? discountRate : prvDiscountRate;
+    quantity = quantity ? quantity : prvQuantity+1;
 
-    addOrderItem(product: Product, discountRate: number = 0, quantity?: number) {
-        
-        discountRate = discountRate ? discountRate : 0;
-        const total = (product.price + (product.mrp * product.margin));
-        const discount = (discountRate ? total * (discountRate/100) : 0);
-        const amount = (total - discount);
-        const tax = (this.taxRateService.getTaxRate(product.taxrate)/100 * amount);
-        let isNew = true;
-        let foundIndex = -1;
-        // Create new Order Item if currently not added to array
-        if (!this.curOrder) {
-            this.createOrder();
-        } else {
-            this.curOrder.details.forEach((detail, index) => {
-                if (detail.product.name === product.name) {
-                    isNew = false;
-                    foundIndex = index;
-                }
-            });
-        }
-        
-        if (isNew) {
-            const newItem: OrderDetails = {
-                itemno: this.curOrder.details.length + 1,
-                product: product,
-                price: product.price,
-                quantity: quantity ? quantity : 1,
-                discountrate: discountRate,
-                discount: discount,
-                tax: tax,
-                total: amount
-            };
-            
-            this.curOrder.details.push(newItem);
+    let total = product.price + (product.mrp * product.margin) / 100;
+    const discount = discountRate ? total * (discountRate / 100) : 0;
+    total = total - discount;
+    const taxrate = this.taxRateService.getTaxRate(product.taxrate);
+    const tax = ( taxrate / 100) * total;
 
-        } else {
-            // If Product already Exist, change the quantity
-                   
-            // Quantity
-            if (quantity) {
-                this.curOrder.details[foundIndex].quantity = quantity;
-            } else {
-                this.curOrder.details[foundIndex].quantity += 1;
-            }
-            
-            // DISCOUNT
-            this.curOrder.details[foundIndex].discountrate = discountRate ? discountRate : 0;
-            this.curOrder.details[foundIndex].discount = discount * this.curOrder.details[foundIndex].quantity;
-            
-            // TAX
-            this.curOrder.details[foundIndex].tax = tax * this.curOrder.details[foundIndex].quantity;
-            
-            // TOTAL AMOUNT
-            this.curOrder.details[foundIndex].total = total * this.curOrder.details[foundIndex].quantity;
-        }
+    if (isNew) {
+      const newItem: OrderDetails = {
+        itemno: this.curOrder.details ? this.curOrder.details.length + 1 : 1,
+        product: product,
+        price: product.price,
+        quantity: quantity ? quantity : 1,
+        discountrate: discountRate,
+        discount: discount,
+        tax: Math.round((tax + 0.00001)*100)/100,
+        total: Math.round((total+ 0.00001)*100)/100
+      };
+
+      this.curOrder.details.push(newItem);
+    } else {
+      // If Product already Exist, change the quantity
+
+      // QUANTITY
+      this.curOrder.details[foundIndex].quantity = quantity;
+
+      // DISCOUNT
+      this.curOrder.details[foundIndex].discountrate = discountRate;
+      this.curOrder.details[foundIndex].discount =
+        discount * this.curOrder.details[foundIndex].quantity;
+
+      // TAX
+      this.curOrder.details[foundIndex].tax = tax * this.curOrder.details[foundIndex].quantity;
+
+      // TOTAL AMOUNT
+      this.curOrder.details[foundIndex].total = total * this.curOrder.details[foundIndex].quantity;
     }
+  }
 }
