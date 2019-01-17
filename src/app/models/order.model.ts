@@ -5,6 +5,7 @@ export interface Order {
   _id?: string;
   orderno?: string;
   date?: Date;
+  customername?: string;
   customer?: Customer;
   total?: number;
   discountrate?: number;

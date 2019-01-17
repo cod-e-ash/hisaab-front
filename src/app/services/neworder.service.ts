@@ -3,22 +3,35 @@ import { TaxRateService } from './taxrate.service';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
 import { Order, OrderDetails } from '../models/order.model';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewOrderService {
   curOrder: Order;
+  alltaxrates = [];
 
   constructor(private taxRateService: TaxRateService) {}
 
   createOrder(customer?: Customer) {
     if (customer) {
       this.curOrder = {
-        customer: customer
+        customername: customer.name,
+        customer: customer,
+        details: []
       };
     } else {
       this.curOrder = { details: [] };
+    }
+  }
+
+  addCustomer(customer: Customer) {
+    if (!this.curOrder) {
+      this.createOrder(customer);
+    } else {
+      this.curOrder.customername = customer.name;
+      this.curOrder.customer = customer;
     }
   }
 
@@ -86,5 +99,37 @@ export class NewOrderService {
       // TOTAL AMOUNT
       this.curOrder.details[foundIndex].total = total * this.curOrder.details[foundIndex].quantity;
     }
+    this.calculateSummary();
+  }
+
+  addDiscount(discountrate) {
+    if (!this.curOrder) {
+      this.createOrder();
+    }
+    this.curOrder.discountrate = discountrate;
+    this.calculateSummary();
+  }
+
+  calculateSummary() {
+    let total = 0;
+    let totaltax = 0;
+    let discount = 0;
+    this.alltaxrates = [];
+
+    this.curOrder.details.forEach(item => {
+      total += item.total;
+      totaltax += item.tax;
+      if (this.alltaxrates.indexOf(item.product.taxrate) < 0 && item.product.taxrate !== 'Excempted') {
+        this.alltaxrates.push(item.product.taxrate);
+      }
+    });
+    if (this.curOrder.discountrate && this.curOrder.discountrate > 0) {
+      discount = total * (this.curOrder.discountrate/100);
+      totaltax = totaltax - (totaltax * (this.curOrder.discountrate/100));
+    }
+    this.curOrder.total = total;
+    this.curOrder.discount = discount;
+    this.curOrder.totaltax = totaltax;
+    this.curOrder.finalamount = total - discount;
   }
 }

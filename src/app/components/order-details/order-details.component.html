@@ -43,42 +43,31 @@
           <div class="card-body">
             <div class="tab-content">
               <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-                <form #productForm="ngForm" name="customerForm" (ngSubmit)="selectCustomer(customerForm)" validate>
-                  <fieldset [disabled]="mode === 'display'">
-                    <!-- <h5 class="info-text"> Let's start with the customer</h5> -->
-                    <div class="row mt-4">
-                      <div class="form-group col-md-7 mx-auto">
-                        <!-- <label for="name" class="pull-left">Customer Name</label> -->
-                        <input required minlength="3" type="text" name="name" class="form-control has-danger"
-                          placeholder="Type few characters and search...">
-                        <button type="button" class="btn btn-sm btn-primary">Search</button>
-                      </div>
+                <form (ngSubmit)="showCustomers()" name="customerSearch">
+                  <div class="row mt-4">
+                    <div class="form-group col-md-7 mx-auto">
+                      <input type="text" name="customerS" [(ngModel)]="customerS" class="form-control has-danger"
+                        placeholder="Type few characters and search...">
+                      <button type="button" #customerSBtn data-toggle="modal" data-target="#customerModal" class="btn btn-sm btn-primary"
+                        (click)="onCustomerSearch({name: customerS, page: 1})">Search</button>
                     </div>
-                    <div class="row mt-2">
-                      <div class="mx-auto">
-                        <h5> Customer Name Here </h5>
-                        <div class="d-flex justify-content-center font-weight-bold">
-                          <div class="col-md-12 mx-auto">9604588888</div>
-                          <div class="text-center text-danger mx-2"><i class="fas fa-envelope"></i></div>
-                          <div class="col-md-12 mx-auto">ashish@bagaddeo.com </div>
-                        </div>
-                        <div class="mt-3">
-                          <div>Address Line One</div>
-                          <div>City, State</div>
-                          <div>ZipCode Country</div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Validation for FORM ROW 1 -->
-                    <div class="d-flex" *ngIf="code?.touched || name?.touched || company?.touched || hsn?.touched">
-                      <ul class="text-delete ml-5">
-                        <li *ngIf="name.touched && (name.errors?.required || name.errors?.minlength)">
-                          Name is required & must be minimum 3 chars.
-                        </li>
-                      </ul>
-                    </div>
-                  </fieldset>
+                  </div>
                 </form>
+                <div class="row mt-2" *ngIf="curOrder && curOrder.customer">
+                  <div class="mx-auto">
+                    <h5> {{curOrder.customername}} </h5>
+                    <div class="d-flex justify-content-center font-weight-bold">
+                      <div class="col-md-12 mx-auto">{{curOrder.customer.phone1}}</div>
+                      <div class="text-center text-danger mx-2"><i class="fas fa-envelope"></i></div>
+                      <div class="col-md-12 mx-auto">{{curOrder.customer.email1}} </div>
+                    </div>
+                    <div class="mt-3">
+                      <div>{{curOrder.customer.address}}</div>
+                      <div>{{curOrder.customer.city}}, {{curOrder.customer.state}}</div>
+                      <div>{{curOrder.customer.zipcode}} {{curOrder.customer.country}}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
                 <div class="d-inline-flex mr-auto search-box">
@@ -89,7 +78,7 @@
                       (keyup.enter)="showProducts()">
                     <input type="text" name="companyS" [(ngModel)]="companyS" class="form-control mx-2" placeholder="Company..."
                       (keyup.enter)="showProducts()">
-                    <button type="button" #productSBtn data-toggle="modal" data-target="#noticeModal" class="btn btn-icon btn-primary search-btn"
+                    <button type="button" #productSBtn data-toggle="modal" data-target="#productModal" class="btn btn-icon btn-primary search-btn"
                       (click)="onProductSearch({code: codeS || null, name: productS, company: companyS, page: 1})">
                       <i class="nc-icon nc-zoom-split"></i>
                     </button>
@@ -170,34 +159,47 @@
                 </form>
               </div>
               <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-                <div class="d-flex justify-content-around">
+                <h6 *ngIf="!curOrder || !curOrder.customer" class="text-danger mx-auto mt-5">
+                  Please select customer first !!
+                </h6>
+                <div *ngIf="curOrder && curOrder.customer" class="d-flex justify-content-around">
                   <div class="card col-6 mx-1 card-summary">
                     <div class="card-header final-card-header">
-                      <h6>Customer Company Name</h6>
+                      <h6>{{curOrder?.customername}}</h6>
                     </div>
                     <div class="card-body">
                       <ul class="list-group list-group-flush">
                         <li class="d-flex-nowrap list-group-item">
                           <div>Total Items </div>
-                          <div class="font-weight-bold">30</div>
+                          <div class="font-weight-bold">{{curOrder.details.length || '0'}}</div>
                         </li>
                         <li class="d-flex-nowrap list-group-item">
                           <div>Tax Rates Applicable </div>
-                          <div class="font-weight-bold very-small">GST@5% | GST@12% | GST@28%</div>
+                          <div *ngIf="!alltaxrates || alltaxrates === ''" class="font-weight-bold very-small">
+                            None
+                          </div>
+                          <div *ngIf="alltaxrates && alltaxrates !== ''" class="font-weight-bold very-small">
+                            <span *ngFor="let taxrate of alltaxrates;let i=index">
+                              <span *ngIf="i !== 0" class="text-danger"> | </span>
+                              {{ taxrate }}
+                            </span>
+                          </div>
                         </li>
                         <li class="d-flex-nowrap list-group-item">
-                          <div>Additional Discount/Charges
-                            <a class="btn btn-sm btn-info text-light ml-2" data-toggle="modal" (click)="delOrderId=order._id"
-                              data-target="#deleteModal">
-                              <i class="fa fa-plus"></i>ADD
+                          <div>Additional Discount
+                            <a class="btn btn-sm btn-primary text-light" data-toggle="modal" (click)="editType='Overall Discount'" data-target="#editModal">
+                              <i class="fa fa-marker" data-toggle="tooltip" data-placement="left" title="Edit Discount"> Edit</i>
                             </a>
                           </div>
-                          <div class="font-weight-bold very-small">Discount: 15%</div>
-                          <div class="font-weight-bold very-small">Other Charges: 200 &#8377;</div>
+                          <div class="font-weight-bold very-small">Discount: {{curOrder.discountrate || 0 }} %</div>
                         </li>
                         <li class="d-flex-nowrap list-group-item">
                           <div>Delivery Address </div>
-                          <div class="font-weight-bold">302, Silverline Apt, Opp PWD House, Pune 411001, India</div>
+                          <div class="font-weight-bold">
+                            {{curOrder.customer.address}},
+                            {{curOrder.customer.city}}, {{curOrder.customer.state}},
+                            {{curOrder.customer.zipcode}}, {{curOrder.customer.country}}
+                          </div>
                         </li>
                       </ul>
                     </div>
@@ -212,19 +214,20 @@
                         <ul class="list-group list-group-flush final-summary">
                           <li class="d-inline-flex list-group-item justify-content-between">
                             <div class="">Total Amount</div>
-                            <div class="font-weight-bold">3000 &#8377;</div>
+                            <div class="font-weight-bold">{{(curOrder.total - curOrder.totaltax || 0) |
+                              currency:'INR':''}} &#8377;</div>
                           </li>
                           <li class="d-inline-flex list-group-item justify-content-between">
                             <div class="">Discount Amount</div>
-                            <div class="font-weight-bold">300 &#8377;</div>
+                            <div class="font-weight-bold">{{(curOrder.discount || 0) | currency:'INR':''}} &#8377;</div>
                           </li>
                           <li class="d-inline-flex list-group-item justify-content-between ">
                             <div class="">Tax Amount</div>
-                            <div class="font-weight-bold">500 &#8377;</div>
+                            <div class="font-weight-bold">{{(curOrder.totaltax || 0) | currency:'INR':''}} &#8377;</div>
                           </li>
                           <li class="d-inline-flex list-group-item justify-content-between font-weight-bold final-amount">
                             <div class="text-dark">Final Amount </div>
-                            <div>3200 &#8377;</div>
+                            <div>{{ (curOrder.finalamount || 0) | currency:'INR':''}} &#8377;</div>
                           </li>
                         </ul>
                       </fieldset>
@@ -250,8 +253,9 @@
   </div>
   <!-- wizard container -->
 </div>
-<!-- notice modal -->
-<div class="modal fade modal-product" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+
+<!-- PRODUCT SEARCH MODAL -->
+<div class="modal fade modal-product" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
   <div class="modal-dialog productModal">
     <div class="modal-content">
@@ -347,6 +351,92 @@
     </div>
   </div>
 </div>
+
+
+<!-- CUSTOMER SEARCH MODAL -->
+<div class="modal fade modal-customer" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog productModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="nc-icon nc-simple-remove"></i>
+        </button>
+        <div class="d-inline-flex justify-content-around">
+          <h5 class="modal-title mr-5" id="myModalLabel">Select Customer</h5>
+          <div class="d-inline-flex mr-auto search-box">
+            <input type="text" name="customerS" [(ngModel)]="customerS" class="form-control" placeholder="Customer..."
+              (keyup.enter)="onCustomerSearch({name: customerS || null, page: 1})">
+            <button class="btn btn-icon btn-primary search-btn" (click)="onCustomerSearch({name: customerS || null, page: 1})">
+              <i class="nc-icon nc-zoom-split"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead class="text-secondary">
+                <th class="text-center"> Select </th>
+                <th class="text-center"> SNO </th>
+                <th>Name </th>
+                <th>Contact</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let customer of customers; let i=index">
+                  <td class="text-right fit">
+                    <div class="form-check-radio ml-3 mt-2">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="customerCheck" #customerCheck (click)="tempCust = customer"
+                          ngValue="customer">
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-center">{{
+                    ((curPage-1)*10) + i + 1 }}</td>
+                  <td>{{customer.name }}</td>
+                  <td>{{ customer.phone1 }}</td>
+                  <td>{{ customer.email1 }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <div class="mt-4 p-2 mr-auto">
+          <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
+            found</div>
+          <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+        </div>
+        <div class="mx-auto">
+          <button type="button" class="btn btn-info btn-round" (click)="tempCust=null" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-info btn-round" (click)="addCustomerToOrder()" data-dismiss="modal">Select</button>
+        </div>
+        <div *ngIf="totalRecs > 0">
+          <nav class="ml-auto mt-4">
+            <ul class="pagination">
+              <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                <a class="page-link" (click)="onCustomerSearch({ name: customerS || null, page: curpage-1})"
+                  tabindex="-1">Previous</a>
+              </li>
+              <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                <a class="page-link page-pages" (click)="onCustomerSearch({ name: customerS || null, page: pageIndex})">{{pageIndex}}</a>
+              </li>
+              <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                <a class="page-link" (click)="onCustomerSearch({ name: customerS || null, page: curPage+1})">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT EDIT MODAL -->
 <div class="modal fade modal-primary" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal"
   aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -357,11 +447,11 @@
         </div>
       </div>
       <div class="modal-body">
-        <p>Increase or Decrease {{editType}} by?</p>
+        <p>Set {{editType}}</p>
         <div class="form-group">
           <!-- <label for="units">Unit</label> -->
-          <input type="number" ngModel #editValue="ngModel" name="editValue" class="form-control" 
-          placeholder="0" [value]="editType==='Quantity' ? curProd?.quantity : curProd?.discountrate">
+          <input type="number" ngModel #editValue="ngModel" name="editValue" class="form-control" placeholder="0"
+            [value]="editType==='Quantity' ? curProd?.quantity : editType==='Discount' ? curProd?.discountrate : curOrder?.discountrate || 0">
         </div>
       </div>
       <div class="modal-footer">
@@ -371,13 +461,14 @@
         <div class="divider"></div>
         <!-- <div class="divider"></div> -->
         <div class="right-side">
-          <button type="button" class="btn btn-link btn-success" (click)="editProduct(editValue.value)"
-            data-dismiss="modal">Change</button>
+          <button type="button" class="btn btn-link btn-success" (click)="editProduct(editValue.value)" data-dismiss="modal">Change</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- PRODUCT DELETE MODAL -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

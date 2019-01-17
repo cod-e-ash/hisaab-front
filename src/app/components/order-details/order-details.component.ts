@@ -1,11 +1,13 @@
 import { TaxRateService } from './../../services/taxrate.service';
 import { OrderService } from './../../services/order.service';
 import { ProductService } from './../../services/product.service';
+import { NewOrderService } from './../../services/neworder.service';
+import { CustomerService } from './../../services/customer.service';
 import { Product } from './../../models/product.model';
+import { Customer } from './../../models/customer.model';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NewOrderService } from 'src/app/services/neworder.service';
 
 @Component({
   selector: 'app-order-details',
@@ -14,7 +16,9 @@ import { NewOrderService } from 'src/app/services/neworder.service';
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('productSBtn') productSBtn: ElementRef;
+  @ViewChild('customerSBtn') customerSBtn: ElementRef;
   products: Product[];
+  customers: Customer[];
   curPage = 0;
   totalPages: number;
   totalRecs: number;
@@ -27,22 +31,34 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   productS: string;
   codeS: string;
   companyS: string;
+  customerS: string;
+  alltaxrates: string[];
   tempProdArr: Product[] = [];
   curOrder;
   editType: string;
   curProd;
   curProdDiscount: number;
+  custOpts: {};
+  curSearch = '';
+  tempCust: Customer;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private productService: ProductService,
+    private customerService: CustomerService,
     private newOrderService: NewOrderService,
     private taxRateService: TaxRateService
 
   ) {}
 
   onProductSearch(prodOpts: { code?: string; name?: string; company?: string; page?: number }) {
+    if (this.curSearch !== 'product') {
+      this.curSearch = 'product';
+      this.curPage = 1;
+      this.totalPages = 1;
+      this.totalRecs = 0;
+    }
     // Show only in stok product by default
     this.stockOpt = true;
     this.taxRateService.getTaxes();
@@ -83,6 +99,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
   retrieveOrder() {
     this.curOrder = this.newOrderService.curOrder;
+    this.alltaxrates = this.newOrderService.alltaxrates;
   }
 
   addProductToArr(product, addProduct) {
@@ -106,8 +123,54 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this.newOrderService.addOrderItem(this.curProd.product, value, this.curProd.quantity);
     } else if (this.editType === 'Quantity') {
       this.newOrderService.addOrderItem(this.curProd.product, this.curProd.discountRate, value);
+    } else if (this.editType === 'Overall Discount') {
+      this.newOrderService.addDiscount(value);
     }
     this.retrieveOrder();
+  }
+
+  
+  showCustomers() {
+    this.customerSBtn.nativeElement.click();
+  }
+
+  addCustomerToOrder() {
+    this.newOrderService.addCustomer(this.tempCust);
+    this.retrieveOrder();
+  }
+
+  onCustomerSearch(custOpts: { name?: string; page?: number }) {
+    if (this.curSearch !== 'customer') {
+      this.curSearch = 'customer';
+      this.curPage = 1;
+      this.totalPages = 1;
+      this.totalRecs = 0;
+    }
+    // Compare old and new params, so that page is not reloaded if no changes
+    this.custOpts = custOpts;
+    // Get data from data service by passing the params
+    this.dataSubs = this.customerService.getData(this.custOpts, 'Customer').subscribe(
+      data => {
+        // Copy new values if records or number of pages change
+        if (this.totalRecs !== data.totalRecs || this.totalPages !== data.totalPages) {
+          this.endPage = 0;
+        }
+        this.customers = data.customers;
+        this.curPage = data.curPage;
+        this.totalPages = data.totalPages;
+        this.totalRecs = data.totalRecs;
+        // Execute pagination logic
+        this.pageLogic();
+      },
+      error => {
+        // Set all fields to default if no records found or server error
+        this.customers = [];
+        this.curPage = 1;
+        this.totalPages = 1;
+        this.totalRecs = 0;
+        this.pageLogic();
+      }
+    );
   }
 
   pageLogic() {
