@@ -1,3 +1,4 @@
+import { OrderDetails } from './../../models/order.model';
 import { TaxRateService } from './../../services/taxrate.service';
 import { OrderService } from './../../services/order.service';
 import { ProductService } from './../../services/product.service';
@@ -41,6 +42,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   custOpts: {};
   curSearch = '';
   tempCust: Customer;
+  mode: string;
+  prvParams: {};
+  alertMsgSuccess: string;
+  alertMsgFail: string;
+  fragment: string;
 
   constructor(
     private router: Router,
@@ -48,9 +54,85 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private customerService: CustomerService,
     private newOrderService: NewOrderService,
+    private orderService: OrderService,
     private taxRateService: TaxRateService
-
   ) {}
+
+  ngOnInit() {
+    // Store mode new/edit/display
+    this.fragment = 'customer';
+    this.mode = this.route.snapshot.paramMap.get('mode');
+    this.route.queryParamMap.subscribe(params => {
+      this.prvParams = {
+        id: params.get('id')
+      };
+      this.prvParams['id'] = null;
+      if (this.mode === 'edit' || this.mode === 'display') {
+        this.curOrder = this.orderService.getSingle(params.get('id'));
+        this.newOrderService.setOrder(this.curOrder);
+        this.retrieveOrder();
+        if (!this.curOrder) {
+          this.router.navigate(['/orders'], {
+            queryParams: this.prvParams
+          });
+        }
+      }
+    });
+  }
+
+  onNext() {
+    if (this.fragment === 'customer') {
+      this.fragment = 'details';
+    } else if (this.fragment === 'details') {
+      this.fragment = 'summary';
+    } else if (this.fragment === 'summary') {
+      if (this.mode === 'display') {
+        this.router.navigate(['orders']);
+      } else {
+        this.saveOrder();
+      }
+    }
+  }
+
+  onPrevious() {
+    if (this.fragment === 'summary') {
+      this.fragment = 'details';
+    } else if (this.fragment === 'details') {
+      this.fragment = 'customer';
+    }
+  }
+
+  saveOrder() {
+    this.alertMsgFail = null;
+    this.alertMsgSuccess = null;
+    if (
+      !this.curOrder ||
+      this.curOrder.details.length === 0 ||
+      !this.curOrder.customername ||
+      this.curOrder.customername === ''
+    ) {
+      this.alertMsgFail = 'Incomplete Order Details';
+    } else {
+      if (this.mode === 'new') {
+        this.orderService.createData({ ...this.curOrder }).subscribe(data => {
+          if (data.orderno) {
+            this.newOrderService.createOrder();
+            this.curOrder = null;
+            this.fragment = 'customer';
+            this.alertMsgSuccess = 'Record Added Successfully';
+          } else {
+            this.alertMsgFail = 'Error Creating Error';
+          }
+        });
+      } else {
+        this.orderService.updateData({ ...this.curOrder }).subscribe(data => {
+          this.newOrderService.setOrder(data[0]);
+          this.retrieveOrder();
+          this.alertMsgSuccess = 'Record Updated Successfully';
+        });
+      }
+    }
+  }
 
   onProductSearch(prodOpts: { code?: string; name?: string; company?: string; page?: number }) {
     if (this.curSearch !== 'product') {
@@ -93,10 +175,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     this.productSBtn.nativeElement.click();
   }
 
-  ngOnInit() {
-    this.retrieveOrder();
-  }
-
   retrieveOrder() {
     this.curOrder = this.newOrderService.curOrder;
     this.alltaxrates = this.newOrderService.alltaxrates;
@@ -109,15 +187,15 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this.tempProdArr.splice(this.tempProdArr.indexOf(product), 1);
     }
   }
-  
+
   addProductsToOrder() {
     this.tempProdArr.forEach(product => {
-      this.newOrderService.addOrderItem(product);
+      this.newOrderService.addOrderItem({ ...product });
     });
     this.tempProdArr = [];
     this.retrieveOrder();
   }
-  
+
   editProduct(value) {
     if (this.editType === 'Discount') {
       this.newOrderService.addOrderItem(this.curProd.product, value, this.curProd.quantity);
@@ -129,7 +207,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     this.retrieveOrder();
   }
 
-  
   showCustomers() {
     this.customerSBtn.nativeElement.click();
   }

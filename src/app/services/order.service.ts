@@ -34,10 +34,7 @@ export class OrderService {
       .set('page', (inParams && inParams.page ? inParams.page : 1).toString())
       .set('client', inParams && inParams.client ? inParams.client : '')
       .set('orderno', inParams && inParams.orderno ? inParams.orderno : '')
-      .set(
-        'statusOpt',
-        inParams && inParams.statusOpt ? inParams.statusOpt : ''
-      )
+      .set('statusOpt', inParams && inParams.statusOpt ? inParams.statusOpt : '')
       .set('fromDate', inParams && inParams.fromDate ? inParams.fromDate : '')
       .set('toDate', inParams && inParams.toDate ? inParams.toDate : '');
 
@@ -59,7 +56,7 @@ export class OrderService {
   createData(data: any) {
     // Set Customer ID
     data['customername'] = data.customer.name;
-    data['customerid'] = data.customer._id;
+    data['customer'] = data.customer._id;
     data.details.forEach((detail, index) => {
       data.details[index]['product'] = detail.product._id;
     });

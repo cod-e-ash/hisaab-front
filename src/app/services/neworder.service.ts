@@ -3,7 +3,6 @@ import { TaxRateService } from './taxrate.service';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
 import { Order, OrderDetails } from '../models/order.model';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +34,7 @@ export class NewOrderService {
     }
   }
 
-  clearOrder() {
-    this.curOrder = null;
-  }
-
   async addOrderItem(product: Product, discountRate?: number, quantity?: number) {
-    
     let isNew = true;
     let foundIndex = -1;
     let prvQuantity = 0;
@@ -61,13 +55,13 @@ export class NewOrderService {
     }
 
     discountRate = discountRate ? discountRate : prvDiscountRate;
-    quantity = quantity ? quantity : prvQuantity+1;
+    quantity = quantity ? quantity : prvQuantity + 1;
 
     let total = product.price + (product.mrp * product.margin) / 100;
     const discount = discountRate ? total * (discountRate / 100) : 0;
     total = total - discount;
     const taxrate = this.taxRateService.getTaxRate(product.taxrate);
-    const tax = ( taxrate / 100) * total;
+    const tax = (taxrate / 100) * total;
 
     if (isNew) {
       const newItem: OrderDetails = {
@@ -77,8 +71,8 @@ export class NewOrderService {
         quantity: quantity ? quantity : 1,
         discountrate: discountRate,
         discount: discount,
-        tax: Math.round((tax + 0.00001)*100)/100,
-        total: Math.round((total+ 0.00001)*100)/100
+        tax: Math.round((tax + 0.00001) * 100) / 100,
+        total: Math.round((total + 0.00001) * 100) / 100
       };
 
       this.curOrder.details.push(newItem);
@@ -119,17 +113,28 @@ export class NewOrderService {
     this.curOrder.details.forEach(item => {
       total += item.total;
       totaltax += item.tax;
-      if (this.alltaxrates.indexOf(item.product.taxrate) < 0 && item.product.taxrate !== 'Excempted') {
+      if (
+        this.alltaxrates.indexOf(item.product.taxrate) < 0 &&
+        item.product.taxrate !== 'Excempted'
+      ) {
         this.alltaxrates.push(item.product.taxrate);
       }
     });
     if (this.curOrder.discountrate && this.curOrder.discountrate > 0) {
-      discount = total * (this.curOrder.discountrate/100);
-      totaltax = totaltax - (totaltax * (this.curOrder.discountrate/100));
+      discount = total * (this.curOrder.discountrate / 100);
+      totaltax = totaltax - totaltax * (this.curOrder.discountrate / 100);
     }
     this.curOrder.total = total;
     this.curOrder.discount = discount;
     this.curOrder.totaltax = totaltax;
     this.curOrder.finalamount = total - discount;
+  }
+
+  setOrder(order: Order) {
+    if (!order) {
+      return;
+    }
+    this.curOrder = order;
+    this.calculateSummary();
   }
 }

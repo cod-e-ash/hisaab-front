@@ -1,4 +1,19 @@
 <div class="col-md-11 mr-auto ml-auto">
+  <div *ngIf="alertMsgFail" class="alert alert-danger alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgFail=null" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Failed - </b> {{alertMsgFail}}</span>
+  </div>
+  <div *ngIf="alertMsgSuccess" class="alert alert-success alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgSuccess=null" data-dismiss="alert"
+      aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Success - </b> {{alertMsgSuccess}}</span>
+  </div>
   <!--      Wizard container        -->
   <div class="wizard-container">
     <div class="card card-wizard active" data-color="primary" id="wizardProfile">
@@ -6,35 +21,37 @@
         <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
         <div class="card-header text-center">
           <div class="d-flex justify-content-center">
-            <div class="mx-auto mr-lg-1"> </div>
+            <a class="ml-3 mt-1">
+              <button class="btn btn-sm btn-danger ml-2 new-btn">
+                <i class="fa fa-print"></i> Print
+              </button>
+            </a>
             <h3 class="card-title mx-auto">
               Order
             </h3>
-            <div class="ml-auto mr-3">
-              <a routerLink="new" queryParamsHandling="merge">
-                <button class="btn btn-sm btn-danger ml-2 new-btn">
-                  <i class="fa fa-print"></i> Print
-                </button>
-              </a>
-            </div>
+            <a class="mr-3 mt-1" routerLink="/orders">
+              <button class="btn btn-sm btn-info ml-2 new-btn">
+                <!-- <i class="fa fa-ban"></i> Leave -->Leave
+              </button>
+            </a>
           </div>
           <div class="wizard-navigation">
             <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link" href="#customer" id="customer-tab" data-toggle="pill" role="tab" aria-controls="customer"
-                  aria-selected="false">
+                <a class="nav-link active" [ngClass]="{'active': fragment === 'customer'}" href="#customer" id="customer-tab"
+                  data-toggle="pill" role="tab" aria-controls="customer" aria-selected="true" (click)="fragment='customer'">
                   <i class="nc-icon nc-single-02"></i> Customer
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#details" id="details-tab" data-toggle="pill" role="tab" aria-controls="details"
-                  aria-selected="false">
+                <a class="nav-link" [ngClass]="{'active': fragment === 'details'}" href="#details" id="details-tab"
+                  data-toggle="pill" role="tab" aria-controls="details" aria-selected="false" (click)="fragment='details'">
                   <i class="nc-icon nc-cart-simple"></i> Details
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#summary" id="summary-tab" data-toggle="pill" role="tab" aria-controls="summary"
-                  aria-selected="true">
+                <a class="nav-link" [ngClass]="{'active': fragment === 'summary'}" href="#summary" id="summary-tab"
+                  data-toggle="pill" role="tab" aria-controls="summary" aria-selected="false" (click)="fragment='summary'">
                   <i class="nc-icon nc-credit-card"></i> Summary
                 </a>
               </li>
@@ -42,8 +59,9 @@
           </div>
           <div class="card-body">
             <div class="tab-content">
-              <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-                <form (ngSubmit)="showCustomers()" name="customerSearch">
+              <div class="tab-pane fade show active" [ngClass]="{'show active': fragment === 'customer'}" id="customer"
+                role="tabpanel" aria-labelledby="customer-tab">
+                <form *ngIf="mode !== 'display'" (ngSubmit)="showCustomers()" name="customerSearch">
                   <div class="row mt-4">
                     <div class="form-group col-md-7 mx-auto">
                       <input type="text" name="customerS" [(ngModel)]="customerS" class="form-control has-danger"
@@ -69,8 +87,9 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
-                <div class="d-inline-flex mr-auto search-box">
+              <div class="tab-pane fade" [ngClass]="{'show active': fragment === 'details'}" id="details" role="tabpanel"
+                aria-labelledby="details-tab">
+                <div *ngIf="mode !== 'display'" class="d-inline-flex mr-auto search-box">
                   <form class="form-inline" (ngSubmit)="showProducts()" name="productSearch">
                     <input type="text" name="codeS" [(ngModel)]="codeS" class="form-control col-2 mx-2" placeholder="Code..."
                       (keyup.enter)="showProducts()">
@@ -101,8 +120,11 @@
                             <th class="text-right">Amount (&#8377;)</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr *ngFor="let item of curOrder?.details; let i=index">
+                        <div class="text-danger" *ngIf="!curOrder || !curOrder.details || curOrder.details.length === 0">
+                          No Items
+                        </div>
+                        <tbody *ngIf="curOrder && curOrder.details && curOrder.details.length > 0">
+                          <tr *ngFor="let item of curOrder.details; let i=index">
                             <td class="td-number"> {{ item.itemno }} </td>
                             <td class="td-name text-secondary font-weight-bold text-left">
                               {{ item.product.name }}
@@ -123,7 +145,8 @@
                             <td class="td-number text-right">
                               <div class="d-inline-flex">
                                 <div class="mr-1">{{ item.discountrate | currency:'INR':'' }}</div>
-                                <a data-toggle="modal" (click)="curProd = item; editType='Discount'" data-target="#editModal">
+                                <a *ngIf="mode !== 'display'" data-toggle="modal" (click)="curProd = item; editType='Discount'"
+                                  data-target="#editModal">
                                   <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
                                     title="Edit Discount"></i>
                                 </a>
@@ -136,7 +159,8 @@
                             <td class="td-number text-right">
                               <div class="d-inline-flex">
                                 <div class="ml-3 mr-1">{{item.quantity}}</div>
-                                <a data-toggle="modal" (click)="curProd = item; editType='Quantity'" data-target="#editModal">
+                                <a *ngIf="mode !== 'display'" data-toggle="modal" (click)="curProd = item; editType='Quantity'"
+                                  data-target="#editModal">
                                   <i class="fa fa-marker text-success" data-toggle="tooltip" data-placement="left"
                                     title="Edit Quantity"></i>
                                 </a>
@@ -146,7 +170,7 @@
                               {{ item.total | currency:'INR':'' }}
                             </td>
                             <td class="td-actions">
-                              <a data-toggle="modal" (click)="curProd = item" data-target="#deleteModal">
+                              <a *ngIf="mode !== 'display'" data-toggle="modal" (click)="curProd = item" data-target="#deleteModal">
                                 <i class="fa fa-trash-alt text-danger" data-toggle="tooltip" data-placement="left"
                                   title="Remove Item"></i>
                               </a>
@@ -158,7 +182,8 @@
                   </fieldset>
                 </form>
               </div>
-              <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+              <div class="tab-pane fade" [ngClass]="{'show active': fragment === 'summary'}" id="summary" role="tabpanel"
+                aria-labelledby="summary-tab">
                 <h6 *ngIf="!curOrder || !curOrder.customer" class="text-danger mx-auto mt-5">
                   Please select customer first !!
                 </h6>
@@ -187,8 +212,10 @@
                         </li>
                         <li class="d-flex-nowrap list-group-item">
                           <div>Additional Discount
-                            <a class="btn btn-sm btn-primary text-light" data-toggle="modal" (click)="editType='Overall Discount'" data-target="#editModal">
-                              <i class="fa fa-marker" data-toggle="tooltip" data-placement="left" title="Edit Discount"> Edit</i>
+                            <a *ngIf="mode !== 'display'" class="btn btn-sm btn-primary text-light" data-toggle="modal"
+                              (click)="editType='Overall Discount'" data-target="#editModal">
+                              <i class="fa fa-marker" data-toggle="tooltip" data-placement="left" title="Edit Discount">
+                                Edit</i>
                             </a>
                           </div>
                           <div class="font-weight-bold very-small">Discount: {{curOrder.discountrate || 0 }} %</div>
@@ -237,13 +264,17 @@
               </div>
             </div>
           </div>
+
+          <!-- CARD FOOTER -->
           <div class="card-footer">
+            <div *ngIf="fragment !== 'customer'" class="pull-left">
+              <input (click)="onPrevious()" type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous'
+                value='Previous' />
+            </div>
             <div class="pull-right">
               <!-- <input type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='next' value='Next' /> -->
-              <input type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='finish' value='Finish' />
-            </div>
-            <div class="pull-left">
-              <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
+              <input (click)="onNext()" type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='finish'
+                [disabled]="mode !== 'display' && fragment === 'summary' && curOrder?.details?.length === 0" [value]="fragment === 'customer' || fragment === 'details' ? 'Next' : mode === 'display' ? 'Close' : 'Save'" />
             </div>
             <div class="clearfix"></div>
           </div>
@@ -419,8 +450,7 @@
           <nav class="ml-auto mt-4">
             <ul class="pagination">
               <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
-                <a class="page-link" (click)="onCustomerSearch({ name: customerS || null, page: curpage-1})"
-                  tabindex="-1">Previous</a>
+                <a class="page-link" (click)="onCustomerSearch({ name: customerS || null, page: curpage-1})" tabindex="-1">Previous</a>
               </li>
               <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
                 <a class="page-link page-pages" (click)="onCustomerSearch({ name: customerS || null, page: pageIndex})">{{pageIndex}}</a>
