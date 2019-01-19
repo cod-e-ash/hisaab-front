@@ -29,6 +29,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   type: string;
   latestParams: Observable<any>;
   combSub: Subscription;
+  isLoading = true;
 
   constructor(
     private router: Router,
@@ -37,6 +38,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isLoading = true;
     // Combine route and query params
     // Distinct will check for distinct parameter
     // debounce will wait untill stack request are cleared
@@ -91,6 +93,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
             this.totalPages = data.totalPages;
             this.totalRecs = data.totalRecs;
             this.pageLogic();
+            this.isLoading = false;
           },
           error => {
             this.customers = [];
@@ -98,6 +101,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
             this.totalPages = 1;
             this.totalRecs = 0;
             this.pageLogic();
+            this.isLoading = false;
           }
         );
       }
@@ -138,6 +142,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   deleteCustomer() {
+    this.isLoading = true;
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
     if (this.delCustomerId) {
@@ -155,9 +160,11 @@ export class CustomersComponent implements OnInit, OnDestroy {
           } else {
             this.alertMsgFail = 'Customer not deleted.' + data.error;
           }
+          this.isLoading = false;
         },
         error => {
           this.alertMsgFail = 'Customer not deleted. Server Error!';
+          this.isLoading = false;
         }
       );
     }

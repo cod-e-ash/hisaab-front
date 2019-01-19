@@ -45,7 +45,8 @@
                   <th>Email 2</th>
                   <th class="text-right">Actions </th>
                 </thead>
-                <tbody>
+                <div class="lds-ripple" *ngIf="isLoading"><div></div><div></div></div>
+                <tbody *ngIf="!isLoading">
                   <tr *ngFor="let customer of customers; let i=index">
                     <td class="text-center">{{
                       ((curPage-1)*10) + i + 1 }}</td>

@@ -53,8 +53,9 @@ export class OrderService {
       );
   }
 
-  createData(data: any) {
+  createData(newdata: any) {
     // Set Customer ID
+    const data = JSON.parse(JSON.stringify(newdata));
     data['customername'] = data.customer.name;
     data['customer'] = data.customer._id;
     data.details.forEach((detail, index) => {
@@ -68,7 +69,8 @@ export class OrderService {
     return this.http.patch(this.url + '/' + id, data, this.httpOptions);
   }
 
-  updateData(data: any) {
+  updateData(newdata: any) {
+    const data = JSON.parse(JSON.stringify(newdata));
     data['customername'] = data.customer.name;
     data['customer'] = data.customer._id;
     data.details.forEach((detail, index) => {

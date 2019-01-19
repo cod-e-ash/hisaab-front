@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   alertMsgFail: string;
   stockOpt: boolean;
   dataSubs: Subscription;
+  isLoading = true;
 
   constructor(
     private router: Router,
@@ -32,6 +33,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isLoading = true;
     // Show only in stok product by default
     this.stockOpt = true;
 
@@ -61,6 +63,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
             this.totalRecs = data.totalRecs;
             // Execute pagination logic
             this.pageLogic();
+            this.isLoading = false;
           },
           error => {
             // Set all fields to default if no records found or server error
@@ -69,6 +72,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
             this.totalPages = 1;
             this.totalRecs = 0;
             this.pageLogic();
+            this.isLoading = false;
           }
         );
       }

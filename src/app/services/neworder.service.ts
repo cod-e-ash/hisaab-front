@@ -96,6 +96,11 @@ export class NewOrderService {
     this.calculateSummary();
   }
 
+  deleteOrderItem(index) {
+    this.curOrder.details.splice(index, 1);
+    this.calculateSummary();
+  }
+
   addDiscount(discountrate) {
     if (!this.curOrder) {
       this.createOrder();
@@ -110,16 +115,19 @@ export class NewOrderService {
     let discount = 0;
     this.alltaxrates = [];
 
-    this.curOrder.details.forEach(item => {
-      total += item.total;
-      totaltax += item.tax;
-      if (
-        this.alltaxrates.indexOf(item.product.taxrate) < 0 &&
-        item.product.taxrate !== 'Excempted'
-      ) {
-        this.alltaxrates.push(item.product.taxrate);
-      }
-    });
+    if (this.curOrder.details && this.curOrder.details.length > 0) {
+      this.curOrder.details.forEach((item,index) => {
+        this.curOrder.details[index].itemno = index + 1;
+        total += item.total;
+        totaltax += item.tax;
+        if (
+          this.alltaxrates.indexOf(item.product.taxrate) < 0 &&
+          item.product.taxrate !== 'Excempted'
+        ) {
+          this.alltaxrates.push(item.product.taxrate);
+        }
+      });
+    }
     if (this.curOrder.discountrate && this.curOrder.discountrate > 0) {
       discount = total * (this.curOrder.discountrate / 100);
       totaltax = totaltax - totaltax * (this.curOrder.discountrate / 100);
@@ -127,7 +135,7 @@ export class NewOrderService {
     this.curOrder.total = total;
     this.curOrder.discount = discount;
     this.curOrder.totaltax = totaltax;
-    this.curOrder.finalamount = total - discount;
+    this.curOrder.finalamount = Math.round(total - discount);
   }
 
   setOrder(order: Order) {

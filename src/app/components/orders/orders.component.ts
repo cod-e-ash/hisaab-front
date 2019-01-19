@@ -24,6 +24,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   alertMsgFail: string;
   statusOpt: boolean;
   dataSubs: Subscription;
+  isLoading = true;
 
   constructor(
     private router: Router,
@@ -33,6 +34,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isLoading = true;
     // Show only in stok product by default
     this.statusOpt = true;
     this.taxRateService.getTaxes();
@@ -62,6 +64,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
             this.totalRecs = data.totalRecs;
             // Execute pagination logic
             this.pageLogic();
+            this.isLoading = false;
           },
           error => {
             // Set all fields to default if no records found or server error
@@ -70,6 +73,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
             this.totalPages = 1;
             this.totalRecs = 0;
             this.pageLogic();
+            this.isLoading = false;
           }
         );
       }

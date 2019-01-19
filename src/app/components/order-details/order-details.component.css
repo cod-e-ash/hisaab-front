@@ -140,12 +140,16 @@ input::placeholder {
     height: 600px !important;
   }
 
-.table td.fit, 
-.table th.fit {
-    white-space: nowrap;
-    width: 1%;
-}
+  .modal-dialog:not(.modal-sm) .modal-body {
+    min-height: 400px;
+  }
 
-td a {
-  cursor: pointer;
-}
+  .table td.fit, 
+  .table th.fit {
+      white-space: nowrap;
+      width: 1%;
+  }
+
+  td a {
+    cursor: pointer;
+  }

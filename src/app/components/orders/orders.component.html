@@ -71,7 +71,8 @@
                   <th class="text-right">Status</th>
                   <th class="text-right">Actions </th>
                 </thead>
-                <tbody>
+                <div class="lds-ripple" *ngIf="isLoading"><div></div><div></div></div>
+                <tbody *ngIf="!isLoading">
                   <tr *ngFor="let order of orders; let i=index">
                     <td class="text-center">{{order.orderno}}</td>
                     <td [routerLink]="['display']" [queryParams]="{id:order._id}" queryParamsHandling="merge">{{

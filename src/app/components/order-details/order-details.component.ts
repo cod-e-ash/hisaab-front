@@ -47,6 +47,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   alertMsgSuccess: string;
   alertMsgFail: string;
   fragment: string;
+  isModalDataLoading = true;
 
   constructor(
     private router: Router,
@@ -76,6 +77,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             queryParams: this.prvParams
           });
         }
+      } else{
+        this.newOrderService.createOrder();
+        this.retrieveOrder();
       }
     });
   }
@@ -114,10 +118,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this.alertMsgFail = 'Incomplete Order Details';
     } else {
       if (this.mode === 'new') {
-        this.orderService.createData({ ...this.curOrder }).subscribe(data => {
+        this.orderService.createData({...this.curOrder}).subscribe(data => {
+          console.log('New:', data);
           if (data.orderno) {
             this.newOrderService.createOrder();
-            this.curOrder = null;
+            this.retrieveOrder();
             this.fragment = 'customer';
             this.alertMsgSuccess = 'Record Added Successfully';
           } else {
@@ -126,6 +131,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         });
       } else {
         this.orderService.updateData({ ...this.curOrder }).subscribe(data => {
+          console.log('Update:', data);
           this.newOrderService.setOrder(data[0]);
           this.retrieveOrder();
           this.alertMsgSuccess = 'Record Updated Successfully';
@@ -134,7 +140,14 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  deleteOrderItem() {
+    this.newOrderService.deleteOrderItem(this.curOrder.details.indexOf(this.curProd));
+    this.retrieveOrder();
+  }
+
   onProductSearch(prodOpts: { code?: string; name?: string; company?: string; page?: number }) {
+    this.tempProdArr = [];
+    this.isModalDataLoading = true
     if (this.curSearch !== 'product') {
       this.curSearch = 'product';
       this.curPage = 1;
@@ -159,6 +172,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         this.totalRecs = data.totalRecs;
         // Execute pagination logic
         this.pageLogic();
+        this.isModalDataLoading = false;
       },
       error => {
         // Set all fields to default if no records found or server error
@@ -167,6 +181,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         this.totalPages = 1;
         this.totalRecs = 0;
         this.pageLogic();
+        this.isModalDataLoading = false;
       }
     );
   }
@@ -217,6 +232,8 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   onCustomerSearch(custOpts: { name?: string; page?: number }) {
+    this.customers = [];
+    this.isModalDataLoading = true
     if (this.curSearch !== 'customer') {
       this.curSearch = 'customer';
       this.curPage = 1;
@@ -238,6 +255,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         this.totalRecs = data.totalRecs;
         // Execute pagination logic
         this.pageLogic();
+        this.isModalDataLoading = false;
       },
       error => {
         // Set all fields to default if no records found or server error
@@ -246,6 +264,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         this.totalPages = 1;
         this.totalRecs = 0;
         this.pageLogic();
+        this.isModalDataLoading = false;
       }
     );
   }
