@@ -10,7 +10,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Orders Pending</p>
-            <p class="card-title">150
+            <p class="card-title">{{ pendingData.count }}
               <p>
           </div>
         </div>
@@ -19,7 +19,7 @@
     <div class="card-footer">
       <hr>
       <div class="stats">
-        <a href="#"><i class="fas fa-sync-alt"></i> Update Status</a>
+        <a routerLink="/orders"><i class="fas fa-sync-alt"></i> Update Status</a>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Revenue <small class="text-lowercase"> (this year)</small></p>
-            <p class="card-title">&#8377;1,345
+            <p class="card-title">&#8377;{{ (pendingData.revenue || 0) + (completedData.revenue || 0 ) | currency:'INR':'' }}
               <p>
           </div>
         </div>
@@ -43,7 +43,7 @@
     <div class="card-footer ">
       <hr>
       <div class="stats">
-        <a href="#"><i class="fas fa-chart-pie"></i> Other Reports</a>
+        <a routerLink="/reports"><i class="fas fa-chart-pie"></i> Other Reports</a>
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
     <div class="card-footer ">
       <hr>
       <div class="stats">
-        <a href="#"><i class="fas fa-user-astronaut"></i> Add Client</a>
+        <a routerLink="/clients/customers/new"><i class="fas fa-user-astronaut"></i> Add Client</a>
       </div>
     </div>
   </div>
@@ -91,7 +91,7 @@
     <div class="card-footer ">
       <hr>
       <div class="stats">
-        <a href="#"><i class="fas fa-puzzle-piece"></i> Add Product</a>
+        <a routerLink="/products/new"><i class="fas fa-puzzle-piece"></i> Add Product</a>
       </div>
     </div>
   </div>

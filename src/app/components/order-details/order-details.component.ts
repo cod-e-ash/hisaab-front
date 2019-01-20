@@ -48,6 +48,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   alertMsgFail: string;
   fragment: string;
   isModalDataLoading = true;
+  curOrderNo: string;
 
   constructor(
     private router: Router,
@@ -64,10 +65,10 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     this.fragment = 'customer';
     this.mode = this.route.snapshot.paramMap.get('mode');
     this.route.queryParamMap.subscribe(params => {
-      this.prvParams = {
-        id: params.get('id')
-      };
-      this.prvParams['id'] = null;
+      // this.prvParams = {
+      //   id: params.get('id')
+      // };
+      // this.prvParams['id'] = null;
       if (this.mode === 'edit' || this.mode === 'display') {
         this.curOrder = this.orderService.getSingle(params.get('id'));
         this.newOrderService.setOrder(this.curOrder);
@@ -109,32 +110,33 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   saveOrder() {
     this.alertMsgFail = null;
     this.alertMsgSuccess = null;
+    this.curOrderNo = null;
     if (
       !this.curOrder ||
       this.curOrder.details.length === 0 ||
       !this.curOrder.customername ||
       this.curOrder.customername === ''
     ) {
-      this.alertMsgFail = 'Incomplete Order Details';
+      this.alertMsgFail = 'Incomplete order details';
     } else {
       if (this.mode === 'new') {
         this.orderService.createData({...this.curOrder}).subscribe(data => {
-          console.log('New:', data);
           if (data.orderno) {
             this.newOrderService.createOrder();
             this.retrieveOrder();
             this.fragment = 'customer';
-            this.alertMsgSuccess = 'Record Added Successfully';
+            this.curOrderNo = data.orderno;
+            this.alertMsgSuccess = 'created successfully';
           } else {
-            this.alertMsgFail = 'Error Creating Error';
+            this.alertMsgFail = 'Error creating order';
           }
         });
       } else {
         this.orderService.updateData({ ...this.curOrder }).subscribe(data => {
-          console.log('Update:', data);
           this.newOrderService.setOrder(data[0]);
           this.retrieveOrder();
-          this.alertMsgSuccess = 'Record Updated Successfully';
+          this.curOrderNo = this.curOrder.orderno;
+          this.alertMsgSuccess = 'updated successfully';
         });
       }
     }
@@ -146,7 +148,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   onProductSearch(prodOpts: { code?: string; name?: string; company?: string; page?: number }) {
-    this.tempProdArr = [];
     this.isModalDataLoading = true
     if (this.curSearch !== 'product') {
       this.curSearch = 'product';
