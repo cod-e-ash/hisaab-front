@@ -15,3 +15,8 @@
     /* width: 240px; */
     margin: 5px;
 }
+
+.card-stats .card-body .numbers {
+    text-align: right;
+    font-size: 1.8em;
+}

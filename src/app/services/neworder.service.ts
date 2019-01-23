@@ -18,10 +18,16 @@ export class NewOrderService {
       this.curOrder = {
         customername: customer.name,
         customer: customer,
-        details: []
+        status: 'Pending',
+        details: [],
+        date: new Date
       };
     } else {
-      this.curOrder = { details: [] };
+      this.curOrder = { 
+        details: [], 
+        status: 'Pending', 
+        date: new Date
+      };
     }
   }
 
@@ -144,5 +150,13 @@ export class NewOrderService {
     }
     this.curOrder = order;
     this.calculateSummary();
+  }
+
+  changeOrderStatus(status) {
+    this.curOrder.status = status;
+  }
+
+  changeOrderDate(orderDate) {
+    this.curOrder.date = orderDate;
   }
 }

@@ -27,7 +27,7 @@
               </button>
             </a>
             <h3 class="card-title mx-auto">
-              Order
+              Order <span *ngIf="curOrder && curOrder.orderno">({{ curOrder.orderno || 0 }})</span>
             </h3>
             <a class="mr-3 mt-1" routerLink="/orders">
               <button class="btn btn-sm btn-info ml-2 new-btn">
@@ -188,53 +188,74 @@
                   Please select customer first !!
                 </h6>
                 <div *ngIf="curOrder && curOrder.customer" class="d-flex justify-content-around">
-                  <div class="card col-6 mx-1 card-summary">
-                    <div class="card-header final-card-header">
-                      <h6>{{curOrder?.customername}}</h6>
+                  <div>
+                    <div class="card mx-1 card-summary">
+                      <div class="card-header final-card-header">
+                        <h6>{{curOrder?.customername}}</h6>
+                      </div>
+                      <div class="card-body col-sm-12">
+                        <ul class="list-group list-group-flush left-side-list">
+                          <li class="d-flex-wrap justify-content-center list-group-item">
+                            <!-- <div class="d-inline-flex"> -->
+                              <div>Order Date : <b> {{ curOrder.date | date:'dd MMM yyyy' }} </b>
+                                <a class="ml-2" *ngIf="mode !== 'display'" data-toggle="modal" data-target="#dateModal">
+                                  <i class="fa fa-marker text-danger" data-toggle="tooltip" data-placement="left" title="Change Date"></i>
+                                </a>
+                              </div>
+                            <!-- </div> -->
+                          </li>
+                          <li class="d-flex-nowrap list-group-item">
+                            <div>Status </div>
+                            <div class="d-inline-block justify-content-center">
+                              <div class="font-weight-bold d-inline" [ngClass]="curOrder.status === 'Completed' ? 'text-success' : 'text-delete'">
+                                {{ curOrder ? curOrder.status : '' }}
+                              </div>
+                              <a class="ml-2" *ngIf="mode !== 'display'" (click)="changeOrderStatus()">
+                                <i data-toggle="tooltip" data-placement="left" title="Change Status" [ngClass]="curOrder.status === 'Completed' ? 'fa fa-undo-alt text-danger' : 'far fa-check-circle text-success'"></i>
+                              </a>
+                            </div>
+                          </li>
+                          <li class="d-flex-nowrap list-group-item">
+                            <div>Total Items </div>
+                            <div class="font-weight-bold">{{curOrder.details.length || '0'}}</div>
+                          </li>
+                          <li class="d-flex-nowrap list-group-item">
+                            <div>Tax Rates Applicable </div>
+                            <div *ngIf="!alltaxrates || alltaxrates === ''" class="font-weight-bold very-small">
+                              None
+                            </div>
+                            <div *ngIf="alltaxrates && alltaxrates !== ''" class="font-weight-bold very-small">
+                              <span *ngFor="let taxrate of alltaxrates;let i=index">
+                                <span *ngIf="i !== 0" class="text-danger"> | </span>
+                                {{ taxrate }}
+                              </span>
+                            </div>
+                          </li>
+                          <li class="d-flex-nowrap list-group-item">
+                            <div>Additional Discount
+                              <a class="ml-2" *ngIf="mode !== 'display'" (click)="editType='Overall Discount'" data-toggle="modal"
+                                data-target="#editModal">
+                                <i class="fa fa-marker text-danger" data-toggle="tooltip" data-placement="left" title="Edit Discount"></i>
+                              </a>
+                            </div>
+                            <div class="font-weight-bold very-small">Discount: {{curOrder.discountrate || 0 }} %</div>
+                          </li>
+                          <li class="d-flex-nowrap list-group-item">
+                            <div>Delivery Address </div>
+                            <div class="font-weight-bold">
+                              {{curOrder.customer.address}},
+                              {{curOrder.customer.city}}, {{curOrder.customer.state}},
+                              {{curOrder.customer.zipcode}}, {{curOrder.customer.country}}
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <!-- <div class="card-footer">
+                            Footer
+                          </div> -->
                     </div>
-                    <div class="card-body">
-                      <ul class="list-group list-group-flush">
-                        <li class="d-flex-nowrap list-group-item">
-                          <div>Total Items </div>
-                          <div class="font-weight-bold">{{curOrder.details.length || '0'}}</div>
-                        </li>
-                        <li class="d-flex-nowrap list-group-item">
-                          <div>Tax Rates Applicable </div>
-                          <div *ngIf="!alltaxrates || alltaxrates === ''" class="font-weight-bold very-small">
-                            None
-                          </div>
-                          <div *ngIf="alltaxrates && alltaxrates !== ''" class="font-weight-bold very-small">
-                            <span *ngFor="let taxrate of alltaxrates;let i=index">
-                              <span *ngIf="i !== 0" class="text-danger"> | </span>
-                              {{ taxrate }}
-                            </span>
-                          </div>
-                        </li>
-                        <li class="d-flex-nowrap list-group-item">
-                          <div>Additional Discount
-                            <a *ngIf="mode !== 'display'" class="btn btn-sm btn-primary text-light" data-toggle="modal"
-                              (click)="editType='Overall Discount'" data-target="#editModal">
-                              <i class="fa fa-marker" data-toggle="tooltip" data-placement="left" title="Edit Discount">
-                                Edit</i>
-                            </a>
-                          </div>
-                          <div class="font-weight-bold very-small">Discount: {{curOrder.discountrate || 0 }} %</div>
-                        </li>
-                        <li class="d-flex-nowrap list-group-item">
-                          <div>Delivery Address </div>
-                          <div class="font-weight-bold">
-                            {{curOrder.customer.address}},
-                            {{curOrder.customer.city}}, {{curOrder.customer.state}},
-                            {{curOrder.customer.zipcode}}, {{curOrder.customer.country}}
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- <div class="card-footer">
-                      Footer
-                    </div> -->
                   </div>
-                  <div class="ml-auto mr-5 col-5">
+                  <div class="ml-auto col-5">
                     <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
                       <fieldset [disabled]="mode === 'display'">
                         <h5 class="info-text"> Final Summary</h5>
@@ -276,7 +297,7 @@
               <input (click)="onNext()" type='button' class='btn btn-next btn-fill btn-rose btn-wd' name='finish'
                 [disabled]="mode !== 'display' && fragment === 'summary' && curOrder?.details?.length === 0" [value]="fragment === 'customer' || fragment === 'details' ? 'Next' : mode === 'display' ? 'Close' : 'Save'" />
             </div>
-            <div class="clearfix"></div>
+            <!-- <div class="clearfix"></div> -->
           </div>
         </div>
       </form>
@@ -532,3 +553,31 @@
     </div>
   </div>
 </div>
+<div class="modal fade modal-primary" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <div class="modal-profile ml-auto mr-auto">
+            <i class="nc-icon nc-time-alarm"></i>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="orderDate">Choose Date</label>
+            <input type="date" #orderDate name="orderDate" [value]="curOrder?.date | date:'yyyy-MM-dd'" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="left-side">
+            <button type="button" class="btn btn-link btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-link btn-success" (click)="changeOrderDate(orderDate.value)"
+              data-dismiss="modal">Set</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

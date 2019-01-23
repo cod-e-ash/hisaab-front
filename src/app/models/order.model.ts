@@ -13,6 +13,7 @@ export interface Order {
   totaltax?: number;
   finalamount?: number;
   details?: OrderDetails[];
+  status?: string;
   }
 
 export interface OrderDetails {

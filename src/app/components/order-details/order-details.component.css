@@ -1,11 +1,11 @@
 /* @import '../orders/orders.component.css'; */
 
 .card-wizard {
-  height: 610px;
+  height: 650px;
 }
 
 .card-wizard .tab-content {
-  min-height: 390px;
+  min-height: 410px;
   padding: 10px 0;
 }
 
@@ -131,7 +131,7 @@ input::placeholder {
   }
 
   .card.card-summary {
-      border-radius: 50px;
+      border-radius: 30px;
       box-shadow: 0px 6px 10px 4px rgba(0, 0, 0, .10);
   }
 
@@ -153,3 +153,11 @@ input::placeholder {
   td a {
     cursor: pointer;
   }
+
+  .left-side-list .list-group-item {
+    padding: .25rem 1.25rem;
+}
+
+li a {
+  cursor: pointer;
+}

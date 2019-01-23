@@ -147,6 +147,20 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     this.retrieveOrder();
   }
 
+  changeOrderStatus() {
+    if (this.curOrder.status !== 'Pending') {
+      this.curOrder.status = 'Pending';
+    } else {
+      this.curOrder.status = 'Completed';
+    }
+    this.newOrderService.changeOrderStatus(this.curOrder.status);
+  }
+
+  changeOrderDate(billDate) {
+    this.curOrder.date = billDate;
+    this.newOrderService.changeOrderDate(billDate); 
+  }
+
   onProductSearch(prodOpts: { code?: string; name?: string; company?: string; page?: number }) {
     this.isModalDataLoading = true
     if (this.curSearch !== 'product') {

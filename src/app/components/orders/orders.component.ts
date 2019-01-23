@@ -19,7 +19,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   startPage = 0;
   endPage = 0;
   params: {};
-  delOrderId: string;
+  curOrder: Order;
   alertMsgSuccess: string;
   alertMsgFail: string;
   statusOpt: boolean;
@@ -132,16 +132,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
   deleteOrder() {
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
-    if (this.delOrderId) {
-      this.dataservice.deleteData(this.delOrderId).subscribe(
+    if (this.curOrder) {
+      this.dataservice.deleteData(this.curOrder._id).subscribe(
         data => {
           if (!data.error) {
-            const index = this.getOrderIndex(this.delOrderId);
+            const index = this.getOrderIndex(this.curOrder._id);
             if (index >= 0) {
               this.orders.splice(index, 1);
               this.totalRecs -= this.totalRecs > 1 ? 1 : 0;
               this.alertMsgSuccess = 'Order deleted successfully';
-              this.delOrderId = null;
+              this.curOrder = null;
             }
           } else {
             this.alertMsgFail = 'Order not deleted.' + data.error;
@@ -149,6 +149,38 @@ export class OrdersComponent implements OnInit, OnDestroy {
         },
         error => {
           this.alertMsgFail = 'Order not deleted. Server Error!';
+        }
+      );
+    }
+  }
+
+  changeOrderStatus() {
+    this.alertMsgSuccess = null;
+    this.alertMsgFail = null;
+    if (this.curOrder) {
+      this.curOrder.status = 'Completed';
+      this.dataservice.updateData(this.curOrder).subscribe(
+        data => {
+          if (data) {
+            const index = this.getOrderIndex(this.curOrder._id);
+            if (index >= 0) {
+              if (this.statusOpt) {
+                this.orders.splice(index, 1);
+              } else {
+                this.orders[index].status = 'Completed';
+              }
+              this.alertMsgSuccess = 'Order updated successfully';
+              this.curOrder = null;
+            } else {
+              this.orders[index].status = 'Pending';
+              this.alertMsgFail = 'Order not updated.';
+            } 
+          } else {
+            this.alertMsgFail = 'Order not updated.';
+          }
+        },
+        error => {
+          this.alertMsgFail = 'Order not updated. Server Error!';
         }
       );
     }

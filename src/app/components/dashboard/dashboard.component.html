@@ -58,7 +58,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Clients</p>
-            <p class="card-title">23
+            <p class="card-title">{{ customerData.count || 0}}
               <p>
           </div>
         </div>
@@ -67,7 +67,7 @@
     <div class="card-footer ">
       <hr>
       <div class="stats">
-        <a routerLink="/clients/customers/new"><i class="fas fa-user-astronaut"></i> Add Client</a>
+        <a routerLink="/clients/customers"><i class="fas fa-user-astronaut"></i> Client List</a>
       </div>
     </div>
   </div>
@@ -82,7 +82,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Products</p>
-            <p class="card-title">200
+            <p class="card-title">{{ productCount }}
               <p>
           </div>
         </div>
@@ -91,7 +91,7 @@
     <div class="card-footer ">
       <hr>
       <div class="stats">
-        <a routerLink="/products/new"><i class="fas fa-puzzle-piece"></i> Add Product</a>
+        <a routerLink="/products"><i class="fas fa-puzzle-piece"></i> Product List</a>
       </div>
     </div>
   </div>

@@ -86,13 +86,13 @@
                       <b>{{ order.status }}</b>
                     </td>
                     <td class="text-right">
-                      <a *ngIf="order.status !== 'Completed'" data-toggle="modal" (click)="delOrderId=order._id"
-                        data-target="#deleteModal">
+                      <a *ngIf="order.status !== 'Completed'" data-toggle="modal" (click)="curOrder=order"
+                        data-target="#statusModal">
                         <i class="far fa-check-circle text-success2" data-toggle="tooltip" data-placement="left" title="Completed"></i>
                       </a>
                       <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:order._id}"
                           queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                      <a data-toggle="modal" (click)="delOrderId=order._id" data-target="#deleteModal">
+                      <a data-toggle="modal" (click)="curOrder=order" data-target="#deleteModal">
                         <i class="fa fa-times text-delete" data-toggle="tooltip" data-placement="left" title="Delete"></i>
                       </a>
                     </td>
@@ -141,7 +141,7 @@
           <h4 class="title title-up">Delete Order</h4>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete <b class="text-delete">{{delOrderorderno}}</b>?
+          <p>Are you sure you want to delete order <b *ngIf="curOrder" class="text-delete">{{curOrder.orderno || 0}}</b> ?
           </p>
         </div>
         <div class="modal-footer">
@@ -156,6 +156,30 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header justify-content-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="nc-icon nc-simple-remove"></i>
+            </button>
+            <h4 class="title title-up">Change Status</h4>
+          </div>
+          <div class="modal-body">
+            <p>Change status to complete for order <b *ngIf="curOrder" class="text-delete">{{curOrder.orderno}}</b> ?</p>
+          </div>
+          <div class="modal-footer">
+            <div class="left-side">
+              <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+            </div>
+            <div class="divider"></div>
+            <div class="right-side">
+              <button type="button" class="btn btn-success btn-link" data-dismiss="modal" (click)="changeOrderStatus()">Complete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <div class="modal fade modal-primary" id="dateSearch" tabindex="-1" role="dialog" aria-labelledby="dateSearch"
     aria-hidden="true">
     <div class="modal-dialog modal-sm">

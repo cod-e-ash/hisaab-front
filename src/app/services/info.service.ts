@@ -13,4 +13,12 @@ export class InfoService {
     getOrderInfo() {
         return this.http.get(this.url + '/orderstatus');
     }
+
+    getClientInfo() {
+        return this.http.get(this.url + '/clients');
+    }
+
+    getProductInfo() {
+        return this.http.get(this.url + '/products');
+    }
 }
