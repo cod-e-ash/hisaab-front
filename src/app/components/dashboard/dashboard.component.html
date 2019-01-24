@@ -9,9 +9,8 @@
         </div>
         <div class="col-7 col-md-8">
           <div class="numbers">
-            <p class="card-category">Orders Pending</p>
-            <p class="card-title">{{ pendingData.count }}
-              <p>
+            <p class="card-category">Orders</p>
+            <p class="card-title">{{ pendingData.count || 0 }}
           </div>
         </div>
       </div>
@@ -33,8 +32,8 @@
         </div>
         <div class="col-7 col-md-8">
           <div class="numbers">
-            <p class="card-category">Revenue <small class="text-lowercase"> (this year)</small></p>
-            <p class="card-title">&#8377;{{ (pendingData.revenue || 0) + (completedData.revenue || 0 ) | currency:'INR':'' }}
+            <p class="card-category">Revenue <small class="text-lowercase"> (this month)</small></p>
+            <p class="card-title">&#8377;{{ (completedData.revenue || 0 ) | currency:'INR':'' }}
               <p>
           </div>
         </div>
