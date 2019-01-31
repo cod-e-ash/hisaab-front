@@ -9,6 +9,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { ReceiptComponent } from './components/receipt/receipt.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'products', component: ProductsComponent},
   {path: 'products/:mode', component: ProductDetailsComponent},
   {path: 'reports', component: ReportsComponent},
+  {path: 'receipt', component: ReceiptComponent},
   {path: 'settings', component: SettingsComponent},
   {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 ];

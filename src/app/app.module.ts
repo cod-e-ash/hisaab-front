@@ -17,6 +17,7 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReceiptComponent } from './components/receipt/receipt.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReportsComponent,
     OrderDetailsComponent,
     CustomerDetailsComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ReceiptComponent
   ],
   imports: [
     BrowserModule,

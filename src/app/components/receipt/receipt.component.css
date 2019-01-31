@@ -1,0 +1,116 @@
+
+/* .row.heading {
+    background-image: linear-gradient(to right, rgb(184, 217, 252) ,  rgb(122, 180, 241));
+}  */
+
+.container {
+    background-color: white !important;
+    padding: 5px;
+}
+
+td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.data-div {
+    display: flex;
+    min-height: 500px;
+}
+
+@media print {
+    
+    table, tr, td, th {
+        page-break-inside: avoid;
+    }
+
+    table.data-table {
+        /* display: block; */
+        page-break-before: auto;
+    }
+
+    div.page-break{
+        page-break-after: always;
+    }
+
+    .data-div {
+        display: flex;
+        min-height: 700px;
+    }
+  }
+
+  table.data-table tr th {
+    text-align: center;
+  }
+
+  /* SNO */
+  table.data-table tr td:nth-child(1), table.data-table tr th:nth-child(1) {
+    width: 1cm;
+    text-align: center;
+  }
+  /* Item */
+  table.data-table tr td:nth-child(2), table.data-table tr th:nth-child(2) {
+    width: 5cm;
+    text-align: left;
+  }
+  /* Qty */
+  table.data-table tr td:nth-child(3), table.data-table tr th:nth-child(3) {
+    width: 1.2cm;
+    text-align: center;
+  }
+  /* MRP */
+  table.data-table tr td:nth-child(4), table.data-table tr th:nth-child(4) {
+    width: 2cm;
+    text-align: end;
+  }
+  /* RATE */
+  table.data-table tr td:nth-child(5), table.data-table tr th:nth-child(5) {
+    width: 2cm;
+    text-align: end;
+}
+/* DISC% */
+table.data-table tr td:nth-child(6), table.data-table tr th:nth-child(6) {
+    width: 1cm;
+    text-align: center;
+}
+/* Discount */
+table.data-table tr td:nth-child(7), table.data-table tr th:nth-child(7) {
+    width: 1.2cm;
+    text-align: end;
+}
+/* Tax rate */
+table.data-table tr td:nth-child(8), table.data-table tr th:nth-child(8) {
+    width: 1cm;
+    text-align: center;
+}
+/* tax */
+table.data-table tr td:nth-child(9), table.data-table tr th:nth-child(9) {
+    width: 1cm;
+    text-align: end;
+}
+/* Price */
+table.data-table tr td:nth-child(10), table.data-table tr th:nth-child(10) {
+    width: 2cm;
+    text-align: end;
+}
+/* Amount */
+table.data-table tr td:nth-child(11), table.data-table tr th:nth-child(11) {
+    width: 2cm;
+    text-align: end;
+  }
+
+  .border{
+    border: 2px solid !important;
+  }
+  
+  .border-bottom {
+    border-bottom: 2px solid !important;
+  }
+
+ .table th {
+    /* padding: .75rem; */
+    /* vertical-align: top; */
+    border-top: 0px;
+}
+
+@page { size: auto;  margin: 0mm; }

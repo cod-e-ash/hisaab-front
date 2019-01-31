@@ -1,7 +1,11 @@
 <div class="wrapper ">
-  <app-sidebar></app-sidebar>
+  <div class="d-print-none">
+    <app-sidebar class="d-print-none"></app-sidebar>
+  </div>
   <div class="main-panel">
-    <app-navbar></app-navbar>
+    <div class="d-print-none">
+      <app-navbar class="d-print-none"></app-navbar>
+    </div>
     <div class="content">
       <router-outlet></router-outlet>
     </div>
