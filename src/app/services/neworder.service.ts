@@ -3,6 +3,7 @@ import { TaxRateService } from './taxrate.service';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
 import { Order, OrderDetails } from '../models/order.model';
+import { InternalFormsSharedModule } from '@angular/forms/src/directives';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { Order, OrderDetails } from '../models/order.model';
 export class NewOrderService {
   curOrder: Order;
   alltaxrates = [];
+  alltaxamounts = {};
 
   constructor(private taxRateService: TaxRateService) {}
 
@@ -120,17 +122,19 @@ export class NewOrderService {
     let totaltax = 0;
     let discount = 0;
     this.alltaxrates = [];
+    this.alltaxamounts = {};
 
     if (this.curOrder.details && this.curOrder.details.length > 0) {
       this.curOrder.details.forEach((item,index) => {
         this.curOrder.details[index].itemno = index + 1;
         total += item.total;
         totaltax += item.tax;
-        if (
-          this.alltaxrates.indexOf(item.product.taxrate) < 0 &&
-          item.product.taxrate !== 'Excempted'
-        ) {
-          this.alltaxrates.push(item.product.taxrate);
+        if (item.product.taxrate !== 'Exempted') {
+          if (this.alltaxrates.indexOf(item.product.taxrate) < 0) {
+            this.alltaxrates.push(item.product.taxrate);
+            this.alltaxamounts[item.product.taxrate] = 0;
+          }
+          this.alltaxamounts[item.product.taxrate] += item.tax;
         }
       });
     }

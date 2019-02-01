@@ -21,7 +21,7 @@
         <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
         <div class="card-header text-center">
           <div class="d-flex justify-content-center">
-            <a routerLink="/receipt" class="ml-3 mt-1">
+            <a routerLink="/receipt" [queryParams]="{id:curOrder._id}" class="ml-3 mt-1">
               <button class="btn btn-sm btn-danger ml-2 new-btn">
                 <i class="fa fa-receipt"></i> Receipt
               </button>

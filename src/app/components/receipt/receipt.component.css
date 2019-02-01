@@ -13,34 +13,23 @@ td {
     padding-right: 5px;
 }
 
-.data-div {
-    display: flex;
-    min-height: 500px;
-}
-
 @media print {
     
     table, tr, td, th {
         page-break-inside: avoid;
     }
 
-    table.data-table {
-        /* display: block; */
-        page-break-before: auto;
-    }
-
-    div.page-break{
+    .page-break{
         page-break-after: always;
-    }
-
-    .data-div {
-        display: flex;
-        min-height: 700px;
     }
   }
 
   table.data-table tr th {
     text-align: center;
+  }
+
+  table.data-table {
+    margin-bottom: 0;
   }
 
   /* SNO */
@@ -88,16 +77,11 @@ table.data-table tr td:nth-child(9), table.data-table tr th:nth-child(9) {
     width: 1cm;
     text-align: end;
 }
-/* Price */
+/* Amount */
 table.data-table tr td:nth-child(10), table.data-table tr th:nth-child(10) {
     width: 2cm;
     text-align: end;
 }
-/* Amount */
-table.data-table tr td:nth-child(11), table.data-table tr th:nth-child(11) {
-    width: 2cm;
-    text-align: end;
-  }
 
   .border{
     border: 2px solid !important;
@@ -113,4 +97,4 @@ table.data-table tr td:nth-child(11), table.data-table tr th:nth-child(11) {
     border-top: 0px;
 }
 
-@page { size: auto;  margin: 0mm; }
+/* @page { size: auto;  margin: 0mm; } */
