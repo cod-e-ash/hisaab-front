@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -10,8 +10,13 @@ export class InfoService {
 
     constructor(private http: HttpClient) {}
 
-    getOrderInfo() {
-        return this.http.get(this.url + '/orderstatus');
+    getOrderInfo(year: number, month:number) {
+
+        const params = new HttpParams()
+        .set('year', (year ? year : 0).toString())
+        .set('month', (month ? month : 0).toString());
+
+        return this.http.get(this.url + '/orders', {params: params});
     }
 
     getClientInfo() {

@@ -17,10 +17,13 @@ export class DashboardComponent implements OnInit {
   constructor(private infoService: InfoService) { }
 
   ngOnInit() {
-    this.infoService.getOrderInfo()
+    const curYear = new Date().getFullYear();
+    const curMonth = new Date().getMonth()+1;
+    this.infoService.getOrderInfo(curYear, curMonth)
     .subscribe( data => {
-        this.pendingData = data[0] && data[0]._id === 'Pending' ? data[0] : data[1] ? data[1] : null;
-        this.completedData = data[0] && data[0]._id === 'Completed' ? data[0] : data[1] ? data[1] : null;
+        console.log(data);
+        this.pendingData = data[0] && data[0]._id === 'Pending' ? data[0] : data[1] ? data[1] : {count: 0};
+        this.completedData = data[0] && data[0]._id === 'Completed' ? data[0] : data[1] ? data[1] : {count: 0};
     });
 
     this.infoService.getClientInfo()

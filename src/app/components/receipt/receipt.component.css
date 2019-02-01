@@ -13,6 +13,11 @@ td {
     padding-right: 5px;
 }
 
+
+div.data-div {
+    min-height: 300px;
+  }
+
 @media print {
     
     table, tr, td, th {
@@ -22,10 +27,21 @@ td {
     .page-break{
         page-break-after: always;
     }
+
+    div.data-div {
+        min-height: 600px;
+      }
+      div.summary-div {
+        min-height: 400px;
+      }
   }
 
   table.data-table tr th {
     text-align: center;
+  }
+  
+  table.data-table tr {
+    max-height: 10px;
   }
 
   table.data-table {

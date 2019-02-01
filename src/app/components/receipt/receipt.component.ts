@@ -1,3 +1,4 @@
+import { Order } from './../../models/order.model';
 import { TaxRateService } from './../../services/taxrate.service';
 import { NewOrderService } from './../../services/neworder.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ReceiptComponent implements OnInit {
 
-  curOrder = {};
+  curOrder: Order;
   allTaxRates = [];
   allTaxAmounts = {};
 
@@ -25,7 +26,7 @@ export class ReceiptComponent implements OnInit {
     // Store mode new/edit/display
     this.route.queryParamMap.subscribe(params => {
       this.curOrder = this.newOrderService.curOrder;
-      if (!this.curOrder) {
+      if (!this.curOrder || this.curOrder.details.length === 0) {
         this.router.navigate(['/orders']);
       }
       this.allTaxRates = this.newOrderService.alltaxrates.sort();
