@@ -14,7 +14,7 @@ export class CustomerService {
   private httpOptions = {
     headers: new HttpHeaders({
       'x-auth-token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudXNocmkiLCJmdWxsbmFtZSI6ImFudXNocmkgYXJvcmEiLCJyb2xlIjoidXNlciIsImlhdCI6MTU0NjE0MDc0OH0.a4NEIya-nJOhrAUKMgZvmVq8UHjE4pPJpzFULyxK_cM'
+        'xxxyyyzzz'
     })
   };
 

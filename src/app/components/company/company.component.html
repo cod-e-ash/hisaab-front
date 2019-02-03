@@ -1,0 +1,186 @@
+<div class="col-md-10  mx-auto">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex">
+        <h5 *ngIf="mode !== 'display'" class="card-title"> {{ mode === 'edit' ? 'Edit' : 'Register' }} {{ ctype }} </h5>
+        <div class="p-2 ml-auto">
+          <div *ngIf="messageSuccess" class="text-success2">{{messageSuccess}}</div>
+          <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form *ngIf="((mode === 'edit' || mode === 'display') && company) || mode === 'new'" #companyForm="ngForm" name="companyForm"
+        (ngSubmit)="saveCompany(companyForm)" validate>
+        <fieldset [disabled]="mode === 'display'">
+          <!-- FORM ROW 1 -->
+          <div class="d-flex justify-content-around">
+            <div class="col-12">
+              <div class="form-group p-2">
+                <label for="name">NAME</label>
+                <input required minlength="3" type="text" [(ngModel)]="company.name" #name="ngModel" name="name" class="form-control"
+                  placeholder="Company / Company Name">
+              </div>
+            </div>
+          </div>
+          <!-- Validation for FORM ROW 1 -->
+          <div class="d-flex justify-content-around" *ngIf="name?.touched">
+            <ul class="text-delete">
+              <li *ngIf="name.touched && (name.errors?.required || name.errors?.minlength)">
+                Name is required & must be minimum 3 chars.
+              </li>
+            </ul>
+          </div>
+          <!-- FORM ROW 2 -->
+          <div class="row mt-1">
+            <h6 class="mx-auto text-prime"> <i class="fa fa-phone mr-2"></i> </h6>
+          </div>
+          <div class="d-flex flex-wrap justify-content-around">
+            <div class="form-group">
+              <label for="phone1">Contact Number (Primary)</label>
+              <input required type="tel" [(ngModel)]="company.phone1" #phone1="ngModel" name="phone1" class="form-control"
+                placeholder="Primary Contact">
+            </div>
+            <div class="form-group">
+              <label for="email1">Email address (Primary)</label>
+              <input type="email" [(ngModel)]="company.email1" #email1="ngModel" name="email1" class="form-control"
+                placeholder="Primary Email">
+            </div>
+            <div class="form-group">
+              <label for="phone2">Contact Number (Optional)</label>
+              <input type="tel" [(ngModel)]="company.phone2" #phone2="ngModel" name="phone2" class="form-control"
+                placeholder="Secondary Contact (Optional)">
+            </div>
+            <div class="form-group">
+              <label for="email2">Email address (Optional)</label>
+              <input type="email" [(ngModel)]="company.email2" #email2="ngModel" name="email2" class="form-control"
+                placeholder="Secondary Email (Optional)">
+            </div>
+          </div>
+          <!-- Validation for FORM ROW 2 -->
+          <div class="d-flex justify-content-around" *ngIf="name?.touched">
+            <ul class="text-delete">
+              <li *ngIf="phone1.touched && phone1.invalid">
+                Please provide correct Primary Phone number.
+              </li>
+              <li *ngIf="phone2.touched && phone2.invalid">
+                Please provide correct Secondary Phone number.
+              </li>
+              <li *ngIf="email1.touched && email1.invalid">
+                Please provide correct Primary Email address.
+              </li>
+              <li *ngIf="email2.touched && email2.invalid">
+                Please provide correct Secondary Email address.
+              </li>
+            </ul>
+          </div>
+
+          <!-- FORM ROW 3 -->
+          <div class="row row-3 mt-1">
+            <h6 class="mx-auto text-success"> <i class="fa fa-map-marked"></i> </h6>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="col-md-11">
+              <div class="form-group p-2">
+                <label for="address">Address</label>
+                <input required type="text" [(ngModel)]="company.address" #address="ngModel" name="address" class="form-control"
+                  placeholder="Office Address - House/Lane/Street">
+              </div>
+            </div>
+          </div>
+          <!-- Validation for FORM ROW 3 -->
+          <div class="d-flex justify-content-around" *ngIf="name?.touched">
+            <ul class="text-delete">
+              <li *ngIf="address.touched && address.invalid">
+                Please provide correct Primary Phone Number.
+              </li>
+            </ul>
+          </div>
+
+          <!-- FORM ROW 4 -->
+          <div class="d-flex flex-wrap justify-content-center">
+            <div class="form-group mx-3">
+              <label for="city">City</label>
+              <input required type="text" [(ngModel)]="company.city" #city="ngModel" name="city" class="form-control"
+                placeholder="City">
+            </div>
+            <div class="form-group mx-3">
+              <label for="state">State</label>
+              <input required type="text" [(ngModel)]="company.state" #state="ngModel" name="state" class="form-control"
+                placeholder="State">
+            </div>
+            <div class="form-group mx-3">
+              <label for="country">Country</label>
+              <input required type="text" [(ngModel)]="company.country" #country="ngModel" name="country" class="form-control"
+                placeholder="Country">
+            </div>
+            <div class="form-group mx-3">
+              <label for="zipcode">Postal Code</label>
+              <input required type="text" [(ngModel)]="company.zipcode" #zipcode="ngModel" name="zipcode" class="form-control"
+                placeholder="ZIP Code">
+            </div>
+          </div>
+          <!-- Validation for FORM ROW 4 -->
+          <div class="" *ngIf="name?.touched">
+            <ul class="text-delete col-md-11 pl-5 offset-1">
+              <li *ngIf="city.touched && city.invalid">
+                Please provide correct City.
+              </li>
+              <li *ngIf="state.touched && state.invalid">
+                Please provide correct State.
+              </li>
+              <li *ngIf="country.touched && country.invalid">
+                Please provide correct Country.
+              </li>
+              <li *ngIf="zipcode.touched && zipcode.invalid">
+                Please provide correct Zipcode.
+              </li>
+            </ul>
+          </div>
+
+          <!-- FORM ROW 5 -->
+          <div class="row mt-2">
+            <h6 class="mx-auto text-delete"> <i class="fa fa-rupee-sign"></i> </h6>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="col-md-4 pr-1">
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text p-2">GST</span>
+                </div>
+                <input type="text" [(ngModel)]="company.gstn" #gstn="ngModel" name="gstn" class="form-control  text-uppercase"
+                  placeholder="Number (Optional)">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text p-2">PAN</span>
+                </div>
+                <input type="text" [(ngModel)]="company.pan" #pan="ngModel" name="pan" class="form-control  text-uppercase"
+                  placeholder="Number (Optional)">
+              </div>
+            </div>
+          </div>
+          <!-- Validation for FORM ROW 4 -->
+          <div class="row" *ngIf="name?.touched">
+            <ul class="text-delete col-md-11 pl-5 offset-1">
+              <li *ngIf="gstn.touched && gstn.invalid">
+                Please provide correct City.
+              </li>
+              <li *ngIf="pan.touched && pan.invalid">
+                Please provide correct State.
+              </li>
+            </ul>
+          </div>
+        </fieldset>
+        <div class="row">
+          <div class="update mx-auto">
+            <button type="button" class="btn btn-info btn-round" [routerLink]="['/settings', paramtype]" [queryParams]="prvParams">Back</button>
+            <button *ngIf="mode !== 'display'" class="btn btn-danger btn-round ml-2">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
