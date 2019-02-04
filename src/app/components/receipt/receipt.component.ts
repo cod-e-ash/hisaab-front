@@ -17,6 +17,10 @@ export class ReceiptComponent implements OnInit {
   allTaxRates = [];
   allTaxAmounts = {};
   company: Company;
+  recsPerPage = 12;
+  pages = [];
+  pageStart= [];
+  recsDone = 0;
 
   constructor(
     private newOrderService: NewOrderService, 
@@ -41,6 +45,9 @@ export class ReceiptComponent implements OnInit {
       }
       this.allTaxRates = this.newOrderService.alltaxrates.sort();
       this.allTaxAmounts = this.newOrderService.alltaxamounts;
+      if (this.curOrder) {
+        this.pageLogic(this.curOrder.details.length);
+      }
     });
   }
 
@@ -48,4 +55,24 @@ export class ReceiptComponent implements OnInit {
     return this.taxRateService.getTaxRate(rate);
   }
 
+  pageLogic(noOfRecs) {
+    let prvsDone = 0;
+    this.pages = [];
+    this.pageStart = [];
+    while(noOfRecs > 12){
+      if(noOfRecs > 20) {
+        this.pages.push(20);
+        this.pageStart.push(prvsDone);
+        noOfRecs -= 20;
+        prvsDone += 20;
+      } else if (noOfRecs > 12){
+        this.pageStart.push(prvsDone);
+        prvsDone += noOfRecs-1;
+        this.pages.push(noOfRecs-1);
+        noOfRecs = 1;
+      }
+    }
+    this.pageStart.push(prvsDone);
+    this.pages.push(noOfRecs);
+  }
 }

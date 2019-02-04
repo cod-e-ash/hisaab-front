@@ -1,18 +1,13 @@
 <div class="d-flex container h-100 w-100 flex-column" *ngIf="curOrder">
   <div>
-    <ng-container *ngFor="let item of curOrder.details; let i=index">
-      <div *ngIf="i > 0 && i !== curOrder.details.length && i%12 === 0" class="d-none d-print-block">
-        <p class="mt-4 text-right" style="page-break-after: always;">&nbsp; P.T.O </p>
-        <p style="page-break-before: always;">&nbsp;</p>
-      </div>
-      <div *ngIf="i%12 === 0" id="wb_Shape1" [ngClass]="{'d-none d-print-flex':i>0}" style="position: relative">
+    <ng-container *ngFor="let page of pages; let i=index">
+      <div id="wb_Shape1" [ngClass]="{'d-none d-print-flex':i>0}" style="position: relative">
         <svg id="Shape1" height="257" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="Shape1_gradient" gradientUnits="userSpaceOnUse" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#4EB3CF" />
               <stop offset="100%" stop-color="#80DFBE" />
             </linearGradient>
-            <!-- <path id="Shape1_shape" d="M0 72L 997 0L 997 257L 0 257L 0 72Z "/> -->
             <path id="Shape1_shape" d="M0 0L 1200 0L 1200 200L 0 257L 0 30Z " />
           </defs>
           <clipPath id="Shape1_clippath">
@@ -76,10 +71,10 @@
           <span>{{ curOrder.date | date:'dd MMMM, yyyy' }}</span>
         </div>
       </div>
-      <div *ngIf="i%12===0" class="data-div">
+      <div class="data-div">
         <table class="table data-table" id="Table1">
           <thead>
-            <tr class="border-bottom" [ngClass]="{'d-none d-print-table-row':i>0}">
+            <tr class="border-bottom" >
               <th>SNo</th>
               <th>ITEM</th>
               <th>QTY</th>
@@ -92,21 +87,25 @@
               <th>AMOUNT</th>
             </tr>
           </thead>
-          <ng-container *ngFor="let item of curOrder.details; let j=index">
-            <tr *ngIf="j>=i && j < i+12">
-              <td>{{ item.itemno }}</td>
-              <td>{{ item.product.name }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.product.mrp | currency:'INR':'' }}</td>
-              <td>{{ item.price + (item.product.mrp * (item.product.margin/100)) | currency:'INR':'' }}</td>
-              <td>{{ item.discountrate | currency:'INR':'' }}</td>
-              <td>{{ item.discount | currency:'INR':'' }}</td>
-              <td>{{ item.product.taxrate }}</td>
-              <td>{{ item.tax | currency:'INR':'' }}</td>
-              <td>{{ item.total | currency:'INR':'' }}</td>
+          <ng-container *ngFor="let k of [].constructor(page); let j=index">
+            <tr>
+              <td>{{ curOrder.details[j+pageStart[i]].itemno }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].product.name }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].quantity }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].product.mrp | currency:'INR':'' }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].price + (curOrder.details[j+pageStart[i]].product.mrp * (curOrder.details[j+pageStart[i]].product.margin/100)) | currency:'INR':'' }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].discountrate | currency:'INR':'' }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].discount | currency:'INR':'' }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].product.taxrate }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].tax | currency:'INR':'' }}</td>
+              <td>{{ curOrder.details[j+pageStart[i]].total | currency:'INR':'' }}</td>
             </tr>
           </ng-container>
         </table>
+      </div>
+      <div *ngIf="i !== pages.length-1" class="d-none d-print-block">
+        <p class="mt-4 text-right" style="page-break-after: always;">&nbsp; P.T.O </p>
+        <p style="page-break-before: always;">&nbsp;</p>
       </div>
     </ng-container>
     <div class="summary-div">
@@ -186,6 +185,7 @@
     </div>
   </div>
   <div class="d-print-none ml-auto mr-auto">
+    <button type="button" [routerLink]="['/orders','display']" [queryParams]="{id:curOrder._id}" class="btn btn-secondary">Back</button>
     <button type="button" onclick="window.print();" class="btn btn-danger">Print</button>
   </div>
 </div>
