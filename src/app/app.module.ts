@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CompanyComponent } from './components/company/company.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReceiptComponent } from './components/receipt/receipt.component';
 
@@ -34,6 +35,7 @@ import { ReceiptComponent } from './components/receipt/receipt.component';
     OrderDetailsComponent,
     CustomerDetailsComponent,
     ProductDetailsComponent,
+    CompanyComponent,
     ReceiptComponent
   ],
   imports: [

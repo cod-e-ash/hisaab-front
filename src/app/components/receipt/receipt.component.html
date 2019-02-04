@@ -24,10 +24,15 @@
           <h2 id="Heading1"><b>INVOICE</b></h2>
         </div>
         <div id="wb_Text1" style="position:absolute;left:200px;top:27px">
-          <span><strong>Aarti Ventures</strong></span></div>
+          <span><strong>{{ company.name }}</strong></span></div>
         <div id="wb_Text2" style="position:absolute;left:200px;top:50px">
-          <span>D 1107, Kalpataru Harmony, Wakad, Pune -
-            411057 <span class="text-secondary font-weight-bold p-1">|</span> +44 7404480554</span></div>
+          <span> 
+              {{ company.address }}, {{company.city}},
+              {{company.zipcode}}, {{company.state}}, {{company.country}}
+            <span class="text-secondary font-weight-bold p-1">|</span> 
+            {{company.phone}}
+          </span>
+        </div>
         <table style="position:absolute;left:94px;top:101px" id="Table2">
           <tr>
             <td class="text-right"><span>Customer : </span></td>
@@ -57,7 +62,7 @@
           <span><strong>GSTN</strong></span>
         </div>
         <div class="text-uppercase" id="wb_Text4" style="position:absolute;right:20px;top:50px;">
-          <span>N/A</span>
+          <span>{{ company.gstn }}</span>
         </div>
         <div id="wb_Text7" style="position:absolute;right:20px;top:82px;">
           <span><strong>INVOICE NO</strong></span></div>
@@ -123,9 +128,9 @@
                       </table>
       </div>
       <div class="d-flex m-3">
-        <table style="height:140px;" id="Table4" class="col-6 border">
+        <table style="height:140px;" id="Table4" class="col-7 border">
           <tr>
-            <td class="align-top text-center"><span>&nbsp; Goods received in good condition.</span></td>
+            <td class="align-top text-center border-right"><span>&nbsp; Goods received in good condition.</span></td>
             <td class="align-bottom  text-center"><span>Signature of Authorized Person</span></td>
           </tr>
         </table>
@@ -166,14 +171,14 @@
         </clipPath>
         <use xlink:href="#Shape1_shape" clip-path="url(#Shape2_clippath)" style="fill:url(#Shape2_gradient);fill-opacity:0.39;stroke:#245580;stroke-width:0;" />
       </svg>
-      <div id="wb_Text12" style="position:absolute;left:17px;top:50px;">
+      <div *ngIf="company.gstn && company.gstn.length < 4" style="position:absolute;left:17px;top:50px;">
         <span><strong>Notes:</strong> TAX not applicable </span>
       </div>
       <div id="wb_Text11" style="position:absolute;left:17px;top:80px;">
         <span>E. &amp; O.E.</span>
       </div>
       <div id="wb_Text13" class="pull-right" style="position:absolute;top:15px;right:15px;">
-        <span><strong>For Aarti Ventures</strong></span>
+        <span><strong>For {{company.name}}</strong></span>
       </div>
       <div id="wb_Text14" style="position:absolute;top:80px;right:15px;">
         <span>Signature</span>

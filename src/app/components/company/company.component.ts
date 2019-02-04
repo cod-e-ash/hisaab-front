@@ -1,18 +1,21 @@
+import { Subscription } from 'rxjs';
 import { CompanyService } from './../../services/company.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { Company } from '../../models/company.model';
 
 @Component({
-  selector: 'app-company-details',
-  templateUrl: './company-details.component.html',
-  styleUrls: ['./company-details.component.css']
+  selector: 'app-company',
+  templateUrl: './company.component.html',
+  styleUrls: ['./company.component.css']
 })
-export class CompanyDetailsComponent implements OnInit {
-  company: any = {};
+export class CompanyComponent implements OnInit, OnDestroy {
+  company: Company = {};
   mode: string;
   messageSuccess: string;
   messageFail: string;
+  companyListner: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,17 +26,27 @@ export class CompanyDetailsComponent implements OnInit {
   ngOnInit() {
     // Get company type
     // Get Mode (New/Edit/Display)
+    this.messageFail = null;
     this.mode = this.route.snapshot.paramMap.get('mode');
     this.route.paramMap.subscribe(params => {
-      if (params['mode'] !== this.mode) {
-        this.mode 
-      }
-      if (this.mode === 'edit' || this.mode === 'display') {
-        this.company = this.dataService.getCompany();
-        if (!this.company) {
-          this.router.navigate(['/settings', 'edit']);
+        this.mode = params.get('mode');
+        if (!this.dataService.company || !this.dataService.company.name) {
+          this.dataService.getCompanyFromServer();
+        } else {
+          Object.assign(this.company, this.dataService.company);
         }
-      }
+        this.companyListner = this.dataService.getCompanyListner().subscribe(data => {
+          if (data) {
+              this.company = data;
+          }
+        });
+        if (!this.company) {
+          if (this.mode === 'display') {
+            this.router.navigate(['/settings', 'edit']);
+          } else {
+            this.messageFail = 'Please add company details!';
+          }
+        }
     });
   }
 
@@ -43,16 +56,14 @@ export class CompanyDetailsComponent implements OnInit {
     if (!company.valid) {
       this.messageFail = 'Invalid Entries in Form';
     } else {
-      if (this.mode === 'new') {
-        company.value['type'] = this.ctype;
         this.dataService.setCompany(company.value).subscribe(data => {
-          this.messageSuccess = 'Record Added Successfully';
-        });
-      } else {
-        this.dataService.setCompany(this.company).subscribe(data => {
           this.messageSuccess = 'Record Updated Successfully';
         });
       }
-    }
   }
+
+  ngOnDestroy() {
+    this.companyListner.unsubscribe();
+  }
+
 }

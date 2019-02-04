@@ -1,3 +1,4 @@
+import { Company } from './models/company.model';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -10,6 +11,7 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { ReceiptComponent } from './components/receipt/receipt.component';
+import { CompanyComponent } from './components/company/company.component';
 
 
 const routes: Routes = [
@@ -23,7 +25,7 @@ const routes: Routes = [
   {path: 'products/:mode', component: ProductDetailsComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'receipt', component: ReceiptComponent},
-  {path: 'settings', component: SettingsComponent},
+  {path: 'settings', component: CompanyComponent},
   {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 ];
 

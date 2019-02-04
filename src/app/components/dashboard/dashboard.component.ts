@@ -1,3 +1,4 @@
+import { CompanyService } from './../../services/company.service';
 import { Component, OnInit } from '@angular/core';
 import { InfoService } from '../../services/info.service';
 
@@ -14,14 +15,13 @@ export class DashboardComponent implements OnInit {
   customerData = 0;
   productCount = 0;
 
-  constructor(private infoService: InfoService) { }
+  constructor(private infoService: InfoService, private companyService: CompanyService) { }
 
   ngOnInit() {
     const curYear = new Date().getFullYear();
     const curMonth = new Date().getMonth()+1;
     this.infoService.getOrderInfo(curYear, curMonth)
     .subscribe( data => {
-        console.log(data);
         this.pendingData = data[0] && data[0]._id === 'Pending' ? data[0] : data[1] ? data[1] : {count: 0};
         this.completedData = data[0] && data[0]._id === 'Completed' ? data[0] : data[1] ? data[1] : {count: 0};
     });

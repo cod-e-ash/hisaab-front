@@ -1,5 +1,5 @@
 import { tap } from 'rxjs/operators';
-import { of } from 'rxjs'
+import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Company } from './../models/company.model';
 import { HttpClient } from '@angular/common/http';
@@ -9,36 +9,41 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CompanyService {
     company: Company;
+    private companyUpdSubject = new Subject<Company>();
     url = 'http://localhost:3000/api/company'
 
     constructor(private http: HttpClient) {}
 
-    getCompany() {
-        if (!this.company) {
-            return this.http.get<{error: string, company: Company}>(this.url)
-            .pipe(
-                tap(data => {
-                    this.company = data.company;
-                })
-            );
-        } else {
-            return of({data: this.company});
-        }
+    getCompanyFromServer() {
+        this.http.get<{error: string, company: Company}>(this.url).subscribe(data => {
+            this.company = data.company;
+            this.emitCompanyEvent();
+        });
+    }
+
+    emitCompanyEvent() {
+        this.companyUpdSubject.next(this.company);
+    }
+
+    getCompanyListner() {
+        return this.companyUpdSubject.asObservable();
     }
 
     setCompany(company) {
-        if (!this.company) {
+        if (!this.company || !this.company.name) {
             return this.http.post<{error: string, company: Company}>(this.url, company)
             .pipe(
                 tap(data => {
-                    this.company = data.company
+                    this.company = data.company;
+                    this.emitCompanyEvent();
                 })
             );
         } else {
             return this.http.put<{error: string, company: Company}>(this.url, company)
             .pipe(
                 tap(data => {
-                    this.company = data.company
+                    this.company = data.company;
+                    this.emitCompanyEvent();
                 })
             );
         }

@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <div class="d-flex">
-        <h5 *ngIf="mode !== 'display'" class="card-title"> {{ mode === 'edit' ? 'Edit' : 'Register' }} {{ ctype }} </h5>
+        <h5 *ngIf="mode !== 'display'" class="card-title"> {{ !company || !company.name ? 'Register' : 'Edit' }} Company </h5>
         <div class="p-2 ml-auto">
           <div *ngIf="messageSuccess" class="text-success2">{{messageSuccess}}</div>
           <div *ngIf="messageFail" class="text-delete">{{messageFail}}</div>
@@ -10,16 +10,23 @@
       </div>
     </div>
     <div class="card-body">
-      <form *ngIf="((mode === 'edit' || mode === 'display') && company) || mode === 'new'" #companyForm="ngForm" name="companyForm"
+      <form #companyForm="ngForm" name="companyForm"
         (ngSubmit)="saveCompany(companyForm)" validate>
         <fieldset [disabled]="mode === 'display'">
           <!-- FORM ROW 1 -->
           <div class="d-flex justify-content-around">
-            <div class="col-12">
+            <div class="col-6">
               <div class="form-group p-2">
                 <label for="name">NAME</label>
                 <input required minlength="3" type="text" [(ngModel)]="company.name" #name="ngModel" name="name" class="form-control"
                   placeholder="Company / Company Name">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group p-2">
+                <label for="owner">Owner</label>
+                <input required minlength="3" type="text" [(ngModel)]="company.owner" #owner="ngModel" name="owner" class="form-control"
+                  placeholder="Owner / Contact Name">
               </div>
             </div>
           </div>
@@ -35,18 +42,18 @@
           <div class="row mt-1">
             <h6 class="mx-auto text-prime"> <i class="fa fa-phone mr-2"></i> </h6>
           </div>
-          <div class="d-flex flex-wrap justify-content-around">
-            <div class="form-group">
-              <label for="phone1">Contact Number (Primary)</label>
-              <input required type="tel" [(ngModel)]="company.phone1" #phone1="ngModel" name="phone1" class="form-control"
+          <div class="d-flex flex-wrap justify-content-center">
+            <div class="form-group col-4">
+              <label for="phone">Contact Number</label>
+              <input required type="tel" [(ngModel)]="company.phone" #phone="ngModel" name="phone" class="form-control"
                 placeholder="Primary Contact">
             </div>
-            <div class="form-group">
-              <label for="email1">Email address (Primary)</label>
-              <input type="email" [(ngModel)]="company.email1" #email1="ngModel" name="email1" class="form-control"
+            <div class="form-group col-4">
+              <label for="email">Email address</label>
+              <input type="email" [(ngModel)]="company.email" #email="ngModel" name="email" class="form-control"
                 placeholder="Primary Email">
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="phone2">Contact Number (Optional)</label>
               <input type="tel" [(ngModel)]="company.phone2" #phone2="ngModel" name="phone2" class="form-control"
                 placeholder="Secondary Contact (Optional)">
@@ -55,23 +62,23 @@
               <label for="email2">Email address (Optional)</label>
               <input type="email" [(ngModel)]="company.email2" #email2="ngModel" name="email2" class="form-control"
                 placeholder="Secondary Email (Optional)">
-            </div>
+            </div> -->
           </div>
           <!-- Validation for FORM ROW 2 -->
           <div class="d-flex justify-content-around" *ngIf="name?.touched">
             <ul class="text-delete">
-              <li *ngIf="phone1.touched && phone1.invalid">
+              <li *ngIf="phone.touched && phone.invalid">
                 Please provide correct Primary Phone number.
               </li>
-              <li *ngIf="phone2.touched && phone2.invalid">
-                Please provide correct Secondary Phone number.
-              </li>
-              <li *ngIf="email1.touched && email1.invalid">
+              <li *ngIf="email.touched && email.invalid">
                 Please provide correct Primary Email address.
+              </li>
+              <!-- <li *ngIf="phone2.touched && phone2.invalid">
+                Please provide correct Secondary Phone number.
               </li>
               <li *ngIf="email2.touched && email2.invalid">
                 Please provide correct Secondary Email address.
-              </li>
+              </li> -->
             </ul>
           </div>
 
@@ -166,10 +173,10 @@
           <div class="row" *ngIf="name?.touched">
             <ul class="text-delete col-md-11 pl-5 offset-1">
               <li *ngIf="gstn.touched && gstn.invalid">
-                Please provide correct City.
+                Please provide correct GSTN.
               </li>
               <li *ngIf="pan.touched && pan.invalid">
-                Please provide correct State.
+                Please provide correct PAN.
               </li>
             </ul>
           </div>
