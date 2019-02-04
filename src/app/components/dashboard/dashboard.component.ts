@@ -9,8 +9,8 @@ import { InfoService } from '../../services/info.service';
 })
 export class DashboardComponent implements OnInit {
 
-  pendingData = {};
-  completedData = {};
+  pendingData: any = {count:0, revenue: 0};
+  completedData: any = {count:0, revenue: 0};
   supplierData = 0;
   customerData = 0;
   productCount = 0;

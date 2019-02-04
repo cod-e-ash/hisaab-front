@@ -17,7 +17,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   navPages: number[];
   startPage = 0;
   endPage = 0;
-  params: {};
+  params: any;
   delProductId: string;
   delProductName: string;
   alertMsgSuccess: string;

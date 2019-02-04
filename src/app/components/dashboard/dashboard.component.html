@@ -10,7 +10,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Orders</p>
-            <p class="card-title">{{ (pendingData.count || 0) + (completedData.count || 0) }} <span class="text-warning">({{pendingData.count || 0}})</span> </p>
+            <p class="card-title">{{ (pendingData?.count || 0) + (completedData?.count || 0) }} <span class="text-warning">({{pendingData?.count || 0}})</span> </p>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <div class="col-7 col-md-8">
           <div class="numbers">
             <p class="card-category">Clients</p>
-            <p class="card-title">{{ customerData.count || 0}}
+            <p class="card-title">{{ customerData || 0}}
               <p>
           </div>
         </div>

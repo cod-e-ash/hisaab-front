@@ -18,7 +18,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   navPages: number[];
   startPage = 0;
   endPage = 0;
-  params: {};
+  params: any;
   curOrder: Order;
   alertMsgSuccess: string;
   alertMsgFail: string;

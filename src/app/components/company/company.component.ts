@@ -11,7 +11,7 @@ import { Company } from '../../models/company.model';
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit, OnDestroy {
-  company: Company = {};
+  company: any = {};
   mode: string;
   messageSuccess: string;
   messageFail: string;

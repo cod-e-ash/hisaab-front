@@ -18,7 +18,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   navPages: number[];
   startPage = 0;
   endPage = 0;
-  qParams: {} = {
+  qParams: any = {
     page: null,
     name: null
   };
