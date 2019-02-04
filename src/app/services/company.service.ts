@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Company } from './../models/company.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class CompanyService {
     company: Company;
     private companyUpdSubject = new Subject<Company>();
-    url = 'http://localhost:3000/api/company'
+    private url = environment.apiUrl + '/company'
 
     constructor(private http: HttpClient) {}
 

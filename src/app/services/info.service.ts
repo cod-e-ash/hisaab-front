@@ -1,13 +1,14 @@
-import { CompanyService } from './company.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
     'providedIn':'root'
 })
 export class InfoService {
     
-    private url = "http://localhost:3000/api/info"
+    private url = environment.apiUrl + '/info';
 
     constructor(private http: HttpClient) {}
 

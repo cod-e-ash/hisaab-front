@@ -1,13 +1,14 @@
 import { TaxRate } from './../models/taxrate.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaxRateService {
   taxRates: {};
-  private url = 'http://localhost:3000/api/taxrates';
+  private url = environment.apiUrl + '/taxrates';
 
   constructor(private http: HttpClient) {}
 

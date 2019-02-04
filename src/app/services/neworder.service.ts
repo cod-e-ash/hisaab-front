@@ -3,7 +3,6 @@ import { TaxRateService } from './taxrate.service';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
 import { Order, OrderDetails } from '../models/order.model';
-import { InternalFormsSharedModule } from '@angular/forms/src/directives';
 
 @Injectable({
   providedIn: 'root'

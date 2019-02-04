@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Order } from './../models/order.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
   private orders: Order[];
-  private url = 'http://localhost:3000/api/orders';
+  private url = environment.apiUrl + '/orders';
 
   // HTTP Options
   private httpOptions = {

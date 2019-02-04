@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from './../models/product.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   private products: Product[];
-  private url = 'http://localhost:3000/api/products';
+  private url = environment.apiUrl + '/products';
 
   // HTTP Options
   private httpOptions = {

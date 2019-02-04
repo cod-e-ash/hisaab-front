@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from './../models/customer.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
   private customers: Customer[];
-  private url = 'http://localhost:3000/api/customers';
+  private url = environment.apiUrl + '/customers';
 
   // HTTP Options
   private httpOptions = {
