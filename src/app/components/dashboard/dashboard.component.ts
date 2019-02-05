@@ -11,8 +11,8 @@ export class DashboardComponent implements OnInit {
 
   pendingData: any = {count:0, revenue: 0};
   completedData: any = {count:0, revenue: 0};
-  supplierData : any;
-  customerData : any;
+  supplierData : any = {count: 0};
+  customerData : any = {count: 0};
   productCount = 0;
 
   constructor(private infoService: InfoService, private companyService: CompanyService) { }

@@ -1,3 +1,4 @@
+import { TaxRateService } from './../../services/taxrate.service';
 import { Subscription } from 'rxjs';
 import { CompanyService } from './../../services/company.service';
 import { Company } from './../../models/company.model';
@@ -14,9 +15,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   company: Company = {};
   companyListner: Subscription;
 
-  constructor(private router: Router, private companyService: CompanyService) {}
+  constructor(
+    private router: Router, 
+    private companyService: CompanyService, 
+    private taxRateService: TaxRateService
+    ) {}
 
   ngOnInit() {
+    this.taxRateService.getTaxes();
     this.companyService.getCompanyFromServer();
     this.companyListner = this.companyService.getCompanyListner()
       .subscribe(data => {

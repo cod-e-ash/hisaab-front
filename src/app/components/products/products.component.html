@@ -79,11 +79,12 @@
                     <td class="text-right" [ngClass]="product.stock > 0 ? 'text-success' : 'text-delete'"><b>{{
                         product.stock !== 0 ? product.stock : 'Nil' }}</b></td>
                     <td class="text-right">
-                      <a *ngIf="product.stock>0"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
-                          data-placement="left" title="Add to Invoice"></i></a>
+                      <!-- <a *ngIf="product.stock>0" data-toggle="modal" (click)="curProduct=product"
+                        data-target="#confirmModal"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
+                          data-placement="left" title="Add to Invoice"></i></a> -->
                       <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{id:product._id}"
                           queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
-                      <a data-toggle="modal" (click)="delProductId=product._id; delProductName=product.name"
+                      <a data-toggle="modal" (click)="curProduct=product"
                         data-target="#deleteModal"><i class="fa fa-times text-delete" data-toggle="tooltip"
                           data-placement="left" title="Delete"></i></a>
                     </td>
@@ -133,16 +134,41 @@
         <h4 class="title title-up">Delete Product</h4>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete <b class="text-delete">{{delProductName}}</b>?
+        <p>Are you sure you want to delete <b class="text-delete">{{curProduct?.name}}</b>?
         </p>
       </div>
       <div class="modal-footer">
         <div class="left-side">
-          <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Never mind</button>
+          <button type="button" class="btn btn-default btn-link" (click)="curProduct=null" data-dismiss="modal">Never mind</button>
         </div>
         <div class="divider"></div>
         <div class="right-side">
           <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteProduct()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="nc-icon nc-simple-add"></i>
+        </button>
+        <h4 class="title title-up">Add to Invoice</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to add <b class="text-success">{{curProduct?.name}}</b> to invoice?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button type="button" class="btn btn-default btn-link" (click)="curProduct=null" data-dismiss="modal">Never mind</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="addProductsToOrder()">Add</button>
         </div>
       </div>
     </div>

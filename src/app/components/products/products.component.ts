@@ -1,3 +1,4 @@
+import { NewOrderService } from './../../services/neworder.service';
 import { Subscription } from 'rxjs';
 import { Product } from './../../models/product.model';
 import { ProductService } from './../../services/product.service';
@@ -18,8 +19,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   startPage = 0;
   endPage = 0;
   params: any;
-  delProductId: string;
-  delProductName: string;
+  curProduct: Product;
   alertMsgSuccess: string;
   alertMsgFail: string;
   stockOpt: boolean;
@@ -29,7 +29,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataservice: ProductService
+    private dataservice: ProductService,
+    private newOrderService: NewOrderService
   ) {}
 
   ngOnInit() {
@@ -118,17 +119,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
   deleteProduct() {
     this.alertMsgSuccess = null;
     this.alertMsgFail = null;
-    if (this.delProductId) {
-      this.dataservice.deleteData(this.delProductId).subscribe(
+    if (this.curProduct._id) {
+      this.dataservice.deleteData(this.curProduct._id).subscribe(
         data => {
           if (!data.error) {
-            const index = this.getProductIndex(this.delProductId);
+            const index = this.getProductIndex(this.curProduct._id);
             if (index >= 0) {
               this.products.splice(index, 1);
               this.totalRecs -= this.totalRecs > 1 ? 1 : 0;
               this.alertMsgSuccess = 'Product deleted successfully';
-              this.delProductId = null;
-              this.delProductName = null;
+              this.curProduct = null;
             }
           } else {
             this.alertMsgFail = 'Product not deleted.' + data.error;
@@ -139,6 +139,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  addProductsToOrder() {
+      this.newOrderService.addOrderItem(this.curProduct);
+      this.curProduct = null;
   }
 
   getProductIndex(id: string) {
