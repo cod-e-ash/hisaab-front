@@ -1,0 +1,47 @@
+ 
+  .card-stats .card-body .numbers {
+    text-align: right;
+    font-size: 1.8em;
+  }
+
+  input::placeholder {
+    color: rgba(83, 82, 82, 0.452);
+    /* font-size: 8; */
+  }
+  
+  input:focus::placeholder {
+    color: transparent;
+  }
+  
+  label {
+    /* color: rgb(22, 175, 175); */
+    font-weight: 600;
+  }
+  
+  .row {
+    padding: 4px;
+  }
+  
+  .form-check-label {
+    color: inherit;
+  }
+  
+  .form-group .input-group-append .input-group-text,
+  .form-group .input-group-prepend .input-group-text,
+  .input-group .input-group-append .input-group-text,
+  .input-group .input-group-prepend .input-group-text {
+    padding: 10px 0 10px 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  input:disabled,
+  select:disabled {
+    background: aliceblue;
+    cursor: default;
+  }
+  
+  span.input-group-text {
+    background-color: lavender;
+  }
+  

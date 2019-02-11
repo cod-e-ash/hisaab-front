@@ -1,3 +1,40 @@
-<p>
-  Coming Soooooooooon...!
-</p>
+<div class="d-flex justify-content-around">
+  <div class="card d-flex tax-report-card">
+    <div class="card-body">
+      <h5 class="card-title text-center">TAX Report</h5>
+      <hr>
+      <div class="form-group mt-4">
+        <label class="mt-1 text-danger">FROM </label>
+        <div class="d-inline-flex pull-right">
+          <label class="mt-1 ml-2" for="units">Month</label>
+          <select class="ml-2" name="month" title="Month Select">
+            <option *ngFor="let month of monthArr;let i = index" value="{{i}}" [selected]="month === curMonth">{{month}}</option>
+          </select>
+          <label class="mt-1 ml-2" for="units">Year</label>
+          <select class="ml-2" name="month" title="Month Select">
+            <option *ngFor="let year of yearArr" value="{{year}}" [selected]="year === curYear">{{year}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label class="mt-1 text-danger">TO </label>
+        <div class="d-inline-flex pull-right">
+            <label class="mt-1 ml-2" for="units">Month</label>
+            <select class="ml-2" name="month" title="Month Select">
+              <option *ngFor="let month of monthArr;let i = index" value="{{i}}" [selected]="month === curMonth">{{month}}</option>
+            </select>
+            <label class="mt-1 ml-2" for="units">Year</label>
+            <select class="ml-2" name="month" title="Month Select">
+              <option *ngFor="let year of yearArr" value="{{year}}" [selected]="year === curYear">{{year}}</option>
+            </select>
+          </div>
+      </div>
+    </div>
+    <div class="card-footer">
+        <hr>
+        <div class="pull-right">
+          <button type="button" class="btn btn-sm btn-primary"> Generate</button>
+        </div>
+      </div>
+  </div>
+</div>

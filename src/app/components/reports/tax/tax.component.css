@@ -1,0 +1,11 @@
+.table th {
+    border-top: 0; 
+}
+
+li div:nth-child(2) {
+    color: rgb(187, 50, 50);
+}
+
+.tax-summary {
+    max-width: 600px;
+}

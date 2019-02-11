@@ -19,6 +19,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { CompanyComponent } from './components/company/company.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReceiptComponent } from './components/receipt/receipt.component';
+import { TaxComponent } from './components/reports/tax/tax.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ReceiptComponent } from './components/receipt/receipt.component';
     CustomerDetailsComponent,
     ProductDetailsComponent,
     CompanyComponent,
-    ReceiptComponent
+    ReceiptComponent,
+    TaxComponent
   ],
   imports: [
     BrowserModule,

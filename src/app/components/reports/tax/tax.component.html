@@ -1,0 +1,63 @@
+<div class="mx-auto tax-summary">
+  <div class="card">
+    <div class="card-body">
+      <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
+        <fieldset [disabled]="mode === 'display'">
+          <h5 class="card-title text-center"> Tax Summary</h5>
+          <p class="card-title text-center"><b> Mar-2018 <span class="text-danger">to</span> Apr-2018</b></p>
+          <ul class="list-group list-group-flush final-summary">
+            <li class="d-inline-flex list-group-item justify-content-between">
+              <div class="">Total Orders</div>
+              <div class="font-weight-bold">24</div>
+            </li>
+            <li class="d-inline-flex list-group-item justify-content-between">
+              <div class="">Total Items / Value</div>
+              <div class="font-weight-bold">200 / {{150000 | currency:'INR':''}} &#8377;</div>
+            </li>
+            <li class="d-inline-flex list-group-item justify-content-between">
+              <table class="table">
+                <thead>
+                    <th>Description</th>
+                    <th class="text-center">Items</th>
+                    <th class="text-right">Value (&#8377;)</th>
+                    <th class="text-right">Tax (&#8377;)</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Exempted</td>
+                    <td class="text-center">4</td>
+                    <td class="text-right">{{2000 | currency:'INR':''}}</td>
+                    <td class="text-right font-weight-bold">{{0 | currency:'INR':''}}</td>
+                  </tr>
+                  <tr>
+                    <td>GST@5%</td>
+                    <td class="text-center">14</td>
+                    <td class="text-right">{{16000 | currency:'INR':''}}</td>
+                    <td class="text-right font-weight-bold">{{ 800 | currency:'INR':''}}</td>
+                  </tr>
+                  <tr>
+                    <td>GST@12%</td>
+                    <td class="text-center">23</td>
+                    <td class="text-right">{{62000 | currency:'INR':''}}</td>
+                    <td class="text-right font-weight-bold">{{7440 | currency:'INR':''}}</td>
+                  </tr>
+                  <tr>
+                    <td>IGST@18</td>
+                    <td class="text-center">4</td>
+                    <td class="text-right">{{10000 | currency:'INR':''}}</td>
+                    <td class="text-right font-weight-bold">{{1800 | currency:'INR':''}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="d-inline-flex list-group-item justify-content-between font-weight-bold final-amount">
+              <div class="text-dark mt-2">Total Tax Amount </div>
+              <div class="mt-2">{{ 24962 | currency:'INR':''}} &#8377;</div>
+            </li>
+          </ul>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+</div>
