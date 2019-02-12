@@ -28,4 +28,14 @@ export class InfoService {
     getProductInfo() {
         return this.http.get(this.url + '/products');
     }
+
+    getTaxReport(fyear, fmonth, tyear, tmonth) {
+        const params = new HttpParams()
+        .set('startyear', (fyear ? fyear : 0).toString())
+        .set('startmonth', (fmonth ? fmonth : 0).toString())
+        .set('endyear', (tyear ? tyear : 0).toString())
+        .set('endmonth', (tmonth ? tmonth : 0).toString());
+
+        return this.http.get(this.url + '/tax', {params: params});
+    }
 }

@@ -78,6 +78,7 @@ export class NewOrderService {
           quantity: quantity ? quantity : 1,
           discountrate: discountRate,
           discount: discount,
+          taxrate: product.taxrate,
           tax: Math.round((tax + 0.00001) * 100) / 100,
           total: Math.round((total + 0.00001) * 100) / 100
         };

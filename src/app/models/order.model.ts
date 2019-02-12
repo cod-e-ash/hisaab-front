@@ -23,6 +23,7 @@ export interface OrderDetails {
   discountrate: number;
   discount: number;
   price: number;
+  taxrate: string;
   tax: number;
   total: number;
 }
