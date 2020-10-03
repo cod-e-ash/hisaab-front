@@ -16,8 +16,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./order-details.component.css']
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('productSBtn', { static: false }) productSBtn: ElementRef;
-  @ViewChild('customerSBtn', { static: false }) customerSBtn: ElementRef;
+  @ViewChild('productSBtn') productSBtn: ElementRef;
+  @ViewChild('customerSBtn') customerSBtn: ElementRef;
   products: Product[];
   customers: Customer[];
   curPage = 0;
