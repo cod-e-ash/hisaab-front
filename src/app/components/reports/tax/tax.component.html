@@ -1,8 +1,7 @@
 <div class="mx-auto tax-summary">
   <div class="card">
     <div class="card-body">
-      <form #summary="ngForm" name="summaryForm" (ngSubmit)="saveOrder(summaryForm)" validate>
-        <fieldset [disabled]="mode === 'display'">
+      <form #summary="ngForm" name="summaryForm" validate>
           <h5 class="card-title text-center"> Tax Summary</h5>
           <p class="card-title text-center"><b> {{fromDate | date:'MMM yyyy'}} <span *ngIf="fyear !== tyear || fmonth !== tmonth"><span class="text-danger">to</span> {{toDate | date:'MMM yyyy'}}</span></b></p>
           <ul class="list-group list-group-flush final-summary">
@@ -37,7 +36,6 @@
               <div class="mt-2">{{ totalTax | currency:'INR':''}} &#8377;</div>
             </li>
           </ul>
-        </fieldset>
       </form>
     </div>
     <div class="card-footer mx-auto">
