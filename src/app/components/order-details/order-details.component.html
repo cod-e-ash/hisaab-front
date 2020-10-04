@@ -27,7 +27,7 @@
               </button>
             </a>
             <h3 class="card-title mx-auto">
-              Order <span *ngIf="curOrder && curOrder.orderno">({{ curOrder.orderno || 0 }})</span>
+              Order <span *ngIf="curOrder && curOrder.orderno">No: {{ curOrder.orderno || 0 }}</span>
             </h3>
             <a class="mr-3 mt-1" routerLink="/orders">
               <button class="btn btn-sm btn-info ml-2 new-btn">
@@ -415,9 +415,6 @@
   <div class="modal-dialog productModal">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          <i class="nc-icon nc-simple-remove"></i>
-        </button>
         <div class="d-inline-flex justify-content-around">
           <h5 class="modal-title mr-5" id="myModalLabel">Select Customer</h5>
           <div class="d-inline-flex mr-auto search-box">
@@ -427,6 +424,11 @@
               <i class="nc-icon nc-zoom-split"></i>
             </button>
           </div>
+          <div class="modal-close">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times fa-lg"></i>
+          </button>
+        </div>
         </div>
       </div>
       <div class="modal-body">
@@ -438,23 +440,22 @@
           <div class="table-responsive">
             <table class="table table-striped">
               <thead class="text-secondary">
-                <th class="text-center"> Select </th>
                 <th class="text-center"> SNO </th>
                 <th>Name </th>
                 <th>Contact</th>
               </thead>
               <tbody>
-                <tr *ngFor="let customer of customers; let i=index">
-                  <td class="text-right fit">
-                    <div class="form-check-radio ml-3 mt-2">
+                <tr *ngFor="let customer of customers; let i=index" [ngClass]="{selected: tempCust === customer}" (click)="tempCust = customer"
+                ngValue="customer">
+                  <!-- <td class="text-right fit">
+                    <div class="form-check-radio">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="customerCheck" #customerCheck (click)="tempCust = customer"
-                          ngValue="customer">
+                        <input class="form-check-input" type="radio" name="customerCheck" #customerCheck >
                         <span class="form-check-sign"></span>
                       </label>
                     </div>
-                  </td>
-                  <td class="text-center">{{
+                  </td> -->
+                  <td class="text-center">{{  
                     ((curPage-1)*10) + i + 1 }}</td>
                   <td>{{customer.name }}</td>
                   <td>{{ customer.phone1 }}</td>

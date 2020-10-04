@@ -42,7 +42,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     // Combine route and query params
     // Distinct will check for distinct parameter
     // debounce will wait untill stack request are cleared
-    this.latestParams = combineLatest(this.route.queryParamMap, this.route.paramMap).pipe(
+    this.latestParams = combineLatest([this.route.queryParamMap, this.route.paramMap]).pipe(
       debounceTime(0),
       distinctUntilChanged(),
       map(data => ({

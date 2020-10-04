@@ -24,9 +24,19 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/css/bootstrap.min.css",
+              "src/assets/css/paper2.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/core/jquery.min.js",
+              "src/assets/js/core/popper.min.js",
+              "src/assets/js/core/bootstrap.min.js",
+              "src/assets/js/plugins/perfect-scrollbar.jquery.min.js",
+              "src/assets/js/plugins/chartjs.min.js",
+              "src/assets/js/plugins/bootstrap-notify.js",
+              "src/assets/js/paper-dashboard.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -84,9 +94,19 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "src/assets/css/bootstrap.min.css",
+              "src/assets/css/paper2.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/js/jquery.min.js",
+              "src/assets/js/popper.min.js",
+              "src/assets/js/bootstrap.min.js",
+              "src/assets/js/plugins/perfect-scrollbar.jquery.min.js",
+              "src/assets/js/plugins/chartjs.min.js",
+              "src/assets/js/plugins/bootstrap-notify.js",
+              "src/assets/js/paper-dashboard.min"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

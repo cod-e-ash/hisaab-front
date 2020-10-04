@@ -48,11 +48,11 @@ li.final-amount {
   border-color: rgb(131, 130, 133);
   border-width: 3px;
   border-radius: 5px;
+  border-bottom-width: 5px !important;
 }
 
-.list-group-flush:last-child .list-group-item:last-child {
-  border-bottom: 5px !important;
-}
+/* .list-group-flush:last-child .list-group-item:last-child {
+} */
 
 .search-box {
   height: 32px;
@@ -160,4 +160,19 @@ input::placeholder {
 
 li a {
   cursor: pointer;
+}
+
+tr {
+  cursor: pointer;
+}
+
+.selected {
+  font-weight: 900;
+  background-color: rgb(255, 212, 187) !important;
+  cursor: default;
+}
+
+.modal-close {
+  margin-top: 0.2em;
+  margin-left: 25em;
 }
