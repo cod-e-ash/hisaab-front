@@ -1,3 +1,4 @@
+import { UtilityService } from './../../services/utility.service';
 import { CompanyService } from './../../services/company.service';
 import { Order } from './../../models/order.model';
 import { Company } from './../../models/company.model';
@@ -27,7 +28,8 @@ export class ReceiptComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     private taxRateService: TaxRateService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private utilityService: UtilityService
     ) { }
 
   ngOnInit() {
@@ -74,5 +76,10 @@ export class ReceiptComponent implements OnInit {
     }
     this.pageStart.push(prvsDone);
     this.pages.push(noOfRecs);
+  }
+
+  public getAmountInWords = () =>
+  {
+    return this.utilityService.toWords(this.curOrder.finalamount);
   }
 }

@@ -16,6 +16,7 @@ export class TaxRateService {
     if (!this.taxRates) {
       this.taxRates = {};
       this.http.get<TaxRate[]>(this.url).subscribe(data => {
+        // tslint:disable-next-line: curly
         for (let i = 0; i < data.length; i++) {
           this.taxRates[data[i].name] = data[i].rate;
         }
