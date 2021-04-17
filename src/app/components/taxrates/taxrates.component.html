@@ -1,0 +1,145 @@
+<div class="content">
+  <div *ngIf="alertMsgFail" class="alert alert-danger alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgFail=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Failed - </b> {{alertMsgFail}}</span>
+  </div>
+  <div *ngIf="alertMsgSuccess" class="alert alert-success alert-dismissible fade show">
+    <button type="button" aria-hidden="true" class="close" (click)="alertMsgSuccess=''" data-dismiss="alert" aria-label="Close">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>
+      <b> Success - </b> {{alertMsgSuccess}}</span>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex flex-wrap">
+            <div class="card-title">
+              <a routerLink="new" queryParamsHandling="merge">
+                <button class="btn btn-danger ml-2 new-btn">
+                  <i class="fa fa-plus-circle"></i> ADD
+                </button>
+              </a>
+            </div>
+            <div class="card-title d-inline-flex mx-auto">
+              <input type="text" #taxRateS [value]="params?.name || null" class="form-control" placeholder="TaxRate..."
+                (keyup.enter)="searchParamChange({name: taxRateS.value || null, taxrate: taxRateS.value || null, page: 1})">
+              <button class="btn btn-icon btn-primary search-btn mx-2" (click)="searchParamChange({name: taxRateS.value || null, company: taxRateS.value || null, page: null})">
+                <i class="nc-icon nc-zoom-split"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead class="text-secondary">
+                  <!-- <th class="text-center"> Code # </th> -->
+                  <th>Name </th>
+                  <th class="text-center">Tax</th>
+                  <th class="text-right">Actions </th>
+                </thead>
+                <div class="lds-ripple" *ngIf="isLoading"><div></div><div></div></div>
+                <tbody *ngIf="!isLoading">
+                  <tr *ngFor="let taxRate of taxRates; let i=index">
+                    <td [routerLink]="['display']" [queryParams]="{name:taxRate.name}" queryParamsHandling="merge">{{
+                      taxRate.name }}</td>
+                    <td class="text-right">
+                      <!-- <a *ngIf="taxRate.stock>0" data-toggle="modal" (click)="curTaxRate=taxRate"
+                        data-target="#confirmModal"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"
+                          data-placement="left" title="Add to Invoice"></i></a> -->
+                      <a><i class="fa fa-edit text-prime" [routerLink]="['edit']" [queryParams]="{name:taxRate.name}"
+                          queryParamsHandling="merge" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+                      <a data-toggle="modal" (click)="curTaxRate=taxRate"
+                        data-target="#deleteModal"><i class="fa fa-times text-delete" data-toggle="tooltip"
+                          data-placement="left" title="Delete"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex flex-wrap justify-content-between">
+              <div class="mt-4 p-2">
+                <div class="text-dplum" *ngIf="totalRecs > 0">{{totalRecs}} {{totalRecs > 1 ? 'records': 'record'}}
+                  found</div>
+                <div class="text-delete" *ngIf="totalRecs === 0">No Record Found</div>
+              </div>
+              <div *ngIf="totalRecs > 0">
+                <nav class="ml-auto mt-4">
+                  <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':curPage === 1}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage-1}" queryParamsHandling="merge"
+                        tabindex="-1">Previous</a>
+                    </li>
+                    <li *ngFor="let pageIndex of navPages" class="page-item" [ngClass]="{'disabled':curPage === pageIndex, 'active': pageIndex === curPage}">
+                      <a class="page-link page-pages" [routerLink]="" [queryParams]="{page:pageIndex}"
+                        queryParamsHandling="merge">{{pageIndex}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':curPage === totalPages}">
+                      <a class="page-link" [routerLink]="" [queryParams]="{page:curPage+1}" queryParamsHandling="merge">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="nc-icon nc-simple-remove"></i>
+        </button>
+        <h4 class="title title-up">Delete Product</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <b class="text-delete">{{curTaxRate?.name}}</b>?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button type="button" class="btn btn-default btn-link" (click)="curTaxRate=null" data-dismiss="modal">Never mind</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="deleteProduct()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="nc-icon nc-simple-add"></i>
+        </button>
+        <h4 class="title title-up">Add to Invoice</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to add <b class="text-success">{{curTaxRate?.name}}</b> to invoice?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button type="button" class="btn btn-default btn-link" (click)="curTaxRate=null" data-dismiss="modal">Never mind</button>
+        </div>
+        <div class="divider"></div>
+        <!-- <div class="right-side">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal" (click)="addProductsToOrder()">Add</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

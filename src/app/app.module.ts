@@ -20,6 +20,8 @@ import { CompanyComponent } from './components/company/company.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReceiptComponent } from './components/receipt/receipt.component';
 import { TaxComponent } from './components/reports/tax/tax.component';
+import { TaxRatesComponent } from './components/taxrates/taxrates.component';
+import { TaxRateDetailsComponent } from './components/taxrate-details/taxrate-details.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { TaxComponent } from './components/reports/tax/tax.component';
     ProductDetailsComponent,
     CompanyComponent,
     ReceiptComponent,
-    TaxComponent
+    TaxComponent,
+    TaxRatesComponent,
+    TaxRateDetailsComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,8 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
 import { TaxComponent } from './components/reports/tax/tax.component';
 import { ReceiptComponent } from './components/receipt/receipt.component';
 import { CompanyComponent } from './components/company/company.component';
+import { TaxRatesComponent } from './components/taxrates/taxrates.component';
+import { TaxRateDetailsComponent } from './components/taxrate-details/taxrate-details.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,8 @@ const routes: Routes = [
   {path: 'clients/:type/edit', component: CustomerDetailsComponent, pathMatch: 'full'},
   {path: 'products', component: ProductsComponent},
   {path: 'products/:mode', component: ProductDetailsComponent},
+  {path: 'taxrates', component: TaxRatesComponent},
+  {path: 'taxrates/:mode', component: TaxRateDetailsComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'reports/tax', component: TaxComponent},
   {path: 'receipt', component: ReceiptComponent},
