@@ -39,7 +39,7 @@
                 <thead class="text-secondary">
                   <!-- <th class="text-center"> Code # </th> -->
                   <th>Name </th>
-                  <th class="text-center">Tax</th>
+                  <th class="text-right">Tax Rate (%)</th>
                   <th class="text-right">Actions </th>
                 </thead>
                 <div class="lds-ripple" *ngIf="isLoading"><div></div><div></div></div>
@@ -47,6 +47,9 @@
                   <tr *ngFor="let taxRate of taxRates; let i=index">
                     <td [routerLink]="['display']" [queryParams]="{name:taxRate.name}" queryParamsHandling="merge">{{
                       taxRate.name }}</td>
+                      <td class="text-right">{{ taxRate.rate | number: '0.2-2' }}</td>
+                      <!-- <td [routerLink]="['display']" [queryParams]="{name:taxRate.rate}" queryParamsHandling="merge">{{
+                        taxRate.rate | number: '2.2-2'}}</td> -->
                     <td class="text-right">
                       <!-- <a *ngIf="taxRate.stock>0" data-toggle="modal" (click)="curTaxRate=taxRate"
                         data-target="#confirmModal"><i class="fa fa-cart-plus text-dplum" data-toggle="tooltip"

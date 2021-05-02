@@ -32,10 +32,16 @@
         <div class="collapse" id="clientSubmenu">
           <ul class="nav">
             <li [class.active]="isActive('clients/customers')" [routerLink]="['clients','customers']">
-              <a><span class="sidebar-mini-icon">C</span><span class="sidebar-normal">Customers</span></a>
+              <a>
+                <!-- <span class="sidebar-mini-icon">C</span> -->
+                <span class="sidebar-normal">Customers</span>
+              </a>
             </li>
             <li [class.active]="isActive('clients/suppliers')" [routerLink]="['clients','suppliers']">
-              <a><span class="sidebar-mini-icon">S</span><span class="sidebar-normal">Suppliers</span></a>
+              <a>
+                <!-- <span class="sidebar-mini-icon">S</span> -->
+                <span class="sidebar-normal">Suppliers</span>
+              </a>
             </li>
           </ul>
         </div>

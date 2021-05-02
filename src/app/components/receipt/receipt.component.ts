@@ -53,8 +53,8 @@ export class ReceiptComponent implements OnInit {
     });
   }
 
-  getTaxRate(rate) {
-    return this.taxRateService.getTaxRate(rate);
+  getTaxRate(rate: string): number {
+    return this.taxRateService.getTaxRate(rate)?.rate ?? 0;
   }
 
   pageLogic(noOfRecs) {

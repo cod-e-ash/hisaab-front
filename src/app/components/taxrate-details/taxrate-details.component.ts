@@ -1,3 +1,4 @@
+import { TaxRate } from './../../models/taxrate.model';
 import { TaxRateService } from 'src/app/services/taxrate.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,7 +10,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./taxrate-details.component.css']
 })
 export class TaxRateDetailsComponent implements OnInit {
-  taxRate: any = {};
+  taxRate: TaxRate;
   mode: string;
   messageSuccess: string;
   messageFail: string;
@@ -32,12 +33,12 @@ export class TaxRateDetailsComponent implements OnInit {
       if (this.mode === 'edit' || this.mode === 'display') {
         this.taxRate = this.dataService.getTaxRate(params.get('name'));
         if (!this.taxRate) {
-          this.router.navigate(['/taxRates'], {
+          this.router.navigate(['/taxrates'], {
             queryParams: this.prvParams
           });
         }
       } else {
-        this.taxRate.stock = 0;
+        this.taxRate = null;
       }
     });
   }
@@ -57,16 +58,6 @@ export class TaxRateDetailsComponent implements OnInit {
         this.dataService.updateData(this.taxRate).subscribe(data => {
           this.messageSuccess = 'Record Updated Successfully';
         });
-      }
-    }
-  }
-
-  changeStockQty(opr, pqty) {
-    if (pqty && pqty > 0) {
-      if (opr === 'add') {
-        this.taxRate.stock += pqty;
-      } else {
-        this.taxRate.stock -= pqty;
       }
     }
   }

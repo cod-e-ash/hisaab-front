@@ -29,6 +29,10 @@ label {
   font-weight: 600;
 }
 
+.input-group-sm>.form-control:not(textarea) {
+  height: calc(2em + .5rem + 2px);;
+}
+
 input:disabled,
 select:disabled {
   background: aliceblue;

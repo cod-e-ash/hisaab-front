@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class TaxRateService {
   taxRate: TaxRate;
-  taxRates: {};
+  taxRates: TaxRate[];
 
   private url = environment.apiUrl + '/taxrates';
 
@@ -25,7 +25,7 @@ export class TaxRateService {
 
   getTaxes() {
     if (!this.taxRates) {
-      this.taxRates = {};
+      this.taxRates = [];
       this.http.get<TaxRate[]>(this.url).subscribe(data => {
         // tslint:disable-next-line: curly
         for (let i = 0; i < data.length; i++) {
@@ -75,9 +75,20 @@ export class TaxRateService {
     );
   }
 
-  getTaxRate(taxName: string): number {
-      return this.taxRates[taxName] ? this.taxRates[taxName] : 0;
+  getTaxRate(taxName: string): TaxRate {
+    if (this.taxRates) {
+      return this.taxRates.filter(taxRate => {
+        return taxRate.name === taxName;
+      })[0];
+    }
   }
 
+  getSingle(name: string): TaxRate {
+    if (this.taxRates) {
+      return this.taxRates.filter(taxRate => {
+        return taxRate.name === name;
+      })[0];
+    }
+  }
 
 }
