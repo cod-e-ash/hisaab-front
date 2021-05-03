@@ -54,7 +54,7 @@ export class ReceiptComponent implements OnInit {
   }
 
   getTaxRate(rate: string): number {
-    return this.taxRateService.getTaxRate(rate)?.rate ?? 0;
+    return this.taxRateService.getTaxRate(rate).rate ?? 0;
   }
 
   pageLogic(noOfRecs) {
