@@ -83,3 +83,23 @@ li.page-item.disabled.active>.page-link.page-pages {
 .btn-round.date-btn {
   padding: 7px;
 }
+
+.modal-header .close {
+  padding: 1px 2px;
+  margin: 0px;
+}
+
+.nc-simple-remove
+{
+  font-size: 1.2rem;
+  border-radius: 4px;
+  background-color: red;
+  color: white;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+.title-up
+{
+  margin: 0px;
+}

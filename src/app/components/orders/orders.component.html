@@ -134,11 +134,13 @@
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header justify-content-center">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="nc-icon nc-simple-remove"></i>
-          </button>
-          <h4 class="title title-up">Delete Order</h4>
+        <div class="modal-header align-items-center d-flex flex-column">
+          <div class="">
+            <button type="button" class="close col-12" data-dismiss="modal" aria-label="Close">
+              <i class="nc-icon nc-simple-remove model-close-btn"></i>
+            </button>
+            </div>
+          <div><h4 class="title title-up col-12">Delete Order</h4></div>
         </div>
         <div class="modal-body">
           <p>Are you sure you want to delete order <b *ngIf="curOrder" class="text-delete">{{curOrder.orderno || 0}}</b> ?
