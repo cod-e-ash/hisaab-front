@@ -18,6 +18,10 @@
     padding-left: 16%;
 }
 
+li:not(.active) a:hover{
+    color: rgb(246, 251, 255) !important;
+}
+
 b.caret {
     margin-top: 0.45rem;
 }
