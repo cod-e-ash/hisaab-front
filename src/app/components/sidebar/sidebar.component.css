@@ -1,3 +1,11 @@
+.sidebar {
+    width: 12rem;
+}
+
+.sidebar-wrapper {
+    max-width: 12rem;
+}
+
 .off-canvas-sidebar .logo a.logo-mini, .sidebar .logo a.logo-mini {
     opacity: 1;
 }
@@ -10,7 +18,7 @@
     padding-left: 16%;
 }
 
-
 b.caret {
     margin-top: 0.4rem;
 }
+

@@ -1,3 +1,7 @@
 .content {
     background-color: whitesmoke;
 }
+
+.main-panel {
+    width: calc(100% - 12rem);
+}
