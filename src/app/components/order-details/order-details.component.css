@@ -142,6 +142,11 @@ input::placeholder {
 
   .modal-dialog:not(.modal-sm) .modal-body {
     min-height: 400px;
+    padding-top: 2px;
+  }
+
+  .modal-dialog.modal-sm {
+    min-width: 450px;
   }
 
   .table td.fit, 
@@ -175,4 +180,31 @@ tr {
 .modal-close {
   margin-top: 0.2em;
   margin-left: 25em;
+}
+
+.product-search-table {
+  border: hidden;
+}
+
+.table.order-detail-table {
+  width: 99% !important;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(158, 84, 14, 0.3);
+  box-shadow: inset 0 0 6px rgba(158, 84, 14, 0.3);
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #a5b1d3;
+  border-radius: 15px;
 }

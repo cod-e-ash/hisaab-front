@@ -106,7 +106,7 @@
                 <form #productForm="ngForm" name="productForm" validate>
                   <fieldset [disabled]="mode === 'display'">
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table order-detail-table">
                         <thead class="">
                           <tr>
                             <th>SNo #</th>
@@ -312,9 +312,6 @@
   <div class="modal-dialog productModal">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          <i class="nc-icon nc-simple-remove"></i>
-        </button>
         <h5 class="modal-title" id="myModalLabel">Select Products</h5>
         <div class="d-inline-flex mr-auto search-box">
           <input type="text" name="codeS" [(ngModel)]="codeS" class="form-control col-2 mx-2" placeholder="Code..."
@@ -331,7 +328,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped product-search-table">
               <thead class="text-secondary">
                 <th> Select </th>
                 <th class="text-center"> Code # </th>
@@ -532,10 +529,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-      <div class="modal-header justify-content-center">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="nc-icon nc-simple-remove"></i>
-        </button>
+      <div class="modal-header">
         <h4 class="title title-up">Delete Item</h4>
       </div>
       <div class="modal-body">

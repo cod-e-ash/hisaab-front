@@ -9,3 +9,8 @@
 .off-canvas-sidebar .logo a.logo-normal, .sidebar .logo {
     padding-left: 16%;
 }
+
+
+b.caret {
+    margin-top: 0.4rem;
+}
