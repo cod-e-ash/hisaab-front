@@ -15,6 +15,7 @@ import { ReceiptComponent } from './components/receipt/receipt.component';
 import { CompanyComponent } from './components/company/company.component';
 import { TaxRatesComponent } from './components/taxrates/taxrates.component';
 import { TaxRateDetailsComponent } from './components/taxrate-details/taxrate-details.component';
+import { AuthComponent } from './components/auth/auth.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: 'reports/tax', component: TaxComponent},
   {path: 'receipt', component: ReceiptComponent},
   {path: 'settings', component: CompanyComponent},
+  {path: 'login', component: AuthComponent},
   {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 ];
 

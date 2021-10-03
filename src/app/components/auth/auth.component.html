@@ -1,0 +1,102 @@
+<div class="content">
+  <div>
+    <i class="fa fa-spinner fa-5x spinner" [ngClass]="{'fa-spin': isLoading}" *ngIf="isLoading"></i>
+  </div>
+  <div class="container-fluid top-extra-pads">
+    <div class="row align-items-center">
+      <div class="col-md-4 ml-auto">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Login</h4>
+            <p class="card-category">i am an existing user</p>
+          </div>
+          <div class="card-body">
+            <form (submit)="onLogin()" [formGroup]="loginForm">
+              <div class="row">
+                <div class="col-md-11">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Email address</label>
+                    <input type="email" class="form-control" formControlName="lUsername">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-11">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Password</label>
+                    <input type="password" class="form-control" formControlName="lPassword">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="loginForm.get('lErrorMsg').value!==''">
+                <label class="text-danger">{{loginForm.get('lErrorMsg').value}}</label>
+              </div>
+              <div class="row top-extra-pads">
+                <button type="submit" class="btn btn-info align-self-center">Login</button>
+                <div class="clearfix"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="vr d-none d-md-block"></div>
+      <div class="hr d-block d-xs-block d-sm-block d-md-none"></div>
+      <div class="col-md-5 mr-auto">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title text-right">Create Profile</h4>
+            <p class="card-category text-right">i am a new user</p>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="signUpForm" (submit)="onSignUp()">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Fist Name*</label> <input type="text" class="form-control"
+                        formControlName="sFirstName">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Last Name</label>
+                    <input type="text" class="form-control" formControlName="sLastName">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="sf.sFirstName.errors && sf.sFirstName.touched && sf.sFirstName?.value !== ''">
+                <small id="passwordLoginError" class="text-danger">Name Required.</small>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Email address*</label>
+                    <input type="email" class="form-control" formControlName="sUsername" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="sf.sUsername.errors && sf.sUsername.touched && sf.sUsername.value?.length > 0">
+                <small id="passwordLoginError" class="text-danger">Invalid Email Address.</small>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Password*</label>
+                    <input type="password" class="form-control" formControlName="sPassword">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="sf.sPassword.errors && sf.sPassword.touched && sf.sPassword.value?.length > 0">
+                <small id="passwordLoginError" class="text-danger">Password must be between 6 to 20 chars.</small>
+              </div>
+              <div class="row top-extra-pads">
+                <label class="text-dark align-self-center font-weight-bold font-italic"><small>* = Required</small></label>
+                <button type="submit" class="btn btn-danger ml-auto">Create</button>
+                <div class="clearfix"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

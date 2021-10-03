@@ -1,0 +1,39 @@
+.top-extra-pads {
+    padding-top: 2rem;
+}
+
+.vr {
+    height: 30rem;
+    width: 7px;
+    border-radius: 10px;
+    background: linear-gradient(70deg,#937097, #e9b5f0);
+    /* background: linear-gradient(70deg, #ff8282, #7de3ff); */
+    margin: 30px;
+}
+
+.hr {
+    height: 6px;
+    width: 100%;
+    border-radius: 10px;
+    /* box-shadow: inset 0 0 2px rgba(0, 0, 0, .3); */
+    background: linear-gradient(60deg, #fa5151, #4ac6ec);
+    margin: 30px;
+}
+
+.card-body {
+    padding-bottom: 2rem;
+}
+
+button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.spinner {
+    color: darkgrey;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+  }

@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BodyComponent } from './components/body/body.component';
@@ -17,11 +17,14 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CompanyComponent } from './components/company/company.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReceiptComponent } from './components/receipt/receipt.component';
 import { TaxComponent } from './components/reports/tax/tax.component';
 import { TaxRatesComponent } from './components/taxrates/taxrates.component';
 import { TaxRateDetailsComponent } from './components/taxrate-details/taxrate-details.component';
+import { ConfigComponent } from './components/config/config.component';
+import { AuthComponent } from './components/auth/auth.component';
+import { AuthInterceptor } from './services/auth-interpreter-service';
 
 @NgModule({
   declarations: [
@@ -43,14 +46,17 @@ import { TaxRateDetailsComponent } from './components/taxrate-details/taxrate-de
     TaxComponent,
     TaxRatesComponent,
     TaxRateDetailsComponent,
+    AuthComponent,
+    ConfigComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
