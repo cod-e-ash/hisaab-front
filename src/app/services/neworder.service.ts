@@ -67,7 +67,7 @@ export class NewOrderService {
       let total = product.price + (product.mrp * product.margin) / 100;
       const discount = discountRate ? total * (discountRate / 100) : 0;
       total = total - discount;
-      const taxrates = await this.taxRateService.getTaxRate(product.taxrate);
+      const taxrates = this.taxRateService.getTaxRate(product.taxrate);
       const taxrate = taxrates.rate ?? 0;
       const tax = (taxrate / 100) * total;
 

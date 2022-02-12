@@ -344,7 +344,7 @@
               <tbody *ngIf="!isModalDataLoading">
                 <tr *ngFor="let product of products; let i=index">
                   <td class="text-center fit">
-                    <div class="form-check">
+                    <div>
                       <label class="form-check-label">
                         <input #productCheck (click)="addProductToArr(product, productCheck.checked)" class="form-check-input"
                           type="checkbox">
